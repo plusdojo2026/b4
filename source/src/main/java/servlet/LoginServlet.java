@@ -34,18 +34,27 @@ public class LoginServlet extends HttpServlet {
 		
 		// ログイン処理を行う
 		UserDao uDao = new UserDao();
-		if (uDao.isLoginOK(new User(0, name, pw, "", "", ""))) { // ログイン成功
-			// セッションスコープにIDを格納する
-			HttpSession session = request.getSession();
-			session.setAttribute("name", new LoginUser(name));
-
-			// チャットサーブレットにリダイレクトする
-			response.sendRedirect("/webapp/ChatServlet");
-		} else { // ログイン失敗
-			request.setAttribute("errorMessage", "ニックネームまたはパスワードが間違っています。");
-			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
-			
-			return;
+		if (request.getParameter("submit").equals("ログイン")) {
+			if (uDao.isLoginOK(new User(0, name, pw, "", "", ""))) { // ログイン成功
+				// セッションスコープにIDを格納する
+				HttpSession session = request.getSession();
+				session.setAttribute("name", new LoginUser(name));
+	
+				// チャットサーブレットにリダイレクトする
+				response.sendRedirect("/webapp/ChatServlet");
+			} else { // ログイン失敗
+				request.setAttribute("errorMessage", "ニックネームまたはパスワードが間違っています。");
+				request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+				
+				return;
+			}
+		}
+		
+		// 新規登録画面へ遷移
+		else if(request.getParameter("submit").equals("新規登録")) {
+			// 結果ページにフォワードする
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userreg.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
 }
