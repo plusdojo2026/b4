@@ -53,8 +53,7 @@ public class LoginServlet extends HttpServlet {
 		// 新規登録画面へ遷移
 		else if(request.getParameter("submit").equals("新規登録")) {
 			// 結果ページにフォワードする
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userreg.jsp");
-			dispatcher.forward(request, response);
+			response.sendRedirect("/webapp/UserRegServlet");
 		}
-	}
+	} 
 }
