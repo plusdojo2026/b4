@@ -11,8 +11,8 @@
 <div>ここる</div>
 <div>image</div>
 
-<div>ログインID<br>
-    <input type="text" name="id" id="id">
+<div>ユーザーニックネーム<br>
+    <input type="text" name="name" id="name">
 </div>
 <div>パスワード<br>
     <input type="password" name="pw" id="pw">
