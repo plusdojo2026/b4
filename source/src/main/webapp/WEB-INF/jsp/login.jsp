@@ -12,13 +12,13 @@
 <div>image</div>
 
 <div>ログインID<br>
-    <input type="text">
+    <input type="text" name="id" id="id">
 </div>
 <div>パスワード<br>
-    <input type="password">
+    <input type="password" name="pw" id="pw">
 </div>
 <div></div>
-<div><input type="submit" class="regist" name="submit" value="新規登録"></div>
-<div><input type="submit" class="login" name="submit" value="ログイン"></div>
+<div><input type="button" id="regist" name="regist" value="新規登録"></div>
+<div><input type="submit" id="login" name="submit" value="ログイン"></div>
 </body>
 </html>
