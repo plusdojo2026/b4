@@ -2,7 +2,6 @@ package servlet;
 
 import java.io.IOException;
 
-import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,21 +33,19 @@ public class LoginServlet extends HttpServlet {
 		String pw = request.getParameter("pw");
 		
 		// ログイン処理を行う
-		UserDao iDao = new UserDao();
-		if (iDao.isLoginOK(new User(0, name, pw, "", "", ""))) { // ログイン成功
+		UserDao uDao = new UserDao();
+		if (uDao.isLoginOK(new User(0, name, pw, "", "", ""))) { // ログイン成功
 			// セッションスコープにIDを格納する
 			HttpSession session = request.getSession();
 			session.setAttribute("name", new LoginUser(name));
 
-			// メニューサーブレットにリダイレクトする
+			// チャットサーブレットにリダイレクトする
 			response.sendRedirect("/webapp/ChatServlet");
 		} else { // ログイン失敗
-			// リクエストスコープに、タイトル、メッセージ、戻り先を格納する
-			request.setAttribute("result", new Result("ログイン失敗！", "IDまたはPWに間違いがあります。", "/webapp/LoginServlet"));
-
-			// 結果ページにフォワードする
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-			dispatcher.forward(request, response);
+			request.setAttribute("errorMessage", "ニックネームまたはパスワードが間違っています。");
+			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+			
+			return;
 		}
 	}
 }

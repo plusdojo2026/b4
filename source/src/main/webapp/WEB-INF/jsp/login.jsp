@@ -17,7 +17,14 @@
 <div>パスワード<br>
     <input type="password" name="pw" id="pw">
 </div>
-<div></div>
+<%
+String errorMessage = (String) request.getAttribute("errorMessage");
+%>
+<%if(errorMessage != null) {%>
+<p class="login-error">
+	<%= errorMessage %>
+</p>
+<%}%>
 <div><input type="button" id="regist" name="regist" value="新規登録"></div>
 <div><input type="submit" id="login" name="submit" value="ログイン"></div>
 </body>
