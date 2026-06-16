@@ -28,13 +28,13 @@ public class SettingServlet extends HttpServlet {
         System.out.println("押されたボタン: " + action);
         
         if ("profile".equals(action)) {
-            // 💡 追加：アイコン名を受け取る
+            // アイコン名を受け取る
             String iconName = request.getParameter("iconName");
             String userName = request.getParameter("userName");
             String childCountStr = request.getParameter("childCount");
             
             System.out.println("[プロフィールデータ受信]");
-            System.out.println("選択されたアイコン: " + iconName); // 💡 追加
+            System.out.println("選択されたアイコン: " + iconName); // 
             System.out.println("ユーザー名: " + userName);
             System.out.println("子どもの人数: " + childCountStr);
             
