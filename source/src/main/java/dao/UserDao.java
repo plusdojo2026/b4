@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import dto.User;
 
 public class UserDao {
-	// 引数で指定されたidpwでログイン成功ならtrueを返す
-		public boolean isLoginOK(User idpw) {
+	// 引数で指定されたnamepwでログイン成功ならtrueを返す
+		public boolean isLoginOK(User namepw) {
 			Connection conn = null;
 			boolean loginResult = false;
 			
@@ -19,20 +19,21 @@ public class UserDao {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 
 				// データベースに接続する
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/webapp1?"
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?"
 						+ "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
 						"root", "password");
 			
 				// SELECT文を準備する
-				String sql = "SELECT count(*) FROM User WHERE id=? AND pw=?";
+				String sql = "SELECT count(*) FROM User WHERE user_nickname=? AND password=?";
 				PreparedStatement pStmt = conn.prepareStatement(sql);
-				pStmt.setString(1, idpw.getUser_nickname());
-				pStmt.setString(2, idpw.getPassword());
+				pStmt.setInt(1, namepw.getId());
+				pStmt.setString(2, namepw.getUser_nickname());
+				pStmt.setString(3, namepw.getPassword());
 				
 				// SELECT文を実行し、結果表を取得する
 				ResultSet rs = pStmt.executeQuery();
 
-				// ユーザーIDとパスワードが一致するユーザーがいれば結果をtrueにする
+				// ユーザーニックネームとパスワードが一致するユーザーがいれば結果をtrueにする
 				rs.next();
 				if (rs.getInt("count(*)") == 1) {
 					loginResult = true;
