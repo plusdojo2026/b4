@@ -13,7 +13,7 @@
 
 <!-- メインここから -->
 
-<form id="userreg" method="POST" action="/webapp/UserRegServlet">
+<form id="userreg" method="POST" action="/b4/UserRegServlet">
 
 	<div>ユーザー登録ID</div>
 		<input type="text">
