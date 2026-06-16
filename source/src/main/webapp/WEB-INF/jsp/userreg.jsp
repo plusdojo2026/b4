@@ -4,25 +4,30 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ログイン</title>
+<title>新規登録</title>
 </head>
 <body>
-	<div>家事提案アプリ</div>
-	<div>ここる</div>
-	<div>image</div>
+<header>
+	<h1>ここる</h1>
+	<img src="/b4/img/mascot.png" alt="ペンギンのここるイラスト" id="mascot">
+	<!-- cssのリンク -->
+	<link rel="stylesheet" href="/css/userreg.css">
+	
+</header>
 
 <!-- メインここから -->
+<main>
 
 <form id="userreg" method="POST" action="/b4/UserRegServlet">
 
-	<div>ユーザー登録ID</div>
-		<input type="text">
+	<div>ユーザーニックネーム</div>
+		<input type="text" id="name" name="name">
 		
 	<div>パスワード</div>
-		<input type="text" id="id" name="id">
+		<input type="text" id="pw" name="pw">
 		
 	<div>確認のため再度入力してください</div>
-		<input type="text" id="pw" name="pw">
+		<input type="text" id="pw2" name="pw2">
 		
 	<p id="msg"></p>
 	
@@ -33,6 +38,8 @@
 	
 <div><input type="button" name="regist" value="登録"></div>
 
+</main>
+
 </body>
 
 <script>
@@ -42,9 +49,9 @@ document.getElementById('userreg').onsubmit = function(event){
     let id = document.getElementById('userreg').id.value;
     let pw = document.getElementById('userreg').pw.value;
     if (id === ''){
-        document.getElementById('msg').textContent = 'ユーザー登録IDを入力してください。';
+        document.getElementById('msg').textContent = 'ユーザーニックネームを入力してください。';
         event.preventDefault();
-    } else if (pw === ''){
+    } else if (pw === '' || pw2 === ''){
     	document.getElementById('msg').textContent = 'パスワードを入力してください。';
         event.preventDefault();
     }

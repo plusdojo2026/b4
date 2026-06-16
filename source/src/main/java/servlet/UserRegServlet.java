@@ -26,9 +26,20 @@ public class UserRegServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// ログインページにフォワードする
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userreg.jsp");
+				dispatcher.forward(request, response);
+			}
+	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// リクエストパラメータを取得する
-				request.setCharacterEncoding("UTF-8");
-				int id;					
+				request.setCharacterEncoding("UTF-8");	
+				int id;
 				String user_nickname = request.getParameter("user_nickname");	
 				String password = request.getParameter("password");		
 				String mail_address = request.getParameter("mail_address");	
@@ -39,16 +50,17 @@ public class UserRegServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
 		if (userDao.insert(new User(0,user_nickname,password,mail_address,c_at,u_at))) { 
 			// 登録成功
-			response.sendRedirect("/b4/LoginServlet");
+			response.sendRedirect("/b4/ChatServlet");
 			return;
-		} 
-		/*else { // 登録失敗
-			request.setAttribute("result", new Result("登録失敗！", "レコードを登録できませんでした。", "/b4/UserRegServlet"));
-		}*/
-		
+		}
+		else { /*// 登録失敗
+			request.setAttribute( "/b4/UserRegServlet");
+		*/
 		// 新規登録ページにフォワードする
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userreg.jsp");
 		dispatcher.forward(request, response);
+		
+	}
 	}
 
 }
