@@ -1,1 +1,25 @@
-@charset "UTF-8";
+* {
+    box-sizing: border-box; /* ブロックボックス */
+}
+
+html {
+	font-size: 16px;
+	font-family: Zen Maru Gothic;
+	background-color: #FBFAF7;
+}
+
+body {
+    margin: 0 0 0 0; /* マージンなし */
+    padding: 0 0 0 0; /* パディングなし */
+    font-size: 20px;
+}
+
+main {
+	margin: 90px auto 90px auto;
+	max-width: 1000px;
+	line-height: 1.2;
+}
+
+h1, h2 {
+	color: #80350E;
+}

@@ -5,11 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>ログイン</title>
+<link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-<div>家事提案アプリ</div>
-<div>ここる</div>
-<div><img src="/b4/img/mascot.png" alt="ペンギンのここるイラスト" id="mascot"></div>
+<h2>家事提案アプリ</h2>
+<h1>ここる</h1>
+<<img src="/b4/img/mascot.png" alt="ペンギンのここるイラスト" id="mascot">
 
 <form method="POST" action="/b4/LoginServlet" id="form">
 <div><label>ユーザーニックネーム<br>
