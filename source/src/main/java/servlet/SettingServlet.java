@@ -34,7 +34,7 @@ public class SettingServlet extends HttpServlet {
             String childCountStr = request.getParameter("childCount");
             
             System.out.println("[プロフィールデータ受信]");
-            System.out.println("選択されたアイコン: " + iconName); // 
+            System.out.println("選択されたアイコン: " + iconName); 
             System.out.println("ユーザー名: " + userName);
             System.out.println("子どもの人数: " + childCountStr);
             
