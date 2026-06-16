@@ -8,10 +8,11 @@
 <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-<h2>家事提案アプリ</h2>
-<h1>ここる</h1>
-<<img src="/b4/img/mascot.png" alt="ペンギンのここるイラスト" id="mascot">
-
+<div class="header">
+<h1>ここる
+<img src="/b4/img/mascot.png" alt="ペンギンのここるイラスト" id="mascot">
+</h1>
+</div>
 <form method="POST" action="/b4/LoginServlet" id="form">
 <div><label>ユーザーニックネーム<br>
     <input type="text" name="name" id="name"></label>
