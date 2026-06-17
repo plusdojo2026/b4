@@ -18,7 +18,7 @@
     <input type="text" name="name" id="name"></label>
 </div>
 <div><label>パスワード<br>
-    <input type="password" name="pw" id="pw"></label>
+    <input type="password" name="password" id="password"></label>
 </div>
 <%
 String errorMessage = (String) request.getAttribute("errorMessage");

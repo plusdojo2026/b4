@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
 		// リクエストパラメータを取得する
 		request.setCharacterEncoding("UTF-8");
 		String name = request.getParameter("name");
-		String pw = request.getParameter("pw");
+		String pw = request.getParameter("password");
 		
 		// ログイン処理を行う
 		UserDao uDao = new UserDao();
@@ -45,10 +45,12 @@ public class LoginServlet extends HttpServlet {
 				// チャットサーブレットにリダイレクトする
 				response.sendRedirect("/b4/ChatServlet");
 				// ログイン情報が取得できない場合
-				if(loginUser == null)
+				if(loginUser == null) {
 					request.setAttribute("errorMessage", "ログインユーザー情報の取得に失敗しました");
 					request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 					return;
+				}
+					
 
 			} else { // ログイン失敗
 				request.setAttribute("errorMessage", "ニックネームまたはパスワードが間違っています");

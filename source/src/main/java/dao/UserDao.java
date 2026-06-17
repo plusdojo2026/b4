@@ -11,7 +11,7 @@ import dto.User;
 
 public class UserDao {
 	// 引数で指定されたnamepwでログイン成功ならtrueを返す
-		public boolean isLoginOK(User namepw) {
+		public boolean isLoginOK(User namepassword) {
 			Connection conn = null;
 			boolean loginResult = false;
 			
@@ -27,9 +27,9 @@ public class UserDao {
 				// SELECT文を準備する
 				String sql = "SELECT count(*) FROM users WHERE user_nickname=? AND password=?";
 				PreparedStatement pStmt = conn.prepareStatement(sql);
-				pStmt.setInt(1, namepw.getId());
-				pStmt.setString(2, namepw.getUser_nickname());
-				pStmt.setString(3, namepw.getPassword());
+				// pStmt.setInt(1, namepw.getId());
+				pStmt.setString(1, namepassword.getUser_nickname());
+				pStmt.setString(2, namepassword.getPassword());
 				
 				// SELECT文を実行し、結果表を取得する
 				ResultSet rs = pStmt.executeQuery();
@@ -61,7 +61,7 @@ public class UserDao {
 			return loginResult;
 		}
 		
-		public LoginUser findLoginUser(String name, String pw) {
+		public LoginUser findLoginUser(String name, String password) {
 			Connection conn = null;        // データベースに接続していない
 			LoginUser ls = new LoginUser();	   // 入れ物を作っておく
 
@@ -90,7 +90,7 @@ public class UserDao {
 				rs.next();
 				ls.setUserName(name);
 				ls.setUserId(rs.getInt("id"));
-				ls.setPassword(rs.getString("pw"));
+				ls.setPassword(rs.getString("password"));
 				
 			// エラー対応	
 			} catch (SQLException e) {
