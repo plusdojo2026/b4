@@ -20,7 +20,7 @@
 
             <div id="modal" style="display:none; position:fixed; top:10%; left:10%; width:80%; background:white; border:2px solid #000; padding:20px; z-index:10;">
                 <p>アイコンを選んでください</p>
-                <% for(int i=1; i<=10; i++) { %>
+                <% for(int i=1; i<=7; i++) { %>
                     <label style="display:inline-block; margin:5px;">
                         <input type="radio" name="tempIcon" value="icon<%=i%>.png" onclick="selectIcon('icon<%=i%>.png')">
                         <img src="images/icon<%=i%>.png" width="40" height="40">
