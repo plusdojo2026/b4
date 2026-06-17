@@ -52,7 +52,6 @@ public class UserRegServlet extends HttpServlet {
 			response.sendRedirect("/b4/ChatServlet");
 			System.out.println("touroku");
 			return;
-			
 		}
 		else { // 登録失敗 エラー文を表示？
 			request.setAttribute( "error","登録できません。");

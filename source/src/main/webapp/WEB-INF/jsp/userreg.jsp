@@ -48,6 +48,9 @@
 'use strict'
 
 document.getElementById('userreg').onsubmit = function(event){
+	if(window.confirm('登録します。よろしいですか？') === false){
+		event.preventDefault();
+	}
     let name = document.getElementById('userreg').name.value;
     let pw = document.getElementById('userreg').pw.value;
     let pw2 = document.getElementById('userreg').pw2.value;
