@@ -24,17 +24,18 @@
 		<input type="text" id="name" name="name">
 		
 	<div>パスワード</div>
-		<input type="text" id="pw" name="pw">
+		<input type="password" id="pw" name="pw">
 		
 	<div>確認のため再度入力してください</div>
-		<input type="text" id="pw2" name="pw2">
+		<input type="password" id="pw2" name="pw2">
 		
-	<p id="msg"></p>
+	<p id="msg"> </p>
 	
 	<div>メールアドレス(任意)</div>
 		<input type="text">
 	
 </form>
+
 	
 <div><input type="button" name="regist" value="登録"></div>
 
@@ -48,11 +49,15 @@
 document.getElementById('userreg').onsubmit = function(event){
     let name = document.getElementById('userreg').name.value;
     let pw = document.getElementById('userreg').pw.value;
+    let pw2 = document.getElementById('userreg').pw2.value;
     if (name === ''){
         document.getElementById('msg').textContent = 'ユーザーニックネームを入力してください。';
         event.preventDefault();
     } else if (pw === '' || pw2 === ''){
     	document.getElementById('msg').textContent = 'パスワードを入力してください。';
+        event.preventDefault();
+    } else if (pw !== pw2){
+    	document.getElementById('msg').textContent = 'パスワードが一致しません。';
         event.preventDefault();
     }
 }

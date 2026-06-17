@@ -39,7 +39,6 @@ public class UserRegServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// リクエストパラメータを取得する
 				request.setCharacterEncoding("UTF-8");	
-				int id;
 				String user_nickname = request.getParameter("user_nickname");	
 				String password = request.getParameter("password");		
 				String mail_address = request.getParameter("mail_address");	
@@ -53,9 +52,10 @@ public class UserRegServlet extends HttpServlet {
 			response.sendRedirect("/b4/ChatServlet");
 			return;
 		}
-		else { /*// 登録失敗 エラー文を表示？
-			request.setAttribute( "/b4/UserRegServlet");
-		*/
+		else { // 登録失敗 エラー文を表示？
+			request.setAttribute( "error","登録できません。");
+			response.sendRedirect("/b4/UserRegServlet");
+		
 		// 新規登録ページにフォワードする
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userreg.jsp");
 		dispatcher.forward(request, response);
