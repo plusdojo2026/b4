@@ -9,6 +9,7 @@ public class UserSetting implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // 保持するデータ
+    private String iconName;
     private String userName;
     private int childCount;
     private String garbageName;
@@ -18,6 +19,9 @@ public class UserSetting implements Serializable {
     public UserSetting() {}
 
     // ゲッターとセッター
+    public String getIconName() { return iconName; }
+    public void setIconName(String iconName) { this.iconName = iconName; }
+    
     public String getUserName() { return userName; }
     public void setUserName(String userName) { this.userName = userName; }
 
