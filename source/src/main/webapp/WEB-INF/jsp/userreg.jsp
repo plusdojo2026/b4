@@ -46,9 +46,9 @@
 'use strict'
 
 document.getElementById('userreg').onsubmit = function(event){
-    let id = document.getElementById('userreg').id.value;
+    let name = document.getElementById('userreg').name.value;
     let pw = document.getElementById('userreg').pw.value;
-    if (id === ''){
+    if (name === ''){
         document.getElementById('msg').textContent = 'ユーザーニックネームを入力してください。';
         event.preventDefault();
     } else if (pw === '' || pw2 === ''){

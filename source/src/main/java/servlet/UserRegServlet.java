@@ -26,7 +26,7 @@ public class UserRegServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// ログインページにフォワードする
+		// 新規登録ページにフォワードする
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userreg.jsp");
 				dispatcher.forward(request, response);
 			}
@@ -49,11 +49,11 @@ public class UserRegServlet extends HttpServlet {
 		// 登録処理を行う
 		UserDao userDao = new UserDao();
 		if (userDao.insert(new User(0,user_nickname,password,mail_address,c_at,u_at))) { 
-			// 登録成功
+			// 登録成功 チャット画面に移動
 			response.sendRedirect("/b4/ChatServlet");
 			return;
 		}
-		else { /*// 登録失敗
+		else { /*// 登録失敗 エラー文を表示？
 			request.setAttribute( "/b4/UserRegServlet");
 		*/
 		// 新規登録ページにフォワードする

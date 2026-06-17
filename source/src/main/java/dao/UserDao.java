@@ -76,7 +76,7 @@ public class UserDao {
 						"root", "password");
 
 				// SQL文を準備する
-				String sql = "INSERT INTO User (id,user_nickname,password,mail_address,c_at,u_at) VALUES (0, ?, ?, ?, ?, ?)";
+				String sql = "INSERT INTO Users (id,user_nickname,password,mail_address,c_at,u_at) VALUES (0,?, ?, ?, ?, ?)";
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
 				// SQL文を完成させる
