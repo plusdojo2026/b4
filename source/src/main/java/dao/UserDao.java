@@ -116,7 +116,7 @@ public class UserDao {
 		}
 		
 	// 引数cardで指定されたレコードを登録し、成功したらtrueを返す
-		public boolean insert(User idpw) {
+		public boolean insert(User namepassword) {
 			Connection conn = null;
 			boolean result = false;
 
@@ -134,20 +134,20 @@ public class UserDao {
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
 				// SQL文を完成させる
-				if (idpw.getUser_nickname() != null) {
-					pStmt.setString(1, idpw.getUser_nickname());
+				if (namepassword.getUser_nickname() != null) {
+					pStmt.setString(1, namepassword.getUser_nickname());
 				} else {
-					pStmt.setString(1, "");
+					pStmt.setString(1,"");
 				}
-				if (idpw.getPassword() != null) {
-					pStmt.setString(2, idpw.getPassword());
+				if (namepassword.getPassword() != null) {
+					pStmt.setString(2, namepassword.getPassword());
 				} else {
-					pStmt.setString(2, "");
+					pStmt.setString(2,"");
 				}
-				if (idpw.getMail_address() != null) {
-					pStmt.setString(3, idpw.getMail_address());
+				if (namepassword.getMail_address() != null) {
+					pStmt.setString(3, namepassword.getMail_address());
 				} else {
-					pStmt.setString(3, "");
+					pStmt.setString(3,"");
 				}
 //				if (idpw.getC_at() != null) {
 //					pStmt.setString(4, idpw.getC_at());

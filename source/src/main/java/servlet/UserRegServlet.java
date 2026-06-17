@@ -50,20 +50,16 @@ public class UserRegServlet extends HttpServlet {
 		if (userDao.insert(new User(0,user_nickname,password,mail_address,c_at,u_at))) { 
 			// 登録成功 チャット画面に移動
 			response.sendRedirect("/b4/ChatServlet");
-			System.out.println("touroku");
+			System.out.println("登録");
 			return;
 		}
 		else { // 登録失敗 エラー文を表示？
 			request.setAttribute( "error","登録できません。");
 //			response.sendRedirect("/b4/UserRegServlet");
+		// 新規登録ページにフォワードする	
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userreg.jsp");
 			dispatcher.forward(request, response);
-			System.out.println("完了");
 		}
-		
-		// 新規登録ページにフォワードする
-//		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/userreg.jsp");
-//		dispatcher.forward(request, response);
 		
 	}
 
