@@ -210,7 +210,7 @@
      *
      * RecordDetailServlet 側では、
      * 表示対象週を「月曜開始〜日曜終了」で作っているため、
-     * JSP側も「月〜日」で表示する。
+     * JSP側も「月〜日」で表示
      */
     String[] dayLabels = {
             "月",
@@ -287,17 +287,17 @@
                     }
                 %>
 
-                <!-- 活動名ごとに行を作成する。 -->
+                <!-- 活動名ごとに行を作成する -->
                 <%
                     for (String activityName : activityNames) {
                 %>
 
-                    <!-- 左端に活動名を表示する。 -->
+                    <!-- 左端に活動名を表示する -->
                     <div class="activity-label">
                         <%= escapeHtml(activityName) %>
                     </div>
 
-                    <!-- 月〜日までの7セルを作成する。 -->
+                    <!-- 月〜日までの7セルを作成する-->
                     <%
                         for (int dayIndex = 0; dayIndex < 7; dayIndex++) {
 
@@ -313,7 +313,7 @@
                             <%
                                 if (done) {
                             %>
-                                <!--記録がある場合だけペンギンアイコンを表示する。-->
+                                <!--記録がある場合だけペンギンアイコンを表示する-->
                                 <img src="<%= contextPath %>/img/penguin.png" alt="記録あり">
                             <%
                                 }
@@ -349,7 +349,7 @@
 
         </div>
 
-        <!--チャット画面へ戻るリンク。
+        <!--チャット画面へ戻るリンク
         記録一覧は参照画面なので、登録処理は行わない-->
         <div class="home-link-wrap">
             <a href="<%= contextPath %>/ChatServlet"
