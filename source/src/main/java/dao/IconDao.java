@@ -3,11 +3,9 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import dto.Icon;
-import dto.Profile;
+import dto.UserSetting;
 
 public class IconDao {
 	// 引数icで指定されたレコードを更新し、成功したらtrueを返す
@@ -34,7 +32,7 @@ public class IconDao {
 				} else {									// 入力がなければ空白で入れる
 					pStmt.setInt(1, 1);
 				}
-				pStmt.setString(2, ic.getId());
+				pStmt.setInt(2, ic.getId());
 				
 				// SQL文を実行する
 				if (pStmt.executeUpdate() == 1) {
@@ -61,4 +59,3 @@ public class IconDao {
 		}
 	}
 
-}
