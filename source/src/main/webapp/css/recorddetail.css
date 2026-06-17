@@ -1,0 +1,567 @@
+/* =========================================================
+   recorddetail.css
+   記録一覧画面専用CSS
+
+   対象JSP：
+   /WEB-INF/jsp/recorddetail.jsp
+
+   画面方針：
+   ・できた/できていないを強く見せすぎない！！
+   ・記録がある箇所にペンギンアイコンを表示する
+   ・スマホでも崩れにくいレイアウト！！
+========================================================= */
+
+
+/* =========================================================
+   1. 全体共通設定
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+/*
+   body全体の基本設定。
+
+   background:
+   → アプリ全体をやわらかいミント系の背景にする。
+
+   font-family:
+   → Windows環境でも見やすい日本語フォントを指定。フォントは後で合わせる
+*/
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Yu Gothic", "Meiryo", sans-serif;
+    color: #2F3A3A;
+    background: linear-gradient(180deg, #F7FCFA 0%, #F4FAF7 100%);
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   2. 画面全体の枠
+========================================================= */
+
+/*
+   background-color:
+   → 中央のアプリ画面部分を白っぽい色に
+*/
+.page-frame {
+    max-width: 430px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: #F8FCFA;
+    border-left: 1px solid #E2EFEA;
+    border-right: 1px solid #E2EFEA;
+    position: relative;
+}
+
+
+/* =========================================================
+   3. ヘッダー
+========================================================= */
+
+/*
+   record-header は画面上部の固定的なヘッダー。
+
+   左：サイドバーボタン
+   中央：記録一覧タイトル
+   右：チャット画面へ戻るボタン
+
+   display: flex;
+   → 横並びにする。
+
+   justify-content: space-between;
+   → 左右にアイコン、中央にタイトルを置く。
+*/
+.record-header {
+    height: 64px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #F8FCFA;
+    border-bottom: 1px solid #E2EFEA;
+}
+
+/*
+   ヘッダー中央のタイトル。
+*/
+.header-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #2F3A3A;
+    letter-spacing: 0.04em;
+}
+
+/*
+   ヘッダー左右の丸いアイコンボタン共通設定。
+
+   sidebar-button と exit-button の土台になる。
+*/
+.header-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    border: 1px solid #DDEBE6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(91, 168, 143, 0.12);
+}
+
+/*
+   ホバー時に少しだけ背景を変える。
+   操作できることを視覚的に伝えるため。
+*/
+.header-icon:hover {
+    background-color: #EAF6F1;
+}
+
+
+/* =========================================================
+   4. サイドバーボタンの見た目
+========================================================= */
+
+/*
+   サイドバーボタンは、CSSだけで三本線を作る。
+
+   span:
+   → 真ん中の線
+
+   span::before:
+   → 上の線
+
+   span::after:
+   → 下の線
+*/
+.sidebar-button span,
+.sidebar-button span::before,
+.sidebar-button span::after {
+    width: 18px;
+    height: 2px;
+    background-color: #5BA88F;
+    border-radius: 999px;
+    display: block;
+    position: absolute;
+    content: "";
+}
+
+/*
+   真ん中の線。
+*/
+.sidebar-button span {
+    top: 20px;
+}
+
+/*
+   上の線。
+*/
+.sidebar-button span::before {
+    top: -6px;
+}
+
+/*
+   下の線。
+*/
+.sidebar-button span::after {
+    top: 6px;
+}
+
+
+/* =========================================================
+   5. 右上の戻るボタンの見た目
+========================================================= */
+
+/*
+   exit-button は「×」に近い形をCSSで作る。
+
+   span::before と span::after を斜めにして、
+   閉じる/戻るボタンのように見せる。
+*/
+.exit-button span::before,
+.exit-button span::after {
+    content: "";
+    width: 18px;
+    height: 2px;
+    background-color: #5BA88F;
+    border-radius: 999px;
+    position: absolute;
+    left: 11px;
+    top: 20px;
+}
+
+/*
+   斜め線1本目。
+*/
+.exit-button span::before {
+    transform: rotate(45deg);
+}
+
+/*
+   斜め線2本目。
+*/
+.exit-button span::after {
+    transform: rotate(-45deg);
+}
+
+
+/* =========================================================
+   6. メイン領域
+========================================================= */
+
+/*
+   record-main はヘッダー下のメインコンテンツ部分。
+
+   padding-bottom を多めにしているのは、
+   下部リンクやボタンが窮屈に見えないようにするため。
+*/
+.record-main {
+    padding: 22px 18px 40px;
+}
+
+
+/* =========================================================
+   7. 記録パネル
+========================================================= */
+
+/*
+   record-panel は、家事ごとの記録表を包むカード。
+
+   白背景 + 角丸 + 影で、やわらかいカードUIにする。
+*/
+.record-panel {
+    background-color: #FFFFFF;
+    border: 1px solid #DDEBE6;
+    border-radius: 28px;
+    padding: 20px 16px 22px;
+    box-shadow: 0 10px 28px rgba(91, 168, 143, 0.12);
+}
+
+/*
+   パネル上部のタイトル行。
+
+   左：家事ごとの記録
+   右：期間ラベル
+*/
+.record-panel-title {
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #2F3A3A;
+}
+
+/*
+   期間ラベル側は少し控えめにする。
+*/
+.record-panel-title span:last-child {
+    font-size: 12px;
+    color: #6F7E7A;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   8. 記録グリッド全体
+========================================================= */
+
+/*
+   record-grid は、家事名 × 曜日の表。
+
+   grid-template-columns:
+   1列目：活動名
+   2〜8列目：月〜日
+
+   84px:
+   → 活動名列の幅
+
+   repeat(7, 1fr):
+   → 曜日列を均等幅にする。
+*/
+.record-grid {
+    display: grid;
+    grid-template-columns: 84px repeat(7, 1fr);
+    gap: 8px;
+    align-items: center;
+}
+
+/*
+   左上の空セル。
+   活動名列と曜日列の交差部分。
+*/
+.grid-empty {
+    height: 30px;
+}
+
+
+/* =========================================================
+   9. 曜日ラベル
+========================================================= */
+
+/*
+   day-label は「月 火 水 木 金 土 日」のヘッダー部分。
+*/
+.day-label {
+    height: 30px;
+    border-radius: 999px;
+    background-color: #EAF6F1;
+    color: #4E8F7A;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================================
+   10. 活動名ラベル
+========================================================= */
+
+/*
+   activity-label は左端の家事名。
+
+   例：
+   掃除
+   洗濯
+   料理
+   片付け
+*/
+.activity-label {
+    min-height: 44px;
+    padding: 8px 10px;
+    border-radius: 16px;
+    background-color: #F3FAF7;
+    color: #2F3A3A;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+
+/* =========================================================
+   11. 記録セル
+========================================================= */
+
+/*
+   record-cell は、曜日ごとの記録表示セル。
+
+   記録がない場合：
+   → 空の白いセル
+
+   記録がある場合：
+   → done クラスが付き、ペンギン画像を表示する。
+*/
+.record-cell {
+    height: 44px;
+    border-radius: 16px;
+    background-color: #F9FCFB;
+    border: 1px solid #E7F0EC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*
+   記録があるセル。
+
+   背景を少しだけミント色にして、
+   ペンギンアイコンが自然に見えるようにする。
+*/
+.record-cell.done {
+    background-color: #EAF6F1;
+    border-color: #CFE9DE;
+}
+
+/*
+   セル内のペンギン画像。
+
+   画像自体が大きすぎても崩れないように、
+   width / height を固定する。
+*/
+.record-cell img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: block;
+}
+
+
+/* =========================================================
+   12. 前週・翌週ボタン
+========================================================= */
+
+/*
+   week-buttons は、前週・翌週ボタンを横並びにする領域。
+*/
+.week-buttons {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
+
+/*
+   前週・翌週ボタン。
+
+   押しやすいように横幅と高さを確保する。
+*/
+.week-button {
+    min-width: 110px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background-color: #FFFFFF;
+    border: 1px solid #DDEBE6;
+    color: #4E8F7A;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 6px 16px rgba(91, 168, 143, 0.10);
+}
+
+/*
+   ホバー時。
+*/
+.week-button:hover {
+    background-color: #EAF6F1;
+}
+
+
+/* =========================================================
+   13. ホームへ戻るリンク
+========================================================= */
+
+/*
+   home-link-wrap は、下部の「ホームへ戻る」を中央寄せするための枠。
+*/
+.home-link-wrap {
+    margin-top: 22px;
+    text-align: center;
+}
+
+/*
+   ホームへ戻るリンク。
+
+   week-button より控えめに見せる。
+*/
+.home-link {
+    display: inline-block;
+    color: #6F7E7A;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 10px;
+}
+
+/*
+   ホバー時。
+*/
+.home-link:hover {
+    color: #4E8F7A;
+}
+
+
+/* =========================================================
+   14. レスポンシブ対応：小さめスマホ
+========================================================= */
+
+/*
+   画面幅が390px以下の場合、
+   活動名列と各セルを少し小さくする。
+
+   小さい画面でも横スクロールなしで見やすくするため。
+*/
+@media (max-width: 390px) {
+
+    .page-frame {
+        border-left: none;
+        border-right: none;
+    }
+
+    .record-main {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .record-panel {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .record-grid {
+        grid-template-columns: 72px repeat(7, 1fr);
+        gap: 6px;
+    }
+
+    .activity-label {
+        font-size: 12px;
+        padding: 7px 8px;
+    }
+
+    .day-label {
+        font-size: 11px;
+    }
+
+    .record-cell {
+        height: 40px;
+        border-radius: 14px;
+    }
+
+    .record-cell img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .week-buttons {
+        gap: 12px;
+    }
+
+    .week-button {
+        min-width: 96px;
+        padding: 11px 14px;
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================================
+   15. レスポンシブ対応：さらに狭い画面
+========================================================= */
+
+/*
+   350px以下のかなり狭い画面では、
+   グリッド全体が潰れやすいため、
+   活動名列をさらに縮める。
+*/
+@media (max-width: 350px) {
+
+    .record-grid {
+        grid-template-columns: 64px repeat(7, 1fr);
+        gap: 5px;
+    }
+
+    .activity-label {
+        font-size: 11px;
+    }
+
+    .record-cell {
+        height: 36px;
+    }
+
+    .record-cell img {
+        width: 22px;
+        height: 22px;
+    }
+}
