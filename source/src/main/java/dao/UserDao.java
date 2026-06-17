@@ -25,7 +25,7 @@ public class UserDao {
 						"root", "password");
 			
 				// SELECT文を準備する
-				String sql = "SELECT count(*) FROM User WHERE user_nickname=? AND password=?";
+				String sql = "SELECT count(*) FROM users WHERE user_nickname=? AND password=?";
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 				pStmt.setInt(1, namepw.getId());
 				pStmt.setString(2, namepw.getUser_nickname());
@@ -70,12 +70,12 @@ public class UserDao {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 
 				// データベースに接続する
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/webapp1?"
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?"
 						+ "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
 						"root", "password");
 
 				// SQL文を準備する
-				String sql = "SELECT id, user_nickname, password FROM User WHERE user_nickname = ?";		// idの値でデータを指定
+				String sql = "SELECT id, user_nickname, password FROM users WHERE user_nickname = ?";		// idの値でデータを指定
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
 				// SQL文を完成させる
