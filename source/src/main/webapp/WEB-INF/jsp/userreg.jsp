@@ -4,15 +4,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>新規登録</title>
+	<title>新規登録</title>
+	<link rel="stylesheet" href="/b4/css/login.css">
 </head>
+
 <body>
 <header>
-	<h1>ここる</h1>
+<div class="header">
+	<h1>ここる
 	<img src="/b4/img/mascot.png" alt="ペンギンのここるイラスト" id="mascot">
-	<!-- cssのリンク -->
-	<link rel="stylesheet" href="/css/userreg.css">
-	
+	</h1>
+</div>
 </header>
 
 <!-- メインここから -->
@@ -34,10 +36,9 @@
 	<div>メールアドレス(任意)</div>
 		<input type="text">
 	
-</form>
+<div><input type="submit" name="regist" value="登録"></div>
 
-	
-<div><input type="button" name="regist" value="登録"></div>
+</form>
 
 </main>
 
