@@ -4,12 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 <title>家事提案</title>
 <link rel="stylesheet" href="css/chat.css">
 </head>
+<body>
 <header class="header">
 	<div class="title">
 		<h1>ここる</h1>
