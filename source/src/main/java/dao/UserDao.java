@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import dto.LoginUser;
 import dto.User;
 
 public class UserDao {
@@ -59,7 +60,60 @@ public class UserDao {
 			// 結果を返す
 			return loginResult;
 		}
+		
+		public LoginUser findLoginUser(String name, String pw) {
+			Connection conn = null;        // データベースに接続していない
+			LoginUser ls = new LoginUser();	   // 入れ物を作っておく
 
+			try {
+				// JDBCドライバを読み込む
+				Class.forName("com.mysql.cj.jdbc.Driver");
+
+				// データベースに接続する
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/webapp1?"
+						+ "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
+						"root", "password");
+
+				// SQL文を準備する
+				String sql = "SELECT id, user_nickname, password FROM User WHERE user_nickname = ?";		// idの値でデータを指定
+				PreparedStatement pStmt = conn.prepareStatement(sql);
+
+				// SQL文を完成させる
+				if (name != null) {							// 入力された文字で検索
+					pStmt.setString(1, name);
+				}
+				
+				// SQL文を実行し、結果表を取得する
+				ResultSet rs = pStmt.executeQuery();
+
+				// 結果表をコレクションにコピーする
+				rs.next();
+				ls.setUserName(name);
+				ls.setUserId(rs.getInt("id"));
+				ls.setPassword(rs.getString("pw"));
+				
+			// エラー対応	
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				
+			} finally {
+				// データベースを切断
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+						
+					}
+				}
+			}
+
+			// 結果を返す
+			return ls;
+		}
 		
 	// 引数cardで指定されたレコードを登録し、成功したらtrueを返す
 		public boolean insert(User idpw) {

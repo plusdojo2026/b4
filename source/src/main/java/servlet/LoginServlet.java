@@ -36,12 +36,20 @@ public class LoginServlet extends HttpServlet {
 		UserDao uDao = new UserDao();
 		if (request.getParameter("submit").equals("ログイン")) {
 			if (uDao.isLoginOK(new User(0, name, pw, "", "", ""))) { // ログイン成功
+				// ログイン情報の取得
+				LoginUser loginUser = uDao.findLoginUser(name,pw);
 				// セッションスコープにidとnameを格納する
 				HttpSession session = request.getSession();
-				session.setAttribute("name", new LoginUser(id, name));
+				session.setAttribute("name", loginUser);
 	
 				// チャットサーブレットにリダイレクトする
 				response.sendRedirect("/b4/ChatServlet");
+				// ログイン情報が取得できない場合
+				if(loginUser == null)
+					request.setAttribute("errorMessage", "ログインユーザー情報の取得に失敗しました");
+					request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+					return;
+
 			} else { // ログイン失敗
 				request.setAttribute("errorMessage", "ニックネームまたはパスワードが間違っています");
 				request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
