@@ -23,10 +23,10 @@
 <form id="userreg" method="POST" action="/b4/UserRegServlet">
 
 	<div>ユーザーニックネーム</div>
-		<input type="text" id="name" name="name">
+		<input type="text" id="name" name="user_nickname">
 		
 	<div>パスワード</div>
-		<input type="password" id="pw" name="pw">
+		<input type="password" id="pw" name="password">
 		
 	<div>確認のため再度入力してください</div>
 		<input type="password" id="pw2" name="pw2">
@@ -34,7 +34,7 @@
 	<p id="msg"> </p>
 	
 	<div>メールアドレス(任意)</div>
-		<input type="text">
+		<input type="text" id= "mail" name="mail_address">
 	
 <div><input type="submit" name="regist" value="登録"></div>
 
