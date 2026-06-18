@@ -7,6 +7,9 @@ html {
 	font-family: "Zen Maru Gothic";
 	background-color: #FBFAF7;
 }
+p{
+	color: red;
+}
 
 body {
     margin: 0 0 0 0; /* マージンなし */
@@ -33,7 +36,4 @@ h1 {
 	color: #80350E;
 }
 
-p{
-	color: red;
-}
 

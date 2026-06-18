@@ -49,7 +49,7 @@ public class UserRegServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
 		if (userDao.insert(new User(0,user_nickname,password,mail_address,c_at,u_at))) { 
 			// 登録成功 チャット画面に移動
-			response.sendRedirect("/b4/ChatServlet");
+			response.sendRedirect("/b4/LoginServlet");
 			System.out.println("登録");
 			return;
 		}

@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 	<title>新規登録</title>
-	<link rel="stylesheet" href="/b4/css/login.css">
+	<link rel="stylesheet" href="/b4/css/userreg.css">
 </head>
 
 <body>
