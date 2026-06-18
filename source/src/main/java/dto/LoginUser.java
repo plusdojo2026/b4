@@ -3,6 +3,7 @@ package dto;
 import java.io.Serializable;
 
 public class LoginUser implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int id;		  // id
 	private String name; // ログイン時のニックネーム
 	private String password;
