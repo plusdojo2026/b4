@@ -1,5 +1,79 @@
 package servlet;
+import java.io.IOException;
 
-public class SuggestServlet {
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import dao.ActivityDao;
+import dao.IconDao;
+import dto.Icon;
+import dto.LoginUser;
+
+
+
+/**
+ * Servlet implementation class RegistServlet
+ */
+@WebServlet("/ChatServlet")
+public class SuggestServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+//		// もしもログインしていなかったらログインサーブレットにリダイレクトする
+//		HttpSession session = request.getSession();
+//		if (session.getAttribute("id") == null) {
+//			response.sendRedirect("/LoginServlet");
+//			return;
+//		}
+		
+		// アイコンテスト用　完成版では消す
+		LoginUser loginUser = new LoginUser(1,"ueda","password");
+		HttpSession session = request.getSession();
+		session.setAttribute("idnamepw", loginUser);
+		// ここまで
+		/* テスト時コメントアウト
+		 * LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw");
+		 */
+		int id = loginUser.getId();
+		
+		//"${Iconlist}"を作成し、リクエストスコープに格納する
+		
+		//icon_idを使って、iconsテーブルから、データを取得する
+		IconDao idao = new IconDao();		// DAOをインスタンス化
+		Icon ic = idao.select(id);		// IconDAOのselectメソッドでicon_idのIconデータを取得
+
+		// リクエストスコープに「Iconlist」と名付けて格納する
+		request.setAttribute("Iconlist",ic);
+		
+		
+		/* テスト時コメントアウト
+		 * //セッションを取得		 
+		HttpSession session = request.getSession();
+		*/
+
+		// 検索処理を行う
+		ActivityDao aDao = new ActivityDao();
+		//List<Activity> cardList1 = aDao.selectAll(new Activity());
+
+		// 検索結果をリクエストスコープに格納する
+		//request.setAttribute("cardList1", cardList1);
+
+		
+		// チャットページにフォワードする
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/chat.jsp");
+		dispatcher.forward(request, response);
+		
+
+    }
+		
 }
+
