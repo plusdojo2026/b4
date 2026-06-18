@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +12,7 @@
 <div class="header">
 <h1>ここる
 <img src="/b4/img/mascot.png" alt="ペンギンのここるイラスト" id="mascot">
+<img src="/b4/img/dog.png" alt="ペンギンのここるイラスト" id="mascot">
 </h1>
 </div>
 <form method="POST" action="/b4/LoginServlet" id="form">
