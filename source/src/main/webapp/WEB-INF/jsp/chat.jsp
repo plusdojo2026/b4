@@ -15,6 +15,7 @@
 		<img src="images/logout.png" class="logout-icon">
 	</div>
 </header>
+<img src="${Iconlist.icon_path}" alt="アイコン" id="icon">
 <c:forEach var="msg" items="${messageList}">
     <div class="${msg.sender}">
         ${msg.text}

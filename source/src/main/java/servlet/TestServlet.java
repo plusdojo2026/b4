@@ -25,7 +25,7 @@ public class TestServlet extends HttpServlet {
 				IconDao idao = new IconDao();		// DAOをインスタンス化
 				Icon ic = idao.select(icon_id);		// IconDAOのselectメソッドでicon_idのIconデータを取得
 
-				// リクエストスコープに「profileList」と名付けて格納する
+				// リクエストスコープに「Iconlist」と名付けて格納する
 				request.setAttribute("Iconlist",ic);
 				
 				
