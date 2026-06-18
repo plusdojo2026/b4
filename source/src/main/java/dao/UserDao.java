@@ -75,7 +75,7 @@ public class UserDao {
 						"root", "password");
 
 				// SQL文を準備する
-				String sql = "SELECT id, user_nickname, password FROM users WHERE user_nickname = ?";		// idの値でデータを指定
+				String sql = "SELECT id, user_nickname, password FROM users WHERE user_nickname = ?";		// user_nicknameの値でデータを指定
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
 				// SQL文を完成させる

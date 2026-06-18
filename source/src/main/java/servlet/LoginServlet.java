@@ -38,9 +38,9 @@ public class LoginServlet extends HttpServlet {
 			if (uDao.isLoginOK(new User(0, name, pw, "", "", ""))) { // ログイン成功
 				// ログイン情報の取得
 				LoginUser loginUser = uDao.findLoginUser(name,pw);
-				// セッションスコープにidとnameを格納する
+				// セッションスコープにidとnameとpwを格納する
 				HttpSession session = request.getSession();
-				session.setAttribute("name", loginUser);
+				session.setAttribute("idnamepw", loginUser);
 	
 				// チャットサーブレットにリダイレクトする
 				response.sendRedirect("/b4/ChatServlet");
