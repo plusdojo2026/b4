@@ -1,0 +1,21 @@
+html {
+	font-size: 16px;
+	font-family: "Zen Maru Gothic";
+	background-color: #FBFAF7;
+}
+
+body {
+    margin: 0 0 0 0; /* マージンなし */
+    padding: 0 0 0 0; /* パディングなし */
+    font-size: 20px;
+    text-align: center;
+}
+
+main {
+	margin: 0 auto 0 auto;
+	max-width: 1000px;
+}
+
+.header {
+	background-color: #D2EBE6;
+}

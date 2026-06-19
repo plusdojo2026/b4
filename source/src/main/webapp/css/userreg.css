@@ -7,15 +7,16 @@ html {
 	font-family: "Zen Maru Gothic";
 	background-color: #FBFAF7;
 }
+
 p{
 	color: red;
 }
 
 body {
-    margin: 0 0 0 0; /* マージンなし */
-    padding: 0 0 0 0; /* パディングなし */
-    font-size: 20px;
-    text-align: center;
+   margin: 0 0 0 0; /* マージンなし */
+   padding: 0 0 0 0; /* パディングなし */
+   font-size: 20px;
+   text-align: center;
 }
 
 main {
@@ -26,6 +27,7 @@ main {
 .header {
 	background-color: #D2EBE6;
 }
+
 
 img {
 	max-width: 100%;
