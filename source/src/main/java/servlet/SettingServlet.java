@@ -14,12 +14,26 @@ public class SettingServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+    	
+
+		// アイコンテスト用　完成版では消す
+		//LoginUser loginUser = new LoginUser(1,"ueda","password");
+		//HttpSession session = request.getSession();
+		//session.setAttribute("idnamepw", loginUser);
+		// ここまで
+		/* テスト時コメントアウト
+		 * LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw");
+		 */
+		//int id = loginUser.getId();
+		
+		//"${Iconlist}"を作成し、リクエストスコープに格納する
+    	
         request.getRequestDispatcher("/WEB-INF/jsp/setting.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        
+
         request.setCharacterEncoding("UTF-8");
         
         String action = request.getParameter("action");
@@ -34,6 +48,7 @@ public class SettingServlet extends HttpServlet {
             String childCountStr = request.getParameter("childCount");
             
             System.out.println("[プロフィールデータ受信]");
+            System.out.println("選択されたアイコン: " + iconName); // 
             System.out.println("選択されたアイコン: " + iconName); 
             System.out.println("ユーザー名: " + userName);
             System.out.println("子どもの人数: " + childCountStr);
