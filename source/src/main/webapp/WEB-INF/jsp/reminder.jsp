@@ -9,8 +9,23 @@
 </head>
 <body>
 <c:forEach var="e" items="${GarbageList}" >
-<div>${e.garbage_day}</div>
+<div class="day">${e.garbage_day}</div>
 <div>${e.garbage_name}</div>
 </c:forEach>
+
+<script>
+'use strict';
+/* 現在年月日（曜日）を表示 */
+function showDate() {
+    const today = new Date();
+    const week = ["日", "月", "火", "水", "木", "金", "土"];
+    const day = week[today.getDay()];
+}
+showDate();
+
+if (document.getElementByClassName("day") != day) {
+	document.getElementByClassName("day").style.display ="none";
+}
+</script>
 </body>
 </html>
