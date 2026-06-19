@@ -20,23 +20,51 @@
 
             <div id="modal" style="display:none; position:fixed; top:10%; left:10%; width:80%; background:white; border:2px solid #000; padding:20px; z-index:10;">
                 <p>アイコンを選んでください</p>
-                <% for(int i=1; i<=7; i++) { %>
                     <label style="display:inline-block; margin:5px;">
-                        <input type="radio" name="tempIcon" value="icon<%=i%>.png" onclick="selectIcon('icon<%=i%>.png')">
-                        <img src="images/icon<%=i%>.png" width="40" height="40">
+                        <input type="radio" name="tempIcon" value="cat.png" onclick="selectIcon('cat.png')">
+                        <img src="img/cat.png" width="40" height="40">
                     </label>
-                <% } %>
+                    
+                     <label style="display:inline-block; margin:5px;">
+                        <input type="radio" name="tempIcon" value="dinosaur.png" onclick="selectIcon('dinosaur.png')">
+                        <img src="img/dinosaur.png" width="40" height="40">
+                    </label>
+                    
+                     <label style="display:inline-block; margin:5px;">
+                        <input type="radio" name="tempIcon" value="dog.png" onclick="selectIcon('dog.png')">
+                        <img src="img/dog.png" width="40" height="40">
+                    </label>
+                    
+                     <label style="display:inline-block; margin:5px;">
+                        <input type="radio" name="tempIcon" value="dolphin.png" onclick="selectIcon('dolphin.png')">
+                        <img src="img/dolphin.png" width="40" height="40">
+                    </label>
+                    
+                     <label style="display:inline-block; margin:5px;">
+                        <input type="radio" name="tempIcon" value="gorilla.png" onclick="selectIcon('gorilla.png')">
+                        <img src="img/gorilla.png" width="40" height="40">
+                    </label>
+                    
+                     <label style="display:inline-block; margin:5px;">
+                        <input type="radio" name="tempIcon" value="rabbit.png" onclick="selectIcon('rabbit.png')">
+                        <img src="img/rabbit.png" width="40" height="40">
+                    </label>
+                    
+                     <label style="display:inline-block; margin:5px;">
+                        <input type="radio" name="tempIcon" value="whiteBear.png" onclick="selectIcon('whiteBear.png')">
+                        <img src="img/whiteBear.png" width="40" height="40">
+                    </label>
                 <br><br>
                 <button type="button" onclick="document.getElementById('modal').style.display='none'">閉じる</button>
             </div>
 
             <p>
                 <label>名前：</label>
-                <input type="text" name="userName" placeholder="名前を入力してください">
+                <input type="text" name="userName"value="${user.userName}" placeholder="名前を入力してください">
             </p>
             <p>
                 <label>子どもの人数：</label>
-                <input type="number" name="childCount" value="0">
+                <input type="number" name="childCount" value="${user.childCount}">
             </p>
             <button type="submit" name="action" value="profile">登録</button>
         </form>
@@ -48,12 +76,12 @@
             <p>
                 <label>ゴミ分類名：</label>
                 <select name="garbage_name">
-                    <option value="可燃ゴミ">可燃ゴミ</option>
-                    <option value="不燃ゴミ">不燃ゴミ</option>
-                    <option value="資源ゴミ">資源ゴミ</option>
-                    <option value="ビン、缶、ペットボトル">ビン、缶、ペットボトル</option>
-                    <option value="その他">その他</option>
-                </select>
+    				<option value="可燃ゴミ" ${user.garbageName == '可燃ゴミ' ? 'selected' : ''}>可燃ゴミ</option>
+   					<option value="不燃ゴミ" ${user.garbageName == '不燃ゴミ' ? 'selected' : ''}>不燃ゴミ</option>
+    				<option value="資源ゴミ" ${user.garbageName == '資源ゴミ' ? 'selected' : ''}>資源ゴミ</option>
+    				<option value="ビン、缶、ペットボトル" ${user.garbageName == 'ビン、缶、ペットボトル' ? 'selected' : ''}>ビン、缶、ペットボトル</option>
+    				<option value="その他" ${user.garbageName == 'その他' ? 'selected' : ''}>その他</option>
+				</select>
             </p>
             <p>
                 <label>曜日：</label>
