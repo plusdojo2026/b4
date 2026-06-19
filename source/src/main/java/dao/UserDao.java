@@ -89,7 +89,7 @@ public class UserDao {
 				// 結果表をコレクションにコピーする
 				rs.next();
 				ls.setUserName(name);
-				ls.setUserId(rs.getInt("id"));
+				ls.setId(rs.getInt("id"));
 				ls.setPassword(rs.getString("password"));
 				
 			// エラー対応	

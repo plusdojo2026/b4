@@ -37,7 +37,7 @@ public class ChatServlet extends HttpServlet {
 //			return;
 //		}
 		
-		// アイコンテスト用　完成版では消す
+		// アイコンテスト用 完成版では消す
 		LoginUser loginUser = new LoginUser(1,"ueda","password");
 		HttpSession session = request.getSession();
 		session.setAttribute("idnamepw", loginUser);
