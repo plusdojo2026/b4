@@ -36,10 +36,38 @@ h1 {
 	color: #80350E;
 }
 
+/* Logout.jspのcss */
 .logout {
 	color: #80350E;
     font-size: 30px;
     font-family: "Zen Maru Gothic";
+}
+
+a{
+	display: inline-block;
+	border: solid;
+	border-radius: 10px;
+	border-color: #D2EBE6;
+	background-color: #D2EBE6;
+	transition: transform 0.25s ease;
+}
+
+a:link{
+    color: brown;
+    text-decoration: none;
+}
+a:visited{
+    color: brown;
+    text-decoration: none;
+}
+a:hover{
+    color: brown;
+    text-decoration: none;
+	transform: translateY(5px);
+}
+a:active{
+    color: brown;
+    text-decoration: none;
 }
 
 

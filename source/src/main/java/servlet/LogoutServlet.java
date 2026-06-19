@@ -27,7 +27,5 @@ public class LogoutServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 		
 	}
-	
-	
 
 }
