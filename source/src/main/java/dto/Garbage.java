@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Garbage implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;					// ID
-	private String user_id;			// ユーザーID
+	private int user_id;			// ユーザーID
 	private String garbage_day;		// ゴミ捨て曜日
 	private String garbage_name;	// ゴミ分類名
 	
@@ -17,10 +17,10 @@ public class Garbage implements Serializable {
 		this.id = id;
 	}
 	
-	public String getUser_id() {
+	public int getUser_id() {
 		return user_id;
 	}
-	public void setUser_id(String user_id) {
+	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
 	
@@ -39,7 +39,7 @@ public class Garbage implements Serializable {
 	}
 	
 	// コンストラクタ
-	public Garbage(int id, String user_id, String garbage_day, String garbage_name) {
+	public Garbage(int id, int user_id, String garbage_day, String garbage_name) {
 		this.id = id;
 		this.user_id = user_id;
 		this.garbage_day = garbage_day;
@@ -48,7 +48,7 @@ public class Garbage implements Serializable {
 	// デフォルトのコンストラクタ
 	public Garbage() {
 		this.id = 0;
-		this.user_id = "";
+		this.user_id = 0;
 		this.garbage_day = "";
 		this.garbage_name = "";
 	}
