@@ -19,7 +19,7 @@ import dto.LoginUser;
 /**
  * Servlet implementation class RegistServlet
  */
-@WebServlet("/ChatServlet")
+@WebServlet("/SuggestServlet")
 public class SuggestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
