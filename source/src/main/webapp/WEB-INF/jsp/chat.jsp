@@ -12,7 +12,7 @@
 <header class="header">
 	<div class="title">
 		<h1>ここる</h1>
-		<img src="images/logout.png" class="logout-icon">
+		<img src="/b4/img/logout.png" class="logout-icon">
 	</div>
 </header>
 <img src="${Iconlist.icon_path}" alt="アイコン" id="icon">
