@@ -27,7 +27,7 @@ function showDate() {
 showDate();
 
 if (e.garbage_day !== day) {
-	document.getElementById('${e.garbage_day}').style.visibility ="hidden";
+	document.getElementById('${e.garbage_day}').style.display ="none";
 }
 </script>
 </body>
