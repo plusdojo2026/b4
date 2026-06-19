@@ -84,7 +84,7 @@
         </div>
     </div>
     
-    <script src="/webapp/js/chat.js"></script>
+    <script src="/b4/js/chat.js"> </script>
     
 </body>
 </html>

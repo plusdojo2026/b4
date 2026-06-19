@@ -16,7 +16,7 @@
 
                 row.innerHTML = `
             <div class="user">${message}</div>
-            <img src="/webapp/img/gorilla.png" class="user-icon">
+            <img src="/b4/img/gorilla.png" class="user-icon">
         `;
 
                 document.getElementById("chatArea").appendChild(row)
@@ -24,7 +24,7 @@
                 const row = document.createElement("div");
                 row.className = "bot-row";
                 row.innerHTML = `
-            <img src="/b4/img/pengin.png" class="bot-icon">
+            <img src="/b4/img/penguin.png" class="bot-icon">
             <div class="bot">${message}</div>
         `;
                 document.getElementById("chatArea").appendChild(row);
