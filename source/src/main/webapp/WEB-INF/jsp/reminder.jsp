@@ -10,7 +10,7 @@
 <body>
 <c:forEach var="e" items="${GarbageList}" >
 <div id="${e.garbage_day}">
-<div>今日は${e.garbage_day} ${e.garbage_name}</div>
+<div>${e.garbage_day} ${e.garbage_name}</div>
 
 </div>
 </c:forEach>
@@ -27,7 +27,7 @@ function showDate() {
 showDate();
 
 if (e.garbage_day !== day) {
-	document.getElementById('${e.garbage_day}').style.display ="none";
+	document.getElementById("${e.garbage_day}").style.display ="none";
 }
 </script>
 </body>
