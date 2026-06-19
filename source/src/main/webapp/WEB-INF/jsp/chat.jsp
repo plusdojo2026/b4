@@ -61,5 +61,6 @@
             </div>
         </div>
     </div>
+    <script src="/webapp/js/chat.js"></script>
 </body>
 </html>
