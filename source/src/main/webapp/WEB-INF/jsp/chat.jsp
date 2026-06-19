@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -16,10 +16,50 @@
 	</div>
 </header>
 <img src="${Iconlist.icon_path}" alt="アイコン" id="icon">
-<c:forEach var="msg" items="${messageList}">
-    <div class="${msg.sender}">
-        ${msg.text}
+   <div id="chatArea"></div>
+    <!-- ポップアップ -->
+    <div id="modal" class="hidden">
+        <div class="modal-content">
+            <h3>何をやったか教えて！</h3>
+            <div class="check-area">
+                <label>
+                    <input type="checkbox" value="掃除機">
+                    掃除機
+                </label>
+
+                <label>
+                    <input type="checkbox" value="洗濯">
+                    洗濯
+                </label>
+
+                <label>
+                    <input type="checkbox" value="食器洗い">
+                    食器洗い
+                </label>
+
+                <label>
+                    <input type="checkbox" value="料理">
+                    料理
+                </label>
+                <label>
+                    <input type="checkbox" value="片づけ">
+                    片づけ
+                </label>
+                <label>
+                    <input type="checkbox" value="ごみまとめ">
+                    ごみまとめ
+                </label>
+                <label>
+                    <input type="checkbox" value="寝具の片付け">
+                    寝具片付け
+                </label>
+            </div>
+
+            <div id="close">
+                <button onclick="reportHw()">報告する</button>
+                <button onclick="closeModal()">閉じる</button>
+            </div>
+        </div>
     </div>
-</c:forEach>
 </body>
 </html>
