@@ -12,12 +12,14 @@
 
             if (user) {
                 const row = document.createElement("div");
+                const iconPath = document.getElementById("icon").src;
                 row.className = "user-row";
 
                 row.innerHTML = `
+             
             <div class="user">${message}</div>
-            <img src="/b4/img/gorilla.png" class="user-icon">
-        `;
+            <img src="${iconPath}" class="user-icon">
+            `;
 
                 document.getElementById("chatArea").appendChild(row)
             } else {

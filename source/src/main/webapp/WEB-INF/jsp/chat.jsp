@@ -12,10 +12,11 @@
 <header class="header">
 	<div class="title">
 		<h1>ここる</h1>
-		<img src="/b4/img/logout.png" class="logout-icon">
+		<a href="/b4/LogoutServlet" id="logout"><img src="/b4/img/logout.png" class="logout-icon" ></a>
 	</div>
 </header>
-<img src="${Iconlist.icon_path}" alt="アイコン" id="icon">
+
+<img src="${Iconlist.icon_path}" id="icon" style="display:none;" >
    <div id="chatArea"></div>
    
     <!-- やった家事ポップアップ -->
@@ -83,6 +84,8 @@
             </div>
         </div>
     </div>
+    
+    
     
     <script src="/b4/js/chat.js"> </script>
     
