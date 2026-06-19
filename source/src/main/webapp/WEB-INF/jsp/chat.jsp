@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>家事提案</title>
-<link rel="stylesheet" href="css/chat.css">
+<link rel="stylesheet" href="/b4/css/chat.css">
 </head>
 <body>
 <header class="header">
@@ -17,7 +17,8 @@
 </header>
 <img src="${Iconlist.icon_path}" alt="アイコン" id="icon">
    <div id="chatArea"></div>
-    <!-- ポップアップ -->
+   
+    <!-- やった家事ポップアップ -->
     <div id="modal" class="hidden">
         <div class="modal-content">
             <h3>何をやったか教えて！</h3>
@@ -61,6 +62,29 @@
             </div>
         </div>
     </div>
+    
+    <!-- 時間指定ポップアップ」 -->
+    <div id="timeModal" class="hidden">
+        <div class="modal-content">
+            <h3>何分くらい頑張る？</h3>
+
+            <select id="timeSelect">
+                <option value="5">5分</option>
+                <option value="10">10分</option>
+                <option value="15">15分</option>
+                <option value="30">30分</option>
+                <option value="45">45分</option>
+                <option value="60">60分</option>
+            </select>
+
+            <div id="decide">
+                <button onclick="decideTime()">決定</button>
+                <button onclick="closeTimeModal()">閉じる</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="/webapp/js/chat.js"></script>
+    
 </body>
 </html>
