@@ -45,6 +45,10 @@ public class Garbage implements Serializable {
 		this.garbage_day = garbage_day;
 		this.garbage_name = garbage_name;
 	}
+	public Garbage(String garbage_day, String garbage_name) {
+		this.garbage_day = garbage_day;
+		this.garbage_name = garbage_name;
+	}
 	// デフォルトのコンストラクタ
 	public Garbage() {
 		this.id = 0;
@@ -52,4 +56,5 @@ public class Garbage implements Serializable {
 		this.garbage_day = "";
 		this.garbage_name = "";
 	}
+
 }

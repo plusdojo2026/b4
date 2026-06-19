@@ -8,9 +8,9 @@
 <title>リマインダー</title>
 </head>
 <body>
-<c:out value="${Garbage.garbage_day}">
-</c:out>
-<c:out value="${Garbage.garbage_name}">
-</c:out>
+<c:forEach var="e" items="${GarbageList}" >
+<div>${e.garbage_day}</div>
+<div>${e.garbage_name}</div>
+</c:forEach>
 </body>
 </html>

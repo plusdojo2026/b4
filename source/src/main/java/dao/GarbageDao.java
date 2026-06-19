@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dto.Garbage;
 
@@ -67,9 +69,10 @@ public class GarbageDao {
 		return result;
 	}
 	
-	public Garbage select(int id) {
-		Connection conn = null;        // データベースに接続していない
-		Garbage gab = new Garbage();	   // 入れ物gabを作っておく
+	public List<Garbage> select(int user_id) {
+		Connection conn = null; 	// データベースに接続していない
+		List<Garbage> GarbageList = new ArrayList<Garbage>();
+		// Garbage gab = new Garbage();	   // 入れ物gabを作っておく
 
 		try {
 			// JDBCドライバを読み込む
@@ -96,11 +99,13 @@ public class GarbageDao {
 			ResultSet rs = pStmt.executeQuery();
 
 			// 結果表をコレクションにコピーする
-			rs.next();
-			gab.setGarbage_day(rs.getString("garbage_day"));
-			rs.next();
-			gab.setGarbage_name(rs.getString("garbage_name"));
-			
+			while (rs.next()) {
+				Garbage gab = new Garbage(
+						rs.getString("garbage_day"),
+						rs.getString("garbage_name")
+						);
+				GarbageList.add(gab);
+			}
 		// エラー対応	
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -121,6 +126,6 @@ public class GarbageDao {
 		}
 
 		// 結果を返す
-		return gab;
+		return GarbageList;
 	}
 }
