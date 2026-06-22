@@ -1,7 +1,5 @@
 package servlet;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import dao.IconDao;
 import dto.Icon;
 import dto.LoginUser;
-import dto.Message;
 
 
 
@@ -56,18 +53,6 @@ public class ChatServlet extends HttpServlet {
 		// リクエストスコープに「Iconlist」と名付けて格納する
 		request.setAttribute("Iconlist",ic);
 
-		//チャット履歴を保存するためのリスト
-		List<Message> messageList = new ArrayList<Message>();
-		
-		//最初の画面
-		messageList.add(new Message("bot", "お疲れ様！何か家事やった？"));
-		
-		/* テスト時コメントアウト
-		 * //セッションを取得		 
-		HttpSession session = request.getSession();
-		*/
-		//チャット履歴を保存
-		session.setAttribute("messageList", messageList);
 		
 		// チャットページにフォワードする
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/chat.jsp");
@@ -75,5 +60,47 @@ public class ChatServlet extends HttpServlet {
 		
 
     }
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		request.setCharacterEncoding("UTF-8");
+		
+		String action = request.getParameter("action");
+		
+		//家事をやったか確認
+		if("checkActivity".equals(action)) {
+			int activityId = Integer.parseInt(request.getParameter("activityId"));
+			
+			//DAOで実施履歴登録
+		}
+        // 時間を選択して家事提案
+        else if ("decideTime".equals(action)) {
+
+            int time = Integer.parseInt(
+                    request.getParameter("time"));
+
+            // DAOで時間に合う家事取得
+            // ActivityDAO.selectByTime(time);
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            // Gsonで提案リストを返す
+            // response.getWriter().write(gson.toJson(list));
+        }
+
+        // 提案された家事が終了
+        else if ("complete".equals(action)) {
+
+            int activityId = Integer.parseInt(
+                    request.getParameter("activityId"));
+
+            // DAOで完了実績登録
+            // HistoryDAO.insertResult(...);
+
+        }
+	    //int time = Integer.parseInt(request.getParameter("time"));
+	}
 		
 }
