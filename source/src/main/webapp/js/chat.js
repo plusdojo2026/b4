@@ -289,6 +289,8 @@
                         state = 4;
                         specifiedButtons();
                     } else {
+	                    const btn2 = document.getElementById("buttons1");
+                        if (btn2) btn2.remove();
                         addMessage("おまかせだね！", false);
                         addMessage("この家事をやろう！", false);
                         suggestionButtons();
