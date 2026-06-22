@@ -156,6 +156,9 @@
 
         function decideTime() {
 
+            const btn2 = document.getElementById("buttons1");
+            if (btn2) btn2.remove();
+
             const time = document.getElementById("timeSelect").value;
 
             addMessage(time + "分間で家事をする！", true);
@@ -186,6 +189,10 @@
                 document.querySelectorAll(
                     '#modal input[type="checkbox"]:checked'
                 );
+
+            const btn1 = document.getElementById("buttons");
+            if (btn1) btn1.remove();
+
 
             let result = [];
 
