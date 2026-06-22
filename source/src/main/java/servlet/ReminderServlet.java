@@ -38,9 +38,14 @@ public class ReminderServlet extends HttpServlet {
 		//user_idを使って、garbageテーブルから、データを取得する
 		GarbageDao gdao = new GarbageDao();		// DAOをインスタンス化
 		List<Garbage> gb = gdao.select(userId);		// GarbageDAOのselectメソッドでuser_idのGarbageデータを取得
-
 		// リクエストスコープに「GarbageList」と名付けて格納する
 		request.setAttribute("GarbageList",gb);
+		
+		TodoDao tdao = new TodoDao();		// DAOをインスタンス化
+		List<Todo> tod = tdao.select(userId);		// TodoDaoのselectメソッドでuserIdのTodoデータを取得
+		// リクエストスコープに「TodoList」と名付けて格納する
+		request.setAttribute("TodoList",tod);
+		
 		// リマインダーページにフォワードする
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
 		dispatcher.forward(request, response);
@@ -55,7 +60,12 @@ public class ReminderServlet extends HttpServlet {
 		LoginUser user = (LoginUser)session.getAttribute("idnamepw"); 	
 		int userId =user.getUserId();
 		String todoName = request.getParameter("todoName");	
-		String todoDate = request.getParameter("todoDate");		
+		String todoDate = request.getParameter("todoDate");	
+		
+		GarbageDao gdao = new GarbageDao();		// DAOをインスタンス化
+		List<Garbage> gb = gdao.select(userId);		// GarbageDAOのselectメソッドでuser_idのGarbageデータを取得
+		// リクエストスコープに「GarbageList」と名付けて格納する
+		request.setAttribute("GarbageList",gb);
 					
 // 登録処理を行う
 TodoDao todoDao = new TodoDao();

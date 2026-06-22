@@ -84,7 +84,7 @@ public class TodoDao {
 						"root", "password");
 
 				// SQL文を準備する
-				String sql = "SELECT todo_name,todo_date FROM todos WHERE user_id = 1";		// idの値でデータを指定
+				String sql = "SELECT todo_name,todo_date FROM todos WHERE user_id = 1 ORDER BY todo_date ASC";		// idの値でデータを指定
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
 				/* テスト中はコメントアウト

@@ -1,0 +1,88 @@
+/* 全画面共通 */
+* {
+    box-sizing: border-box;
+}
+html {
+	font-size: 16px;
+	font-family: "Zen Maru Gothic";
+	background-color: #FBFAF7;
+}
+
+body {
+    margin: 0 0 0 0; /* マージンなし */
+    padding: 0 0 0 0; /* パディングなし */
+    font-size: 20px;
+    text-align: center;
+}
+
+main {
+	margin: 0 auto 0 auto;
+	max-width: 1000px;
+}
+
+.header {
+	background-color: #D2EBE6;
+}
+
+.title{
+    position: relative;
+    text-align: center;
+    background-color: #d2ebe6;
+    color: #80350E;
+    padding: 25px;
+    border-bottom: 1px solid #000080;
+}
+
+.logout-icon{
+    position: absolute;
+    right: 45px;
+    top: 80px;
+    transform: translateY(-50%);
+    width: 140px;
+    height: 80px;
+    cursor: pointer;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input{
+	width:60%;
+	height: 2rem;
+    border: 1px solid #CFCABF;
+}
+
+th,td {
+    border: solid 1px;              /* 枠線指定 */
+    padding: 7px;      /* 余白指定 */
+}
+
+#todo {
+  	table-layout: fixed;
+  	width: 100%;
+  	text-align: center;
+	border-collapse:  collapse;     /* セルの線を重ねる */
+}
+
+#todo th, #todo td {
+  border: 2px solid #D2EBE6;
+}
+
+#todo thead th {
+  background-color: #D2EBE6;
+  color: #80350E;
+  border: 2px solid #D2EBE6;
+}
+
+#garbage {
+	table-layout: fixed;
+    width: 40%;
+	margin: 7px auto;
+	border-collapse:  collapse;     /* セルの線を重ねる */
+}
