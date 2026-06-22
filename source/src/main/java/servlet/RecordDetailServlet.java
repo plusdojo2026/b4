@@ -44,7 +44,7 @@ public class RecordDetailServlet extends HttpServlet {
 			LoginUser loginUser = (LoginUser) session.getAttribute("name");
 
 			// ユーザーID取得
-			int userId = loginUser.getId();
+			int userId = loginUser.getUserId();
 
 			// ユーザーIDが取得できない場合はログイン画面へ戻す
 			if (userId <= 0) {

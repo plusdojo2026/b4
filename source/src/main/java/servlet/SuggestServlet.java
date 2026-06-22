@@ -43,7 +43,7 @@ public class SuggestServlet extends HttpServlet {
 		/* テスト時コメントアウト
 		 * LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw");
 		 */
-		int id = loginUser.getId();
+		int id = loginUser.getUserId();
 		
 		//"${Iconlist}"を作成し、リクエストスコープに格納する
 		
