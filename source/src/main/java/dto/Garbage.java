@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class Garbage implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;					// ID
-	private int user_id;			// ユーザーID
-	private String garbage_day;		// ゴミ捨て曜日
-	private String garbage_name;	// ゴミ分類名
+	private int userId;			// ユーザーID
+	private String garbageDay;		// ゴミ捨て曜日
+	private String garbageName;	// ゴミ分類名
 	
 	// ゲッタ・セッタ
 	public int getId() {
@@ -17,44 +17,44 @@ public class Garbage implements Serializable {
 		this.id = id;
 	}
 	
-	public int getUser_id() {
-		return user_id;
+	public int getUserId() {
+		return userId;
 	}
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
-	}
-	
-	public String getGarbage_day() {
-		return garbage_day;
-	}
-	public void setGarbage_day(String garbage_day) {
-		this.garbage_day = garbage_day;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	
-	public String getGarbage_name() {
-		return garbage_name;
+	public String getGarbageDay() {
+		return garbageDay;
 	}
-	public void setGarbage_name(String garbage_name) {
-		this.garbage_name = garbage_name;
+	public void setGarbageDay(String garbageDay) {
+		this.garbageDay = garbageDay;
+	}
+	
+	public String getGarbageName() {
+		return garbageName;
+	}
+	public void setGarbageName(String garbageName) {
+		this.garbageName = garbageName;
 	}
 	
 	// コンストラクタ
-	public Garbage(int id, int user_id, String garbage_day, String garbage_name) {
+	public Garbage(int id, int userId, String garbageDay, String garbageName) {
 		this.id = id;
-		this.user_id = user_id;
-		this.garbage_day = garbage_day;
-		this.garbage_name = garbage_name;
+		this.userId = userId;
+		this.garbageDay = garbageDay;
+		this.garbageName = garbageName;
 	}
-	public Garbage(String garbage_day, String garbage_name) {
-		this.garbage_day = garbage_day;
-		this.garbage_name = garbage_name;
+	public Garbage(String garbageDay, String garbageName) {
+		this.garbageDay = garbageDay;
+		this.garbageName = garbageName;
 	}
 	// デフォルトのコンストラクタ
 	public Garbage() {
 		this.id = 0;
-		this.user_id = 0;
-		this.garbage_day = "";
-		this.garbage_name = "";
+		this.userId = 0;
+		this.garbageDay = "";
+		this.garbageName = "";
 	}
 
 }

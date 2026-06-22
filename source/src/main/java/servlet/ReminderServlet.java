@@ -61,6 +61,10 @@ public class ReminderServlet extends HttpServlet {
 TodoDao todoDao = new TodoDao();
 if (todoDao.insert(new Todo(userId,todoName,todoDate))) { 
 	// 登録成功 
+	TodoDao tdao = new TodoDao();		// DAOをインスタンス化
+	List<Todo> tod = tdao.select(userId);		// TodoDaoのselectメソッドでuserIdのTodoデータを取得
+	// リクエストスコープに「TodoList」と名付けて格納する
+	request.setAttribute("TodoList",tod);
 	// リマインダーページにフォワードする
 	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
 	dispatcher.forward(request, response);

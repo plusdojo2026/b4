@@ -10,7 +10,7 @@
 <body>
 <c:forEach var="e" items="${GarbageList}" >
 <div id="dayname">
-<div>${e.garbage_day} ${e.garbage_name}</div>
+<div>${e.garbageDay} ${e.garbageName}</div>
 </div>
 </c:forEach>
 
@@ -20,7 +20,14 @@
   <input type=submit id="submit" name="submit" value="登録">
 </form>
 
-
+<c:forEach var="t" items="${TodoList}" >
+<table>
+	<tr>
+		<td>TODO${t.todoName}</td>
+		<td>期日${t.todoDate}</td>
+	</tr>
+</table>
+</c:forEach>
 <script>
 'use strict';
 /* 現在年月日（曜日）を表示 */
@@ -35,10 +42,10 @@ for(let i = 0; i < week.length; i++)  {
         continue;
     }
     
-	if (e.garbage_day == today) {
+	if (e.garbageDay == today) {
         div.style.display = "block";
 	}
-	else (e.garbage_day !== today) {
+	else (e.garbageDay !== today) {
 		div.style.display ="none";
 	}
 }

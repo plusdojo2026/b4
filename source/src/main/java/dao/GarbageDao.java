@@ -30,18 +30,18 @@ public class GarbageDao {
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
-			if (gb.getUser_id() != 0) {
-				pStmt.setInt(1, gb.getUser_id());
+			if (gb.getUserId() != 0) {
+				pStmt.setInt(1, gb.getUserId());
 			}else {
 				pStmt.setString(1,"");
 			}
-			if (gb.getGarbage_day() != null) {
-				pStmt.setString(2, gb.getGarbage_day());
+			if (gb.getGarbageDay() != null) {
+				pStmt.setString(2, gb.getGarbageDay());
 			} else {
 				pStmt.setString(2,"");
 			}
-			if (gb.getGarbage_name() != null) {
-				pStmt.setString(3, gb.getGarbage_name());
+			if (gb.getGarbageName() != null) {
+				pStmt.setString(3, gb.getGarbageName());
 			} else {
 				pStmt.setString(3,"");
 			}
@@ -69,7 +69,7 @@ public class GarbageDao {
 		return result;
 	}
 	
-	public List<Garbage> select(int user_id) {
+	public List<Garbage> select(int userId) {
 		Connection conn = null; 	// データベースに接続していない
 		List<Garbage> GarbageList = new ArrayList<Garbage>();
 		// Garbage gab = new Garbage();	   // 入れ物gabを作っておく
@@ -89,8 +89,8 @@ public class GarbageDao {
 
 			/* テスト中はコメントアウト
 			 * // SQL文を完成させる
-			if (user_id != 0) {							// 入力された文字で検索
-				pStmt.setInt(1, user_id);
+			if (userId != 0) {							// 入力された文字で検索
+				pStmt.setInt(1, userId);
 			} else {										// nullだったらすべてあいまい検索
 				pStmt.setString(1, "%");
 			}*/
