@@ -5,6 +5,8 @@
         let state = 0;
         let remainTime = 0;
         let currentTaskTime = 0;
+        let suggestionViewState = null;
+        let nextwork = null;
 
         // メッセージ追加
         function addMessage(message, user) {
@@ -154,6 +156,7 @@
                 .classList.add("hidden");
         }
 
+		//時間指定した後の処理
         function decideTime() {
 
             const btn2 = document.getElementById("buttons1");
@@ -163,6 +166,7 @@
 
             addMessage(time + "分間で家事をする！", true);
 
+			//ユーザーの所要時間
             remainTime = time;
 
             addMessage(time + "分間だね！", false);
@@ -170,11 +174,33 @@
             closeTimeModal();
 
             // ここで家事提案処理
-            const housework = "掃除機";
-            addMessage("まずは" + housework + "をやろう！", false
+            suggestionViewState = {
+                currentIndex: 0,
+
+                suggestions: [
+                    {
+                        activityId: 1,
+                        category: "HOUSEWORK",
+                        title: "テーブルを拭く",
+                        requiredTime: 5,
+                        message: "5分だけテーブルを整えましょう"
+                    },
+                    {
+                        activityId: 8,
+                        category: "REST",
+                        title: "暖かい飲み物を飲む",
+                        requiredTime: 10,
+                        message: "少し休憩しましょう"
+                    }
+                  ]
+               };
+            
+            const housework = suggestionViewState.suggestions[
+                suggestionViewState.currentIndex
+            ];
+            addMessage("まずは" + housework.title + "をやろう！", false
             );
-            addMessage("終わったら教えてね！");
-            currentTaskTime = 20;
+            addMessage("終わったら教えてね！",false);
 
             suggestionButtons();
             state = 5;
@@ -182,7 +208,43 @@
             document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
         }
 
+		//おまかせの処理
+		function decideHw() {
+            suggestionViewState = {
+                currentIndex: 0,
 
+                suggestions: [
+                    {
+                        activityId: 1,
+                        category: "HOUSEWORK",
+                        title: "テーブルを拭く",
+                        requiredTime: 5,
+                        message: "5分だけテーブルを整えましょう"
+                    },
+                    {
+                        activityId: 8,
+                        category: "REST",
+                        title: "温かい飲み物を飲む",
+                        requiredTime: 10,
+                        message: "少し休憩しましょう"
+                    }
+				]
+            }
+
+		const housework = suggestionViewState.suggestions[
+                suggestionViewState.currentIndex
+            ];
+
+            addMessage(housework.message, false
+            );
+            addMessage("終わったら教えてね！", false);
+
+            suggestionButtons();
+			state = 6;
+			
+			document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
+        }
+		
         function reportHw() {
 
             const checked =
@@ -291,35 +353,56 @@
                     } else {
 	                    const btn2 = document.getElementById("buttons1");
                         if (btn2) btn2.remove();
-                        addMessage("おまかせだね！", false);
-                        addMessage("この家事をやろう！", false);
-                        suggestionButtons();
-                        state = 5;
+                      //addMessage("おまかせだね！", false);
+                      //addMessage("この家事をやろう！", false);
+                      //suggestionButtons();
+                      //state = 5;
+                      	decideHw();
                     }
                     break;
 
-                case 4: //指定するボタン
-                    if (value == "○分間で家事をする！") {
-                        addMessage("○分間だね！", false);
-                        addMessage("この家事をやろう！", false);
-                        suggestionButtons();
-                        state = 5;
-                    }
-                    break;
+              //case 4: //指定するボタン
+              //    if (value == "○分間で家事をする！") {
+              //        addMessage("○分間だね！", false);
+              //        addMessage("この家事をやろう！", false);
+              //        suggestionButtons();
+              //        state = 5;
+              //    }
+              //    break;
 
-                case 5: //再提案
+                case 5: //時間指定の再提案と終わったよ
                     console.log(value);
                     if (value == "再提案！") {
-                        addMessage("じゃあ○○をやるのはどう？", false);
+                    	console.log(value);
+                    	
+                   		suggestionViewState.currentIndex++;
+                        
+                        if(suggestionViewState.currentIndex < suggestionViewState.suggestions.length){
+                        nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
+                    
+                        addMessage("じゃあ、" + nextwork.title + "はどう？", false);
                         addMessage("終わったら教えてね！", false);
                         suggestionButtons();
                         state = 5;
-                    }
-                    else if (value == "終わったよ！") {
-                        currentTaskTime = 15;
-                        remainTime -= currentTaskTime;
-                        if (remainTime > 0) {
-                            addMessage("次は洗濯をやろう！", false);
+                    	} else {
+                            addMessage("お疲れ様！家事はここまでにしよう！", false);
+                            const btn1 = document.getElementById("buttons");
+                            if (btn1) btn1.remove();
+
+                            const btn2 = document.getElementById("buttons1");
+                            if (btn2) btn2.remove();
+
+                            const btn5 = document.getElementById("buttons5");
+                            if (btn5) btn5.remove();
+                    	 }
+                    } else if (value == "終わったよ！") {
+                    
+                        suggestionViewState.currentIndex++;
+                        
+                        if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length){
+                        nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
+                        
+                            addMessage("次は" + nextwork.message, false);
                             addMessage("終わったら教えてね！");
                             suggestionButtons();
                             state = 5;
@@ -334,20 +417,61 @@
 
                             const btn5 = document.getElementById("buttons5");
                             if (btn5) btn5.remove();
-                            state = 99;
                         }
                     }
 
                     break;
+                    
+                    case 6: //おまかせ→再提案/終わったよ
+                    if (value == "再提案！") {
+                        console.log(value);
+                   
+                        suggestionViewState.currentIndex++;
 
+                        if(suggestionViewState.currentIndex < suggestionViewState.suggestions.length){
+                        
+                        nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
+                        
+                        addMessage("次は" + nextwork.title +"はどう？", false);
+                        addMessage("終わったら教えてね！", false);
+                        suggestionButtons();
+                        state = 6;
+                        } else {
+                            addMessage("お疲れ様！家事はここまでにしよう！", false);
+                            const btn1 = document.getElementById("buttons");
+                            if (btn1) btn1.remove();
 
+                            const btn2 = document.getElementById("buttons1");
+                            if (btn2) btn2.remove();
 
+                            const btn5 = document.getElementById("buttons5");
+                            if (btn5) btn5.remove();
+                        }
 
+                    } else if (value == "終わったよ！") {
+                        suggestionViewState.currentIndex++;
+
+                        if(suggestionViewState.currentIndex < suggestionViewState.suggestions.length){
+                        nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
+                        
+                        addMessage("次は、" + nextwork.message, false);
+                        addMessage("終わったら教えてね！", false);
+                        suggestionButtons();
+                        state = 6;
+
+                        } else {
+                            addMessage("お疲れ様！家事はここまでにしよう！", false);
+                            const btn1 = document.getElementById("buttons");
+                            if (btn1) btn1.remove();
+
+                            const btn2 = document.getElementById("buttons1");
+                            if (btn2) btn2.remove();
+
+                            const btn5 = document.getElementById("buttons5");
+                            if (btn5) btn5.remove();
+                        }
+                    }
                     break;
-
-                case 99:
-                    addMessage("家事は終了しています。", false);
-
-                    break;
+                    
          }
          }  
