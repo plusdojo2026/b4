@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.GarbageDao;
+import dao.TodoDao;
 import dto.Garbage;
 import dto.LoginUser;
+import dto.Todo;
 
 @WebServlet("/ReminderServlet")
 public class ReminderServlet extends HttpServlet {
@@ -30,12 +32,12 @@ public class ReminderServlet extends HttpServlet {
 		 * LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw");
 		*/
 		
-		int user_id = loginUser.getId();
+		int userId = loginUser.getUserId();
 			
 		//"${GarbageDate}"を作成し、リクエストスコープに格納する
 		//user_idを使って、garbageテーブルから、データを取得する
 		GarbageDao gdao = new GarbageDao();		// DAOをインスタンス化
-		List<Garbage> gb = gdao.select(user_id);		// GarbageDAOのselectメソッドでuser_idのGarbageデータを取得
+		List<Garbage> gb = gdao.select(userId);		// GarbageDAOのselectメソッドでuser_idのGarbageデータを取得
 
 		// リクエストスコープに「GarbageList」と名付けて格納する
 		request.setAttribute("GarbageList",gb);
@@ -43,5 +45,32 @@ public class ReminderServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
 		dispatcher.forward(request, response);
 				
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// リクエストパラメータを取得する
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		LoginUser user = (LoginUser)session.getAttribute("idnamepw"); 	
+		int userId =user.getUserId();
+		String todoName = request.getParameter("todoName");	
+		String todoDate = request.getParameter("todoDate");		
+					
+// 登録処理を行う
+TodoDao todoDao = new TodoDao();
+if (todoDao.insert(new Todo(userId,todoName,todoDate))) { 
+	// 登録成功 
+	// リマインダーページにフォワードする
+	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
+	dispatcher.forward(request, response);
+	return;
+}
+else { // 登録失敗 エラー文を表示？
+	request.setAttribute( "error","登録できません。");
+// 新規登録ページにフォワードする	
+	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
+	dispatcher.forward(request, response);
+}
 	}
 }

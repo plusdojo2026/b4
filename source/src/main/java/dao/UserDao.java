@@ -28,7 +28,7 @@ public class UserDao {
 				String sql = "SELECT count(*) FROM users WHERE user_nickname=? AND password=?";
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 				// pStmt.setInt(1, namepw.getId());
-				pStmt.setString(1, namepassword.getUser_nickname());
+				pStmt.setString(1, namepassword.getUserNickname());
 				pStmt.setString(2, namepassword.getPassword());
 				
 				// SELECT文を実行し、結果表を取得する
@@ -61,7 +61,7 @@ public class UserDao {
 			return loginResult;
 		}
 		
-		public LoginUser findLoginUser(String name, String password) {
+		public LoginUser findLoginUser(String userNickname, String password) {
 			Connection conn = null;        // データベースに接続していない
 			LoginUser ls = new LoginUser();	   // 入れ物を作っておく
 
@@ -79,8 +79,8 @@ public class UserDao {
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
 				// SQL文を完成させる
-				if (name != null) {							// 入力された文字で検索
-					pStmt.setString(1, name);
+				if (userNickname != null) {							// 入力された文字で検索
+					pStmt.setString(1, userNickname);
 				}
 				
 				// SQL文を実行し、結果表を取得する
@@ -88,8 +88,8 @@ public class UserDao {
 
 				// 結果表をコレクションにコピーする
 				rs.next();
-				ls.setUserName(name);
-				ls.setId(rs.getInt("id"));
+				ls.setUserNickname(userNickname);
+				ls.setUserId(rs.getInt("userId"));
 				ls.setPassword(rs.getString("password"));
 				
 			// エラー対応	
@@ -134,8 +134,8 @@ public class UserDao {
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
 				// SQL文を完成させる
-				if (namepassword.getUser_nickname() != null) {
-					pStmt.setString(1, namepassword.getUser_nickname());
+				if (namepassword.getUserNickname() != null) {
+					pStmt.setString(1, namepassword.getUserNickname());
 				} else {
 					pStmt.setString(1,"");
 				}
@@ -144,8 +144,8 @@ public class UserDao {
 				} else {
 					pStmt.setString(2,"");
 				}
-				if (namepassword.getMail_address() != null) {
-					pStmt.setString(3, namepassword.getMail_address());
+				if (namepassword.getMailAddress() != null) {
+					pStmt.setString(3, namepassword.getMailAddress());
 				} else {
 					pStmt.setString(3,"");
 				}

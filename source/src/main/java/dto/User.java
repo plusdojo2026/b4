@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;					/* id */
-	private String user_nickname;	/* ユーザーニックネーム */
+	private String userNickname;	/* ユーザーニックネーム */
 	private String password;		/* パスワード */
-	private String mail_address;	/* メールアドレス */
-	private String c_at;			/* created_at */
-	private String u_at;			/* update_at */
+	private String mailAddress;	/* メールアドレス */
+	private String cAt;			/* created_at */
+	private String uAt;			/* update_at */
 	
 	// ゲッタ・セッタ
 	public int getId() {
@@ -19,11 +19,11 @@ public class User implements Serializable {
 		this.id = id;
 	}
 	
-	public String getUser_nickname() {
-		return user_nickname;
+	public String getUserNickname() {
+		return userNickname;
 	}
-	public void setUser_nickname(String user_nickname) {
-		this.user_nickname = user_nickname;
+	public void setUserNickname(String userNickname) {
+		this.userNickname = userNickname;
 	}
 	
 	public String getPassword() {
@@ -33,45 +33,45 @@ public class User implements Serializable {
 		this.password = password;
 	}
 	
-	public String getMail_address() {
-		return mail_address;
+	public String getMailAddress() {
+		return mailAddress;
 	}
-	public void setMail_address(String mail_address) {
-		this.mail_address = mail_address;
-	}
-	
-	public String getC_at() {
-		return c_at;
-	}
-	public void setC_at(String c_at) {
-		this.c_at = c_at;
+	public void setMail_address(String mailAddress) {
+		this.mailAddress = mailAddress;
 	}
 	
-	public String getU_at() {
-		return u_at;
+	public String getCAt() {
+		return cAt;
 	}
-	public void setU_at(String u_at) {
-		this.u_at = u_at;
+	public void setCAt(String cAt) {
+		this.cAt = cAt;
+	}
+	
+	public String getUAt() {
+		return uAt;
+	}
+	public void setUAt(String uAt) {
+		this.uAt = uAt;
 	}
 	// コンストラクタ
-	public User(int id, String user_nickname, String password, String mail_address, String c_at, String u_at) {
+	public User(int id, String userNickname, String password, String mailAddress, String cAt, String uAt) {
 		super();
 		this.id = id;
-		this.user_nickname = user_nickname;
+		this.userNickname = userNickname;
 		this.password = password;
-		this.mail_address = mail_address;
-		this.c_at = c_at;
-		this.u_at = u_at;
+		this.mailAddress = mailAddress;
+		this.cAt = cAt;
+		this.uAt = uAt;
 	}
 	// デフォルトのコンストラクタ
 	public User() {
 		super();
 		this.id = 0;
-		this.user_nickname ="";
+		this.userNickname ="";
 		this.password ="";
-		this.mail_address ="";
-		this.c_at ="";
-		this.u_at ="";
+		this.mailAddress ="";
+		this.cAt ="";
+		this.uAt ="";
 	}
 	
 }

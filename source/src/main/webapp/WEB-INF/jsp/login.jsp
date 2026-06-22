@@ -16,7 +16,7 @@
 </div>
 <form method="POST" action="/b4/LoginServlet" id="form">
 <div><label>ユーザーニックネーム<br>
-    <input type="text" name="name" id="name"></label>
+    <input type="text" name="userNickname" id="userNickname"></label>
 </div>
 <div><label>パスワード<br>
     <input type="password" name="password" id="password"></label>

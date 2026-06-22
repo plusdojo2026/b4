@@ -29,15 +29,15 @@ public class LoginServlet extends HttpServlet {
 		throws ServletException, IOException {
 		// リクエストパラメータを取得する
 		request.setCharacterEncoding("UTF-8");
-		String name = request.getParameter("name");
+		String userNickname = request.getParameter("userNickname");
 		String pw = request.getParameter("password");
 		
 		// ログイン処理を行う
 		UserDao uDao = new UserDao();
 		if (request.getParameter("submit").equals("ログイン")) {
-			if (uDao.isLoginOK(new User(0, name, pw, "", "", ""))) { // ログイン成功
+			if (uDao.isLoginOK(new User(0, userNickname, pw, "", "", ""))) { // ログイン成功
 				// ログイン情報の取得
-				LoginUser loginUser = uDao.findLoginUser(name,pw);
+				LoginUser loginUser = uDao.findLoginUser(userNickname,pw);
 				// セッションスコープにidとnameとpwを格納する
 				HttpSession session = request.getSession();
 				session.setAttribute("idnamepw", loginUser);
