@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>新規登録</title>
 	<link rel="stylesheet" href="/b4/css/userreg.css">
 </head>
@@ -28,7 +29,7 @@
 	<div>パスワード</div>
 		<input type="password" id="pw" name="password">
 		
-	<div>確認のため再度入力してください</div>
+	<div>パスワード確認</div>
 		<input type="password" id="pw2" name="pw2">
 		
 	<p id="msg"> </p>
@@ -36,7 +37,7 @@
 	<div>メールアドレス(任意)</div>
 		<input type="text" id= "mail" name="mail_address">
 	
-<div><input type="submit" name="regist" value="登録"></div>
+<div><input type="submit" id="regist" name="regist" value="登録"></div>
 
 </form>
 

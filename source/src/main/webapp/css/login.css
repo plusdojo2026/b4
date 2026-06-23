@@ -32,3 +32,25 @@ h1 {
 	margin-top: 0;
 	color: #80350E;
 }
+
+input#login , input#regist{
+	width: 90px;
+	height: 40px;
+	margin: 5px;
+	margin-top: 20px;
+	border-radius: 10px;
+	background-color: #d2ebe6;
+	transition: all 0.2s ease;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	appearance: none;
+	border: none;
+	font-weight: 500;
+}
+
+/*  スマホ画面用 */
+
+@media screen and (max-width: 767px) {
+img#mascot{
+	width: 100px;
+}
+}
