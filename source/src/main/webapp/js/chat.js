@@ -165,8 +165,7 @@ function decideTime() {
     //console.log("decideTime実行");
 
 	const time = document.getElementById("timeSelect").value;
-
-
+   
 	
 	addMessage(time + "分間で家事をする！", true);
 
@@ -222,6 +221,17 @@ function decideTime() {
 	addMessage("まずは" + housework.title + "をやろう！", false
 	);
 	addMessage("終わったら教えてね！", false);
+	
+//	fetch("SuggestServlet", ...)
+//    .then(response => response.json())
+//    .then(data => {
+//
+//        suggestionViewState = data;
+//
+//        const housework = suggestionViewState.suggestions[suggestionViewState.currentIndex];
+//
+//        addMessage("まずは" + housework.title + "をやろう！", false);
+//    });
 
 	suggestionButtons();
 	state = 5;
@@ -259,6 +269,17 @@ function decideHw() {
 	addMessage(housework.message, false
 	);
 	addMessage("終わったら教えてね！", false);
+	
+	//	fetch("SuggestServlet", ...)
+//    .then(response => response.json())
+//    .then(data => {
+//
+//        suggestionViewState = data;
+//
+//        const housework = suggestionViewState.suggestions[suggestionViewState.currentIndex];
+//
+//        addMessage("まずは" + housework.title + "をやろう！", false);
+//    });
 
 	suggestionButtons();
 	state = 6;
