@@ -32,8 +32,10 @@
 		<table id="todo">
 		<thead>
 	    <tr>
+	    	<th></th>
 	     	<th>やること</th>
 	     	<th>期限</th>
+	     	<th></th>
 	    </tr>
 	    </thead>
 		<c:forEach var="t" items="${TodoList}" >
@@ -43,8 +45,8 @@
 			<td>
 			<input type="hidden" name="id" value="${t.id}"> 
 			</td>
-			<td data-label="やること">${t.todoName}</td>
-			<td data-label="期限">${t.todoDate}</td>
+			<td class="todo" data-label="やること">${t.todoName}</td>
+			<td class="todo" data-label="期限">${t.todoDate}</td>
 			<td>
 			<input type="submit" id="submit" name="submit" value="削除">
 			</td>
