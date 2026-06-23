@@ -86,9 +86,10 @@ public class ChatServlet extends HttpServlet {
 
             int activityId = Integer.parseInt(request.getParameter("activityId"));
 
+            System.out.println("完了活動ID："+activityId);
             
-            // DAOで完了実績登録
-            // HistoryDAO.insertResult(...);
+            response.setContentType("text/plain");
+            response.getWriter().write("OK");
 
         }
 
