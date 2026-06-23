@@ -75,8 +75,8 @@ public class ReminderServlet extends HttpServlet {
 		// リクエストパラメータを取得する
 		request.setCharacterEncoding("UTF-8");
 		// HttpSession session = request.getSession();
-		LoginUser user = (LoginUser)session.getAttribute("idnamepw"); 	
-		
+		LoginUser user = (LoginUser)session.getAttribute("idnamepw"); 
+
 		int id = Integer.parseInt(request.getParameter("id")); 
 		int userId =user.getUserId();
 		String todoName = request.getParameter("todoName");	
@@ -90,33 +90,22 @@ public class ReminderServlet extends HttpServlet {
 		// 登録処理を行う
 		TodoDao todoDao = new TodoDao();
 		if (request.getParameter("submit").equals("登録")) {
-			if (todoDao.insert(new Todo(userId, todoName, todoDate))) { 
-				// 登録成功 
-				TodoDao tdao = new TodoDao();		// DAOをインスタンス化
-				List<Todo> tod = tdao.select(userId);		// TodoDaoのselectメソッドでuserIdのTodoデータを取得
-				// リクエストスコープに「TodoList」と名付けて格納する
-				request.setAttribute("TodoList",tod);
-			}
+			todoDao.insert(new Todo(userId, todoName, todoDate)); 
+		}
 		// 削除処理を行う
 		else if (request.getParameter("submit").equals("削除")){
-			//idで削除するようにdaoを変更する
-			if (todoDao.delete(id)) {
-				TodoDao tdao = new TodoDao();		// DAOをインスタンス化
-				List<Todo> tod = tdao.select(userId);		// TodoDaoのselectメソッドでuserIdのTodoデータを取得
-				// リクエストスコープに「TodoList」と名付けて格納する
-				request.setAttribute("TodoList",tod);
-			}
+			//idで指定したデータを削除
+			todoDao.delete(id);
 		}
-			// リマインダーページにフォワードする
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
-			dispatcher.forward(request, response);
-			return;
-		}
-		/*else { // 登録失敗 エラー文を表示？
-			request.setAttribute( "error","登録できません。");
-		// 新規登録ページにフォワードする	
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
-			dispatcher.forward(request, response);
-		}*/
+		TodoDao tdao = new TodoDao();			// DAOをインスタンス化
+		// TodoDaoのselectメソッドでuserIdのTodoデータを取得
+		List<Todo> tod = tdao.select(userId);	
+		// リクエストスコープに「TodoList」と名付けて格納する
+		request.setAttribute("TodoList",tod);
+		
+		// リマインダーページにフォワードする
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
+		dispatcher.forward(request, response);
+		return;
 	}
 }

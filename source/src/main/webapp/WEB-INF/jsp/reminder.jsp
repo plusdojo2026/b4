@@ -28,9 +28,9 @@
 	<form id="input" method="POST" action="/b4/ReminderServlet">
 	  <label>やること: <input type= "text" name="todoName"></label><br>
 	  <label>期限: <input type="date" name="todoDate"></label><br>
-	  <input type=submit id="submit" name="submit" value="登録">
+	  <input type="submit" id="submit" name="submit" value="登録">
 		<table id="todo">
-		 <thead>
+		<thead>
 	    <tr>
 	     	<th>やること</th>
 	     	<th>期限</th>
@@ -40,11 +40,13 @@
 	    <tbody>
 		<tr>
 	<!-- idの情報を見えないようにして表示する -->
-			<td><input type="text" name="id" value="${t.id}"></td>
+			<td>
+			<input type="hidden" name="id" value="${t.id}"> 
+			</td>
 			<td data-label="やること">${t.todoName}</td>
 			<td data-label="期限">${t.todoDate}</td>
 			<td>
-			<input type=submit id="submit" name="submit" value="削除">
+			<input type="submit" id="submit" name="submit" value="削除">
 			</td>
 		</tr>
 		</tbody>
