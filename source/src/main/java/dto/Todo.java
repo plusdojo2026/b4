@@ -56,10 +56,6 @@ public class Todo implements Serializable {
 		this.todoDate = todoDate;
 	}
 	
-	public Todo(String todoName, String todoDate) {
-		this.todoName = todoName;
-		this.todoDate = todoDate;
-	}
 	
 	// デフォルトのコンストラクタ
 	public Todo() {

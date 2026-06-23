@@ -26,27 +26,31 @@
 	</c:forEach>
 	
 	<form id="input" method="POST" action="/b4/ReminderServlet">
-	  <label>やること: <input type= "text" required name="todoName"></label><br>
-	  <label>期限: <input type="date" required name="todoDate"></label><br>
+	  <label>やること: <input type= "text" name="todoName"></label><br>
+	  <label>期限: <input type="date" name="todoDate"></label><br>
 	  <input type=submit id="submit" name="submit" value="登録">
+		<table id="todo">
+		 <thead>
+	    <tr>
+	     	<th>やること</th>
+	     	<th>期限</th>
+	    </tr>
+	    </thead>
+		<c:forEach var="t" items="${TodoList}" >
+	    <tbody>
+		<tr>
+	<!-- idの情報を見えないようにして表示する -->
+			<td><input type="text" name="id" value="${t.id}"></td>
+			<td data-label="やること">${t.todoName}</td>
+			<td data-label="期限">${t.todoDate}</td>
+			<td>
+			<input type=submit id="submit" name="submit" value="削除">
+			</td>
+		</tr>
+		</tbody>
+		</c:forEach>
+		</table>
 	</form>
-	
-	<table id="todo">
-	 <thead>
-    <tr>
-     	<th>やること</th>
-     	<th>期限</th>
-    </tr>
-    </thead>
-	<c:forEach var="t" items="${TodoList}" >
-    <tbody>
-	<tr>
-		<td data-label="やること">${t.todoName}</td>
-		<td data-label="期限">${t.todoDate}</td>
-	</tr>
-	</tbody>
-	</c:forEach>
-	</table>
 </main>
 <script>
 'use strict';

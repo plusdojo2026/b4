@@ -29,6 +29,12 @@ public class ReminderServlet extends HttpServlet {
 		session.setAttribute("idnamepw", loginUser);
 		// ここまで
 		/* テスト時コメントアウト
+		 * // もしもログインしていなかったらログインサーブレットにリダイレクトする
+		HttpSession session = request.getSession();
+		if (session.getAttribute("userId") == null) {
+			response.sendRedirect("/b4/LoginServlet");
+			return;
+		}
 		 * LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw");
 		*/
 		
@@ -54,10 +60,24 @@ public class ReminderServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// テスト用　完成版では消す
+		LoginUser loginUser = new LoginUser(1,"ueda","password");
+		HttpSession session = request.getSession();
+		session.setAttribute("idnamepw", loginUser);
+		// ここまで
+		/* テスト時コメントアウト
+		 * // もしもログインしていなかったらログインサーブレットにリダイレクトする
+		HttpSession session = request.getSession();
+		if (session.getAttribute("userId") == null) {
+			response.sendRedirect("/b4/LoginServlet");
+			return;
+		}*/
 		// リクエストパラメータを取得する
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
+		// HttpSession session = request.getSession();
 		LoginUser user = (LoginUser)session.getAttribute("idnamepw"); 	
+		
+		int id = Integer.parseInt(request.getParameter("id")); 
 		int userId =user.getUserId();
 		String todoName = request.getParameter("todoName");	
 		String todoDate = request.getParameter("todoDate");	
@@ -67,24 +87,36 @@ public class ReminderServlet extends HttpServlet {
 		// リクエストスコープに「GarbageList」と名付けて格納する
 		request.setAttribute("GarbageList",gb);
 					
-// 登録処理を行う
-TodoDao todoDao = new TodoDao();
-if (todoDao.insert(new Todo(userId,todoName,todoDate))) { 
-	// 登録成功 
-	TodoDao tdao = new TodoDao();		// DAOをインスタンス化
-	List<Todo> tod = tdao.select(userId);		// TodoDaoのselectメソッドでuserIdのTodoデータを取得
-	// リクエストスコープに「TodoList」と名付けて格納する
-	request.setAttribute("TodoList",tod);
-	// リマインダーページにフォワードする
-	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
-	dispatcher.forward(request, response);
-	return;
-}
-else { // 登録失敗 エラー文を表示？
-	request.setAttribute( "error","登録できません。");
-// 新規登録ページにフォワードする	
-	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
-	dispatcher.forward(request, response);
-}
+		// 登録処理を行う
+		TodoDao todoDao = new TodoDao();
+		if (request.getParameter("submit").equals("登録")) {
+			if (todoDao.insert(new Todo(userId, todoName, todoDate))) { 
+				// 登録成功 
+				TodoDao tdao = new TodoDao();		// DAOをインスタンス化
+				List<Todo> tod = tdao.select(userId);		// TodoDaoのselectメソッドでuserIdのTodoデータを取得
+				// リクエストスコープに「TodoList」と名付けて格納する
+				request.setAttribute("TodoList",tod);
+			}
+		// 削除処理を行う
+		else if (request.getParameter("submit").equals("削除")){
+			//idで削除するようにdaoを変更する
+			if (todoDao.delete(id)) {
+				TodoDao tdao = new TodoDao();		// DAOをインスタンス化
+				List<Todo> tod = tdao.select(userId);		// TodoDaoのselectメソッドでuserIdのTodoデータを取得
+				// リクエストスコープに「TodoList」と名付けて格納する
+				request.setAttribute("TodoList",tod);
+			}
+		}
+			// リマインダーページにフォワードする
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
+			dispatcher.forward(request, response);
+			return;
+		}
+		/*else { // 登録失敗 エラー文を表示？
+			request.setAttribute( "error","登録できません。");
+		// 新規登録ページにフォワードする	
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
+			dispatcher.forward(request, response);
+		}*/
 	}
 }
