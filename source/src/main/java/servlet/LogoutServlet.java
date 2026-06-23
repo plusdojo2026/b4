@@ -27,5 +27,12 @@ public class LogoutServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 		
 	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// ログインページにフォワードする
+		request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+	}
 
 }

@@ -84,7 +84,7 @@ public class TodoDao {
 						"root", "password");
 
 				// SQL文を準備する
-				String sql = "SELECT todo_name,todo_date FROM todos WHERE user_id = 1 ORDER BY todo_date ASC";		// idの値でデータを指定
+				String sql = "SELECT id,todo_name,todo_date FROM todos WHERE user_id = 1 ORDER BY todo_date ASC";		// idの値でデータを指定
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
 				/* テスト中はコメントアウト
@@ -101,6 +101,8 @@ public class TodoDao {
 				// 結果表をコレクションにコピーする
 				while (rs.next()) {
 					Todo tod = new Todo(
+							rs.getInt("id"),
+							rs.getInt(userId),
 							rs.getString("todo_name"),
 							rs.getString("todo_date")
 							);
@@ -127,6 +129,51 @@ public class TodoDao {
 
 			// 結果を返す
 			return TodoList;
+		}
+		
+		// 引数idで指定された番号のレコードを削除し、成功したらtrueを返す
+		public boolean delete(int id) {
+			Connection conn = null;
+			boolean result = false;
+
+			try {
+				// JDBCドライバを読み込む
+				Class.forName("com.mysql.cj.jdbc.Driver");
+
+				// データベースに接続する
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?"
+						+ "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
+						"root", "password");
+
+				// SQL文を準備する
+				String sql = "DELETE FROM todos WHERE id=?";		// idの値でデータを指定
+				PreparedStatement pStmt = conn.prepareStatement(sql);
+
+				// SQL文を完成させる
+				pStmt.setInt(1, id);
+				
+				// SQL文を実行する
+				if (pStmt.executeUpdate() == 1) {
+					result = true;
+				}
+			// エラー対応
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} finally {
+				// データベースを切断
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+			// 結果を返す
+			return result;
 		}
 
 }

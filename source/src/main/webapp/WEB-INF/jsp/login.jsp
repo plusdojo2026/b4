@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ログイン</title>
 <link rel="stylesheet" href="css/login.css">
 </head>
@@ -29,8 +30,8 @@ String errorMessage = (String) request.getAttribute("errorMessage");
 	<%= errorMessage %>
 </p>
 <%}%>
-<div><input type="submit" id="regist" name="submit" value="新規登録"></div>
 <div><input type="submit" id="login" name="submit" value="ログイン"></div>
+<div><input type="submit" id="regist" name="submit" value="新規登録"></div>
 </form>
 </body>
 </html>

@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>新規登録</title>
 	<link rel="stylesheet" href="/b4/css/userreg.css">
 </head>
@@ -28,7 +29,7 @@
 	<div>パスワード</div>
 		<input type="password" id="pw" name="password">
 		
-	<div>確認のため再度入力してください</div>
+	<div>パスワード確認</div>
 		<input type="password" id="pw2" name="pw2">
 		
 	<p id="msg"> </p>
@@ -36,34 +37,14 @@
 	<div>メールアドレス(任意)</div>
 		<input type="text" id= "mail" name="mail_address">
 	
-<div><input type="submit" name="regist" value="登録"></div>
+<div><input type="submit" id="regist" name="regist" value="登録"></div>
 
 </form>
 
 </main>
 
+<script src="/b4/js/userreg.js"> </script>
+
 </body>
 
-<script>
-'use strict'
-
-document.getElementById('userreg').onsubmit = function(event){
-	if(window.confirm('登録します。よろしいですか？') === false){
-		event.preventDefault();
-	}
-    let name = document.getElementById('userreg').name.value;
-    let pw = document.getElementById('userreg').pw.value;
-    let pw2 = document.getElementById('userreg').pw2.value;
-    if (name === ''){
-        document.getElementById('msg').textContent = 'ユーザーニックネームを入力してください。';
-        event.preventDefault();
-    } else if (pw === '' || pw2 === ''){
-    	document.getElementById('msg').textContent = 'パスワードを入力してください。';
-        event.preventDefault();
-    } else if (pw !== pw2){
-    	document.getElementById('msg').textContent = 'パスワードが一致しません。';
-        event.preventDefault();
-    }
-}
-</script>
 </html>

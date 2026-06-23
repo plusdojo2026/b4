@@ -16,37 +16,47 @@
 	</div>
 </header>
 <main>
+	<div id="garbage">
 	<c:forEach var="e" items="${GarbageList}" >
-	<table id="garbage">
+	<table>
 		<tr>
 			<td>${e.garbageDay}</td>
 			<td>${e.garbageName}</td>
 		</tr>
 	</table>
 	</c:forEach>
+	</div>
 	
 	<form id="input" method="POST" action="/b4/ReminderServlet">
-	  <label>やること: <input type= "text" required name="todoName"></label><br>
-	  <label>期限: <input type="date" required name="todoDate"></label><br>
-	  <input type=submit id="submit" name="submit" value="登録">
+	  <label>やること: <input type= "text" name="todoName"></label><br>
+	  <label>期限: <input type="date" name="todoDate"></label><br>
+	  <input type="submit" id="submit" name="submit" value="登録">
+	  
+		<table id="todo">
+			<thead>
+		    <tr>
+		    	<th></th>
+		     	<th>やること</th>
+		     	<th>期限</th>
+		     	<th></th>
+		    </tr>
+		    </thead>
+			<c:forEach var="t" items="${TodoList}" >
+		    <tbody>
+			<tr>
+				<td>
+				<input type="hidden" name="id" value="${t.id}"> 
+				</td>
+				<td class="todo" data-label="やること">${t.todoName}</td>
+				<td class="todo" data-label="期限">${t.todoDate}</td>
+				<td>
+				<input type="submit" id="submit" name="submit" value="削除">
+				</td>
+			</tr>
+			</tbody>
+			</c:forEach>
+		</table>
 	</form>
-	
-	<table id="todo">
-	 <thead>
-    <tr>
-     	<th>やること</th>
-     	<th>期限</th>
-    </tr>
-    </thead>
-	<c:forEach var="t" items="${TodoList}" >
-    <tbody>
-	<tr>
-		<td data-label="やること">${t.todoName}</td>
-		<td data-label="期限">${t.todoDate}</td>
-	</tr>
-	</tbody>
-	</c:forEach>
-	</table>
 </main>
 <script>
 'use strict';

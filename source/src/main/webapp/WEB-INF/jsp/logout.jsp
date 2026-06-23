@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>ログアウト</title>
 	<!-- cssは新規登録のものを利用中 -->
 	<link rel="stylesheet" href="/b4/css/userreg.css">
@@ -21,8 +22,8 @@
 <body>
 
 <p class="logout">ゆっくり休んでね♪</p>
-
-<a href="/b4/LoginServlet">ログイン</a>
-
+<form method="POST" action="/b4/LogoutServlet" id="form">
+<input type="submit" id="login" name="login" value="ログイン">
+</form>
 </body>
 </html>

@@ -64,43 +64,35 @@ public class ChatServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		
 		request.setCharacterEncoding("UTF-8");
 		
 		String action = request.getParameter("action");
-		
-		//家事をやったか確認
-		if("checkActivity".equals(action)) {
-			int activityId = Integer.parseInt(request.getParameter("activityId"));
-			
-			//DAOで実施履歴登録
-		}
+	
         // 時間を選択して家事提案
-        else if ("decideTime".equals(action)) {
+        if ("decideTime".equals(action)) {
 
-            int time = Integer.parseInt(
-                    request.getParameter("time"));
+            int time = Integer.parseInt(request.getParameter("time"));
 
-            // DAOで時間に合う家事取得
-            // ActivityDAO.selectByTime(time);
+            System.out.println("選択時間：" + time);
+            
+            response.setContentType("text/plain");
+            response.getWriter().write("OK");
 
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
-            // Gsonで提案リストを返す
-            // response.getWriter().write(gson.toJson(list));
         }
 
         // 提案された家事が終了
         else if ("complete".equals(action)) {
 
-            int activityId = Integer.parseInt(
-                    request.getParameter("activityId"));
+            int activityId = Integer.parseInt(request.getParameter("activityId"));
 
-            // DAOで完了実績登録
-            // HistoryDAO.insertResult(...);
+            System.out.println("完了活動ID："+activityId);
+            
+            response.setContentType("text/plain");
+            response.getWriter().write("OK");
 
         }
-	    //int time = Integer.parseInt(request.getParameter("time"));
+
 	}
 		
 }

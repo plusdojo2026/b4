@@ -64,6 +64,7 @@ th,td {
 }
 
 #todo {
+	margin-top: 17px;
   	table-layout: fixed;
   	width: 100%;
   	text-align: center;
@@ -81,6 +82,7 @@ th,td {
 }
 
 #garbage {
+	text-align: center;
 	table-layout: fixed;
     width: 40%;
 	margin: 7px auto;
