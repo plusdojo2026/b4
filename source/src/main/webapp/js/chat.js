@@ -195,6 +195,8 @@ function decideTime() {
 	// ここで家事提案処理
 	suggestionViewState = {
 		currentIndex: 0,
+		status:"PREPARE",
+		remainingMinutes:5,
 	
 
 		suggestions: [
@@ -243,6 +245,8 @@ function decideTime() {
 function decideHw() {
 	suggestionViewState = {
 		currentIndex: 0,
+		status:"PREPARE",
+		remainingMinutes:5,
 
 		suggestions: [
 			{
@@ -419,7 +423,7 @@ function answer(value) {
 
 				suggestionViewState.currentIndex++;
 
-				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length) {
+				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length){
 					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
 
 					addMessage("じゃあ、" + nextwork.title + "はどう？", false);
