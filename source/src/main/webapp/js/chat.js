@@ -196,6 +196,7 @@ function decideTime() {
 	// ここで家事提案処理
 	suggestionViewState = {
 		currentIndex: 0,
+	
 
 		suggestions: [
 			{
@@ -417,11 +418,34 @@ function answer(value) {
 				}
 			} else if (value == "終わったよ！") {
 
+                //終わったよボタンが押された時に活動IDをjavaに送信
+				const currentWork =suggestionViewState.suggestions[suggestionViewState.currentIndex];
+
+				console.log("完了した活動ID:", currentWork.activityId);
+				
+				//reportServletに通信する
+				fetch("ChatServlet", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					//activityIdを取得
+					body:
+						"action=complete" +
+						"&activityId=" +
+						currentWork.activityId  
+				})
+				//サーバから返ってきたデータを文字列として受け取る
+					.then(response => response.text())
+				//受け取ったデータをコンソールに表示
+					.then(data => {console.log(data);});
+
 				suggestionViewState.currentIndex++;
 
 				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length) {
 					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
 
+                    addMessage("残り時間は〇分だよ！", false);
 					addMessage("次は" + nextwork.message, false);
 					addMessage("終わったら教えてね！");
 					suggestionButtons();
@@ -469,11 +493,32 @@ function answer(value) {
 				}
 
 			} else if (value == "終わったよ！") {
+				const currentWork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
+
+				console.log("完了した活動ID:", currentWork.activityId);
+
+				//reportServletに通信する
+				fetch("ChatServlet", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					//activityIdを取得
+					body:
+						"action=complete" +
+						"&activityId=" +
+						currentWork.activityId
+				})
+					//サーバから返ってきたデータを文字列として受け取る
+					.then(response => response.text())
+					//受け取ったデータをコンソールに表示
+					.then(data => { console.log(data); });
 				suggestionViewState.currentIndex++;
 
 				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length) {
 					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
 
+                    
 					addMessage("次は、" + nextwork.message, false);
 					addMessage("終わったら教えてね！", false);
 					suggestionButtons();
