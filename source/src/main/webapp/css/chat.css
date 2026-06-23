@@ -206,7 +206,7 @@ button:hover {
 
 	.logout-icon {
 		right: 1px;
-		top: 45px;
+		top: 40px;
 		width: 100px;
 	}
 
@@ -218,21 +218,21 @@ button:hover {
 	}
 
 	.bot {
-		padding: 10px;
+		padding: 8px;
 		margin: 10px;
 		border-radius: 10px;
 		width: fit-content;
 		margin-right: auto;
-		font-size: 20px;
+		font-size: 18px;
 	}
 
 	.user {
-		padding: 10px;
+		padding: 8px;
 		margin: 10px;
 		border-radius: 10px;
 		width: fit-content;
 		margin-left: auto;
-		font-size: 20px;
+		font-size: 18px;
 	}
 
 	button {
