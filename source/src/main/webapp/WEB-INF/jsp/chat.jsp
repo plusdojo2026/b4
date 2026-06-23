@@ -26,7 +26,7 @@
             <h3>何をやったか教えて！</h3>
             <div class="check-area">
                 <label>
-                    <input type="checkbox" value="1" data-name="掃除機">
+                    <input type="checkbox" value="掃除機">
                     掃除機
                 </label>
 
