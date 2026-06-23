@@ -1,5 +1,6 @@
 * {
-    box-sizing: border-box; /* ブロックボックス */
+	box-sizing: border-box;
+	/* ブロックボックス */
 }
 
 html {
@@ -9,163 +10,273 @@ html {
 }
 
 body {
-    margin: 0 0 0 0; /* マージンなし */
-    padding: 0 0 0 0; /* パディングなし */
-    font-size: 20px;
-    text-align: center;
+	margin: 0 0 0 0;
+	/* マージンなし */
+	padding: 0 0 0 0;
+	/* パディングなし */
+	font-size: 20px;
+	text-align: center;
 }
 
-header{
-    margin-top: 0;
+header {
+	margin-top: 0;
 }
 
-.title{
-    position: relative;
-    text-align: center;
-    background-color: #d2ebe6;
-    padding: 25px;
-    border-bottom: 1px solid #000080;
+h1{
+	color: #80350E;
 }
 
-.logout-icon{
-    position: absolute;
-    right: 45px;
-    top: 80px;
-    transform: translateY(-50%);
-    width: 140px;
-    height: 80px;
-    cursor: pointer;
+.title {
+	position: relative;
+	text-align: center;
+	background-color: #d2ebe6;
+	padding: 25px;
+	border-bottom: 1px solid #000080;
+}
+
+.logout-icon {
+	position: absolute;
+	right: 45px;
+	top: 80px;
+	transform: translateY(-50%);
+	width: 140px;
+	height: 80px;
+	cursor: pointer;
 }
 
 #chatArea {
-    margin: 20px;
-    background: #fbfaf7;
-    overflow-y: auto;
-    padding: 10px;
-    height: 70vh;      /* 高さを固定 */
-
-
+	margin: 20px;
+	background: #fbfaf7;
+	overflow-y: auto;
+	padding: 10px;
+	height: 70vh;
+	/* 高さを固定 */
 }
 
 .bot {
-    background: #ffffff;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 15px;
-    width: fit-content;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    border: 1.5px solid #000080;
-    font-size: 50px;
+	background: #ffffff;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 15px;
+	width: fit-content;
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	border: 1.5px solid #000080;
+	font-size: 25px;
 }
 
 .user {
-    background: #dcdcdc;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-    width: fit-content;
-    margin-left: auto;
-    border: 1.5px solid #000080;
-    font-size: 50px;
+	background: #dcdcdc;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 10px;
+	width: fit-content;
+	margin-left: auto;
+	border: 1.5px solid #000080;
+	font-size: 25px;
 }
 
 #buttons {
-    text-align: center;
-    margin-top: 10px;
+	text-align: center;
+	margin-top: 10px;
 }
 
 button {
-    width: 230px;
-    height: 100px;
-    font-size: 45px;
-    margin: 10px;
-    border-radius: 10px;
-    background-color: #d2ebe6;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    appearance: none;
-    border: none;
+	width: 150px;
+	height: 80px;
+	font-size: 25px;
+	margin: 10px;
+	border-radius: 10px;
+	background-color: #d2ebe6;
+	transition: all 0.2s ease;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	appearance: none;
+	border: none;
 }
 
-button:hover{
-    transform: translateY(3px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+button:hover {
+	transform: translateY(3px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-#close, #decide{
-    display: flex;
+
+#close,
+#decide {
+	display: flex;
 }
-.bot-icon, .user-icon{
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+
+.bot-icon,
+.user-icon {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
 }
+
 .bot-row {
-    display: flex;
-    align-items: flex-end;
-    margin: 10px 0;
-    gap: 10px;
-    margin: 10px;
+	display: flex;
+	align-items: flex-end;
+	margin: 10px 0;
+	gap: 10px;
+	margin: 10px;
 }
-.user-row{
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    gap: 10px;
-    margin: 10px;
+
+.user-row {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	gap: 10px;
+	margin: 10px;
 }
-#modal,#timeModal {
-    position: fixed;
-    inset: 0;
 
-    background: rgba(0,0,0,0.5);
+#modal,
+#timeModal {
+	position: fixed;
+	inset: 0;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	background: rgba(0, 0, 0, 0.5);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #modal.hidden {
-    display: none;
+	display: none;
 }
-#timeModal.hidden{
-    display: none;
+
+#timeModal.hidden {
+	display: none;
 }
 
 .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
+	background: white;
+	padding: 20px;
+	border-radius: 10px;
 
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    max-width: 660px;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 100%;
+	max-width: 660px;
+	align-items: center;
 }
+
 .check-area {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-.modal-content label{
-    font-size: 50px;
-    margin: 8px 0;
-}
-#buttons1, #buttons5{
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
-#timeSelect {
-    width: 150px;
-    height: 40px;
-    font-size: 18px;
-    text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 }
 
-#icon{
+.modal-content label {
+	font-size: 30px;
+	margin: 8px 0;
+}
+
+#buttons1,
+#buttons5 {
+	display: flex;
+	justify-content: center;
+	gap: 5px;
+}
+
+#timeSelect {
+	width: 200px;
+	height: 50px;
+	font-size: 25px;
+	text-align: center;
+}
+
+#icon {
 	display: none;
+}
+
+
+/*  スマホ画面用 */
+
+@media screen and (max-width: 767px) {
+
+	h1{
+		margin: 5px;
+		color: #80350E;
+	}
+
+	.title {
+		padding: 10px;
+	}
+
+	.logout-icon {
+		right: 1px;
+		top: 45px;
+		width: 100px;
+	}
+
+	.bot-icon,
+	.user-icon {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+	}
+
+	.bot {
+		padding: 10px;
+		margin: 10px;
+		border-radius: 10px;
+		width: fit-content;
+		margin-left: auto;
+		font-size: 20px;
+	}
+
+	.user {
+		padding: 10px;
+		margin: 10px;
+		border-radius: 10px;
+		width: fit-content;
+		margin-left: auto;
+		font-size: 20px;
+	}
+
+	button {
+		width: 100px;
+		height: 50px;
+		font-size: 15px;
+		margin: 10px;
+	}
+
+	#chatArea {
+		margin: 5px;
+		padding: 5px;
+		height: 80vh; /* 高さを固定 */
+	}
+
+	.modal-content {
+		background: white;
+		padding: 20px;
+		border-radius: 10px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		width: auto;
+		max-width: 660px;
+		align-items: center;
+		width: auto;
+	}
+
+	#timeSelect {
+		width: 150px;
+		font-size: 20px;
+	}
+
+	.modal-content label {
+		font-size: 20px;
+		margin: 3px;
+	}
+
+	.bot-row , .user-row {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	gap: 10px;
+	margin: 0;
+}
+
 }
