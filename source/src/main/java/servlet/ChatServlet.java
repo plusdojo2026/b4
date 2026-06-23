@@ -81,17 +81,17 @@ public class ChatServlet extends HttpServlet {
 
         }
 
-//        // 提案された家事が終了
-//        else if ("complete".equals(action)) {
-//
-//            int activityId = Integer.parseInt(
-//                    request.getParameter("activityId"));
-//
-//            // DAOで完了実績登録
-//            // HistoryDAO.insertResult(...);
-//
-//        }
-//	    //int time = Integer.parseInt(request.getParameter("time"));
+        // 提案された家事が終了
+        else if ("complete".equals(action)) {
+
+            int activityId = Integer.parseInt(request.getParameter("activityId"));
+
+            
+            // DAOで完了実績登録
+            // HistoryDAO.insertResult(...);
+
+        }
+
 	}
 		
 }
