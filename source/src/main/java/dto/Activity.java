@@ -6,9 +6,16 @@ public class Activity implements Serializable {
 	
 	private int id; //id
 	private String category; //カテゴリー
-	private String activity_name; //活動名
-	private int required_time; //所要時間
-	private int base_point; //基本ポイント
+	private String activityName; //活動名
+	private int requiredTime; //所要時間
+	private int basePoint; //基本ポイント
+	private boolean isCanWithChild; //子供とできるか判定
+	private boolean isNoise; //騒音か(掃除機など)
+	private boolean garbage; //ゴミの有無
+	private String flowGroup; //家事の流れ
+	private Integer flowStep; //家事の順番
+	private String garbageActionType; //なんのゴミか
+	private int waitMinutes; //家事待ち時間
 	private String c_at; //作成日
 	private String u_at; //更新日
 	
@@ -30,27 +37,83 @@ public class Activity implements Serializable {
 	}
 	
 	//活動名
-	public String getActivity_name() {
-		return activity_name;
+	public String getActivityName() {
+		return activityName;
 	}
-	public void setActivity_name(String activity_name) {
-		this.activity_name = activity_name;
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
 	}
 	
 	//所要時間
-	public int getRequired_time() {
-		return required_time;
+	public int getRequiredTime() {
+		return requiredTime;
 	}
-	public void setRequired_time(int required_time) {
-		this.required_time = required_time;
+	public void setRequiredTime(int requiredTime) {
+		this.requiredTime = requiredTime;
 	}
 	
 	//基本ポイント
-	public int getBase_point() {
-		return base_point;
+	public int getBasePoint() {
+		return basePoint;
 	}
-	public void setBase_point(int base_point) {
-		this.base_point = base_point;
+	public void setBasePoint(int basePoint) {
+		this.basePoint = basePoint;
+	}
+	
+	//子供とできるか判定
+	public boolean getIsCanWithChild() {
+		return isCanWithChild;
+	}
+	public void setIsCanWithChild(boolean isCanWithChild) {
+		this.isCanWithChild = isCanWithChild;
+	}
+	
+	//騒音か
+	public boolean getIsNoise() {
+		return isNoise;
+	}
+	public void setIsNoise(boolean isNoise) {
+		this.isNoise = isNoise;
+	}
+	
+	//ゴミの有無
+	public boolean getGarbage() {
+		return garbage;
+	}
+	public void setGarbage(boolean garbage) {
+		this.garbage = garbage;
+	}
+	
+	//家事の流れ
+	public String getFlowGroup() {
+		return flowGroup;
+	}
+	public void setFlowGroup(String flowGroup) {
+		this.flowGroup = flowGroup;
+	}
+	
+	//家事の順番
+	public Integer getFlowStep() {
+		return flowStep;
+	}
+	public void setFlowStep(Integer flowStep) {
+		this.flowStep = flowStep;
+	}
+	
+	//なんのゴミか
+	public String getGarbageActionType() {
+		return garbageActionType;
+	}
+	public void setGarbageActionType(String garbageActionType) {
+		this.garbageActionType = garbageActionType;
+	}
+	
+	//家事の待ち時間
+	public int getWaitMinutes() {
+		return waitMinutes;
+	}
+	public void setWaitMinutes(int waitMinutes) {
+		this.waitMinutes = waitMinutes;
 	}
 	
 	//作成日
@@ -71,14 +134,35 @@ public class Activity implements Serializable {
 	
 	
 	//コンストラクタ
-	public Activity(int id, String category, String activity_name, int required_time, int base_point, String c_at,
+	public Activity(
+			int id, 
+			String category, 
+			String activityName, 
+			int requiredTime, 
+			int basePoint, 
+			boolean isCanWithChild, 
+			boolean isNoise, 
+			boolean garbage, 
+			String flowGroup,
+			Integer flowStep, 
+			String garbageActionType, 
+			int waitMinutes, 
+			String c_at, 
 			String u_at) {
+		
 		super();
 		this.id = id;
 		this.category = category;
-		this.activity_name = activity_name;
-		this.required_time = required_time;
-		this.base_point = base_point;
+		this.activityName = activityName;
+		this.requiredTime = requiredTime;
+		this.basePoint = basePoint;
+		this.isCanWithChild = isCanWithChild;
+		this.isNoise = isNoise;
+		this.garbage = garbage;
+		this.flowGroup = flowGroup;
+		this.flowStep = flowStep;
+		this.garbageActionType = garbageActionType;
+		this.waitMinutes = waitMinutes;
 		this.c_at = c_at;
 		this.u_at = u_at;
 	}
@@ -88,9 +172,11 @@ public class Activity implements Serializable {
 		super();
 		this.id = 0;
 		this.category = "";
-		this.activity_name = "";
-		this.required_time = 0;
-		this.base_point = 0;
+		this.activityName = "";
+		this.requiredTime = 0;
+		this.basePoint = 0;
+		this.isCanWithChild = false;
+		this.isNoise = false;
 		this.c_at = "";
 		this.u_at = "";
 	}
