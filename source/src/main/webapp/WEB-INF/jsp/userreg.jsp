@@ -26,13 +26,16 @@
 	<div>ユーザーニックネーム</div>
 		<input type="text" id="name" name="user_nickname">
 		
-	<div>パスワード</div>
-		<input type="password" id="pw" name="password">
+	<div class="password-wrapper">パスワード</div>
+		<input type="password" id="password" name="password">
+		<img src="img/eye.png" id="togglePassword" class="toggle-eye">
 		
-	<div>パスワード確認</div>
-		<input type="password" id="pw2" name="pw2">
+	<div class="password-wrapper">パスワード確認</div>
+		<input type="password" id="password2" name="password2">
+		<img src="img/eye.png" id="togglePassword2" class="toggle-eye">
 		
 	<p id="msg"> </p>
+	
 	
 	<div>メールアドレス(任意)</div>
 		<input type="text" id= "mail" name="mail_address">

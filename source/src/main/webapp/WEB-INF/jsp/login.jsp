@@ -19,8 +19,9 @@
 <div><label>ユーザーニックネーム<br>
     <input type="text" name="userNickname" id="userNickname"></label>
 </div>
-<div><label>パスワード<br>
-    <input type="password" name="password" id="password"></label>
+<div class="password-wrapper"><label>パスワード<br>
+    <input type="password" name="password" id="password">
+	<img src="img/eye.png" id="togglePassword" class="toggle-eye"></label>
 </div>
 <%
 String errorMessage = (String) request.getAttribute("errorMessage");
@@ -33,5 +34,6 @@ String errorMessage = (String) request.getAttribute("errorMessage");
 <div><input type="submit" id="login" name="submit" value="ログイン"></div>
 <div><input type="submit" id="regist" name="submit" value="新規登録"></div>
 </form>
+	<script src="/b4/js/login.js"> </script>
 </body>
 </html>
