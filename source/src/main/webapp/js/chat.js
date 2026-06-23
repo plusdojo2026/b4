@@ -302,10 +302,14 @@ function reportHw() {
 	if (btn1) btn1.remove();
 
 
-	let result = [];
+	//let result = [];
+	const activityIds = [];
+    const activityNames = [];
 
 	checked.forEach(item => {
-		result.push(item.value);
+		//result.push(item.value);
+		activityIds.push(item.value);
+        activityNames.push(item.dataset.name);
 	});
 
 	if (result.length === 0) {
@@ -313,8 +317,30 @@ function reportHw() {
 		return;
 	}
 
+	// Servletへ送るデータ作成
+	const params = new URLSearchParams();
+
+	params.append("action", "checkActivity");
+
+	result.forEach(activityId => {
+		params.append("activityId", activityId);
+	});
+
+	fetch("ReportServlet", {
+		method: "POST",
+		headers: {
+			"Content-Type":
+				"application/x-www-form-urlencoded"
+		},
+		body: params.toString()
+	})
+	.then(response => response.text())
+	.then(data => {
+
+		console.log(data);
+
 	addMessage(
-		result.join("、") + "をやったよ！",
+		activityNames.join("、") + "をやったよ！",
 		true
 	);
 
@@ -326,6 +352,11 @@ function reportHw() {
 	closeModal();
 
 	document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
+})
+	.catch(error => {
+		console.error(error);
+		alert("履歴の登録に失敗しました");
+	});
 }
 
 //提案時表示ボタン

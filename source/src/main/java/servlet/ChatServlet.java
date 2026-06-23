@@ -61,38 +61,38 @@ public class ChatServlet extends HttpServlet {
 
     }
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
-		
-		request.setCharacterEncoding("UTF-8");
-		
-		String action = request.getParameter("action");
-	
-        // 時間を選択して家事提案
-        if ("decideTime".equals(action)) {
-
-            int time = Integer.parseInt(request.getParameter("time"));
-
-            System.out.println("選択時間：" + time);
-            
-            response.setContentType("text/plain");
-            response.getWriter().write("OK");
-
-        }
-
-        // 提案された家事が終了
-        else if ("complete".equals(action)) {
-
-            int activityId = Integer.parseInt(request.getParameter("activityId"));
-
-            System.out.println("完了活動ID："+activityId);
-            
-            response.setContentType("text/plain");
-            response.getWriter().write("OK");
-
-        }
-
-	}
-		
+//	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		
+//		
+//		request.setCharacterEncoding("UTF-8");
+//		
+//		String action = request.getParameter("action");
+//	
+//        // 時間を選択して家事提案
+//        if ("decideTime".equals(action)) {
+//
+//            int time = Integer.parseInt(request.getParameter("time"));
+//
+//            System.out.println("選択時間：" + time);
+//            
+//            response.setContentType("text/plain");
+//            response.getWriter().write("OK");
+//
+//        }
+//
+//        // 提案された家事が終了
+//        else if ("complete".equals(action)) {
+//
+//            int activityId = Integer.parseInt(request.getParameter("activityId"));
+//
+//            System.out.println("完了活動ID："+activityId);
+//            
+//            response.setContentType("text/plain");
+//            response.getWriter().write("OK");
+//
+//        }
+//
+//	}
+//		
 }
