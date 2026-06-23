@@ -64,6 +64,7 @@ public class ChatServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		
 		request.setCharacterEncoding("UTF-8");
 		
 		String action = request.getParameter("action");
@@ -74,10 +75,13 @@ public class ChatServlet extends HttpServlet {
             int time = Integer.parseInt(request.getParameter("time"));
 
             System.out.println("選択時間：" + time);
-
+            
             response.setContentType("text/plain");
             response.getWriter().write("OK");
 
+    		
+//    		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/chat.jsp");
+//    		dispatcher.forward(request, response);
         }
 
 //        // 提案された家事が終了
