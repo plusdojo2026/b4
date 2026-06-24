@@ -11,8 +11,8 @@ import java.util.List;
 import dto.Garbage;
 
 public class GarbageDao {
-	// 引数gbで指定されたレコードを登録し、成功したらtrueを返す
-	public boolean insert(Garbage gb) {
+	/*// 引数gbで指定されたレコードを登録し、成功したらtrueを返す
+	public boolean insert(int userId) {
 		Connection conn = null;
 		boolean result = false;
 		
@@ -30,11 +30,7 @@ public class GarbageDao {
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
-			if (gb.getUserId() != 0) {
-				pStmt.setInt(1, gb.getUserId());
-			}else {
-				pStmt.setString(1,"");
-			}
+			pStmt.setInt(1, userId);
 			if (gb.getGarbageDay() != null) {
 				pStmt.setString(2, gb.getGarbageDay());
 			} else {
@@ -67,7 +63,7 @@ public class GarbageDao {
 		}
 		// 結果を返す
 		return result;
-	}
+	}*/
 	
 	public List<Garbage> select(int userId) {
 		Connection conn = null; 	// データベースに接続していない
