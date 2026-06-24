@@ -27,12 +27,14 @@ public class ChatServlet extends HttpServlet {
      */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		// もしもログインしていなかったらログインサーブレットにリダイレクトする
+		// もしもログインしていなかったらログインサーブレットにリダイレクトする
 //		HttpSession session = request.getSession();
-//		if (session.getAttribute("id") == null) {
-//			response.sendRedirect("/LoginServlet");
+//		if (session == null || session.getAttribute("name") == null) {
+//			response.sendRedirect(request.getContextPath() + "/LoginServlet");
 //			return;
 //		}
+		
+
 		
 		// アイコンテスト用 完成版では消す
 		LoginUser loginUser = new LoginUser(1,"ueda","password");

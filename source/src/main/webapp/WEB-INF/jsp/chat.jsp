@@ -26,34 +26,34 @@
             <h3>何をやったか教えて！</h3>
             <div class="check-area">
                 <label>
-                    <input type="checkbox" value="掃除機">
+                    <input type="checkbox" value="1" data-name="掃除機">
                     掃除機
                 </label>
 
                 <label>
-                    <input type="checkbox" value="洗濯">
+                    <input type="checkbox" value="2" data-name="洗濯">
                     洗濯
                 </label>
 
                 <label>
-                    <input type="checkbox" value="食器洗い">
+                    <input type="checkbox" value="3" data-name="食器洗い">
                     食器洗い
                 </label>
 
                 <label>
-                    <input type="checkbox" value="料理">
+                    <input type="checkbox" value="4" data-name="料理">
                     料理
                 </label>
                 <label>
-                    <input type="checkbox" value="片づけ">
+                    <input type="checkbox" value="5" data-name="片づけ">
                     片づけ
                 </label>
                 <label>
-                    <input type="checkbox" value="ごみまとめ">
+                    <input type="checkbox" value="6" data-name="ごみまとめ">
                     ごみまとめ
                 </label>
                 <label>
-                    <input type="checkbox" value="寝具の片付け">
+                    <input type="checkbox" value="7" data-name="寝具片付け">
                     寝具片付け
                 </label>
             </div>
@@ -71,7 +71,7 @@
             <h3>何分くらい頑張る？</h3>
 
             <select id="timeSelect">
-                <option value="5">5分</option>
+<!--                 <option value="5">5分</option> -->
                 <option value="10">10分</option>
                 <option value="15">15分</option>
                 <option value="30">30分</option>

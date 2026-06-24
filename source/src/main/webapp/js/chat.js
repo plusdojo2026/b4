@@ -302,17 +302,17 @@ function reportHw() {
 	if (btn1) btn1.remove();
 
 
-	let result = [];
-//	const activityIds = [];
-//    const activityNames = [];
+	//let result = [];
+	const activityIds = [];
+    const activityNames = [];
 
 	checked.forEach(item => {
-		result.push(item.value);
-//		activityIds.push(item.value);
-//        activityNames.push(item.dataset.name);
+		//result.push(item.value);
+		activityIds.push(item.value);
+        activityNames.push(item.dataset.name);
 	});
 
-	if (result.length === 0) {
+	if (activityIds.length === 0) {
 		alert("家事を選択してください");
 		return;
 	}
@@ -322,7 +322,11 @@ function reportHw() {
 
 	params.append("action", "checkActivity");
 
-	result.forEach(activityId => {
+//	result.forEach(activityId => {
+//		params.append("activityId", activityId);
+//	});
+
+	activityIds.forEach(activityId => {
 		params.append("activityId", activityId);
 	});
 
