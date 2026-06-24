@@ -77,7 +77,6 @@ public class ReminderServlet extends HttpServlet {
 		// HttpSession session = request.getSession();
 		LoginUser user = (LoginUser)session.getAttribute("idnamepw"); 
 
-		int id = Integer.parseInt(request.getParameter("id")); 
 		int userId =user.getUserId();
 		String todoName = request.getParameter("todoName");	
 		String todoDate = request.getParameter("todoDate");	
@@ -89,11 +88,12 @@ public class ReminderServlet extends HttpServlet {
 					
 		// 登録処理を行う
 		TodoDao todoDao = new TodoDao();
-		if (request.getParameter("submit").equals("登録")) {
+		if (request.getParameter("id").equals("input")) {
 			todoDao.insert(new Todo(userId, todoName, todoDate)); 
 		}
 		// 削除処理を行う
-		else if (request.getParameter("submit").equals("削除")){
+		else {
+			int id = Integer.parseInt(request.getParameter("id")); 
 			//idで指定したデータを削除
 			todoDao.delete(id);
 		}

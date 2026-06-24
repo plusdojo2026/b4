@@ -159,12 +159,18 @@ button:hover {
 	width: 100%;
 	max-width: 660px;
 	align-items: center;
+	max-height: 80vh;
+    overflow-y: auto;
 }
 
 .check-area {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	text-align: left;
+    max-width: 400px;  /* スマホで見やすい幅に制限 */
+    margin: 0 auto;    /* コンテナ自体は画面の中央に配置 */
+    padding: 10px;
 }
 
 .modal-content label {
@@ -279,4 +285,46 @@ button:hover {
 	margin: 0;
 }
 
+}
+/*やった家事洗濯 */
+.check-area details {
+    margin-bottom: 10px;
+}
+.check-area details details,
+.check-area details .cleaning-item,
+.check-area details label {
+    margin-left: 24px; 
+    display: block;    /* 縦並びにする */
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.check-area summary {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 4px 0;
+}
+
+.check-area label {
+    display: inline-flex;
+    align-items: center;
+    gap:6px;
+    cursor:pointer;
+}
+
+details summary {
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+details {
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.cleaning-item {
+    margin-left: 20px;
+    margin-top: 5px;
 }
