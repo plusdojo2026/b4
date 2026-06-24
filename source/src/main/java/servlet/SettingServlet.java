@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.usersettingDao;
+
 @WebServlet("/SettingServlet")
 public class SettingServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -43,17 +45,22 @@ public class SettingServlet extends HttpServlet {
         
         if ("profile".equals(action)) {
             // アイコン名を受け取る
-            String iconName = request.getParameter("iconName");
+            int iconId = Integer.parseInt(request.getParameter("iconName"));
             String userName = request.getParameter("userName");
             String childCountStr = request.getParameter("childCount");
             
             System.out.println("[プロフィールデータ受信]");
-            System.out.println("選択されたアイコン: " + iconName); // 
-            System.out.println("選択されたアイコン: " + iconName); 
+            System.out.println("選択されたアイコン: " + iconId); // 
             System.out.println("ユーザー名: " + userName);
             System.out.println("子どもの人数: " + childCountStr);
             
+            
+            //テスト用ではuser_idは「1」とす
             request.setAttribute("message", "プロフィールを保存しました。");
+            usersettingDao udao = new usersettingDao();
+            udao.update(iconId,1); //true or false	が戻り値なのでそれを利用する
+            
+            
    
         } else if ("garbage".equals(action)) {
             String garbageName = request.getParameter("garbage_name");
