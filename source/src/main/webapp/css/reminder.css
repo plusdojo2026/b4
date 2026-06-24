@@ -43,7 +43,7 @@ main {
     cursor: pointer;
 }
 
-form {
+#input {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -59,7 +59,7 @@ input{
 }
 
 th,td {
-    border: solid 1px;              /* 枠線指定 */
+    border: solid 1px; /* 枠線指定 */
     padding: 7px;      /* 余白指定 */
 }
 
@@ -79,6 +79,10 @@ th,td {
   background-color: #D2EBE6;
   color: #80350E;
   border: 2px solid #D2EBE6;
+}
+
+button {
+	cursor: pointer;
 }
 
 #garbage {

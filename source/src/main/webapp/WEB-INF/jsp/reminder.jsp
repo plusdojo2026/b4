@@ -46,7 +46,7 @@
 		   <c:forEach var="t" items="${TodoList}" >
 			<tr>
 				<td class="todo" data-label="やること">${t.todoName}</td>
-				<td class="todo" data-label="期限">${t.todoDate}</td>
+				<td class="todo" id="todoDate" data-label="期限">${t.todoDate}</td>
 				<td>
 				<button type="submit" name="id" value="${t.id}">
                     削除
@@ -59,7 +59,6 @@
 			</c:forEach>
 		</table>
 	</form>
-
 </main>
 <script>
 'use strict';
@@ -83,7 +82,6 @@ for(let i = 0; i < week.length; i++)  {
 	}
 }
 */
-
 </script>
 </body>
 </html>
