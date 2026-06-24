@@ -176,7 +176,7 @@ function decideTime() {
 
 	closeTimeModal();
 
-	fetch("ChatServlet", {
+	fetch("SuggestServlet", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded"
@@ -233,6 +233,7 @@ function decideTime() {
 //        const housework = suggestionViewState.suggestions[suggestionViewState.currentIndex];
 //
 //        addMessage("まずは" + housework.title + "をやろう！", false);
+//        addMessage("終わったら教えてね！", false);
 //    });
 
 	suggestionButtons();
@@ -274,7 +275,7 @@ function decideHw() {
 	);
 	addMessage("終わったら教えてね！", false);
 	
-	//	fetch("SuggestServlet", ...)
+//	fetch("SuggestServlet", ...)
 //    .then(response => response.json())
 //    .then(data => {
 //
@@ -485,7 +486,7 @@ function answer(value) {
 				console.log("完了した活動ID:", currentWork.activityId);
 				
 				//reportServletに通信する
-				fetch("ChatServlet", {
+				fetch("SuggestServlet", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/x-www-form-urlencoded"

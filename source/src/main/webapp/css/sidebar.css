@@ -1,0 +1,76 @@
+/* body { */
+/* 	background-color: #D2EBE6; */
+/* } */
+
+ul {
+	list-style-type: none;
+	color: #80350E;
+}
+
+a {
+	margin: 20px;
+	display: block;
+	width: 180px;
+	padding: 10px 20px;
+ 	background-color: #FBFAF7;
+	text-decoration: none;
+	border-radius: 5px;
+}
+
+a:link {
+	color: #80350E;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #80350E;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #80350E;
+	text-decoration: underline;
+}
+
+a:active {
+	color: #80350E;
+	text-decoration: none;
+}
+
+/*サイドバーの開閉*/
+.toggle-sidebar {
+  width: 250px;
+  height:  calc(100vh - 60px);
+  background: #D2EBE6;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: -250px;
+  transition: left 0.3s;
+  margin-top: 70px;
+  z-index: 2000;
+}
+
+.toggle-sidebar.active {
+  left: 0;
+}
+
+.toggle-main {
+  margin-left: 0;
+  padding: 1em;
+}
+
+#toggleBtn {
+  margin: 15px;
+  width: 60px;
+  top: 10px; 
+  left: 10px;
+  position: fixed;
+  /*   transition: left 0.3s; ← サイドバーと同じ動き */
+}
+
+/* #toggleBtn.active { */
+/*   left:220px; */ 
+/* } */
+
+

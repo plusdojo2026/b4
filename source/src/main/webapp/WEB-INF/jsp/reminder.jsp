@@ -5,12 +5,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>リマインダー</title>
 <link rel="stylesheet" href="css/reminder.css">
 </head>
 <body>
+<jsp:include page="sidebar.jspf" flush="true|false" />
+
 <header class="header">
+
 	<div class="title">
+	
+	<!-- サイドバー -->
+<%-- <jsp:include page="sidebar.jspf" flush="true|false" /> --%>
+<img src="/b4/img/sidebar.png" id="toggleBtn">
+<link rel="stylesheet" href="/b4/css/sidebar.css">
+<script src="/b4/js/sidebar.js"> </script>
+
 		<h1>ここる</h1>
 		<a href="/b4/LogoutServlet" id="logout"><img src="/b4/img/logout.png" class="logout-icon" ></a>
 	</div>
@@ -46,7 +57,7 @@
 		   <c:forEach var="t" items="${TodoList}" >
 			<tr>
 				<td class="todo" data-label="やること">${t.todoName}</td>
-				<td class="todo" data-label="期限">${t.todoDate}</td>
+				<td class="todo" id="todoDate" data-label="期限">${t.todoDate}</td>
 				<td>
 				<button type="submit" name="id" value="${t.id}">
                     削除
@@ -59,7 +70,6 @@
 			</c:forEach>
 		</table>
 	</form>
-
 </main>
 <script>
 'use strict';
@@ -83,7 +93,6 @@ for(let i = 0; i < week.length; i++)  {
 	}
 }
 */
-
 </script>
 </body>
 </html>

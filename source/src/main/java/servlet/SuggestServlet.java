@@ -539,7 +539,7 @@ public class SuggestServlet extends HttpServlet {
         /*
          * 騒音活動は17時以上20時未満だけ許可する。
          */
-        if (activity.isNoise() && !isNoiseAllowedTime(currentTime)) {
+        if (activity.getIsNoise() && !isNoiseAllowedTime(currentTime)) {
 
             return EXCLUDED_SCORE;
         }
@@ -643,7 +643,7 @@ public class SuggestServlet extends HttpServlet {
 
         if ("HOUSEWORK".equals(category)) {
 
-            if (activity.isCanWithChild()) {
+            if (activity.getIsCanWithChild()) {
                 return 10;
             }
 
@@ -707,7 +707,7 @@ public class SuggestServlet extends HttpServlet {
                 return 20;
             }
 
-            if ("HOUSEWORK".equals(category) && !activity.isNoise()) {
+            if ("HOUSEWORK".equals(category) && !activity.getIsNoise()) {
 
                 return 20;
             }

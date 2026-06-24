@@ -66,8 +66,8 @@ public class ActivityHistoryDao {
 
         String sql =
                 "INSERT INTO activity_histories ("
-                + "users_id, "
-                + "activities_id, "
+                + "user_id, "
+                + "activity_id, "
                 + "c_at, "
                 + "u_at"
                 + ") VALUES ("
@@ -194,8 +194,8 @@ public class ActivityHistoryDao {
                 + "ah.c_at AS created_at "
                 + "FROM activity_histories ah "
                 + "INNER JOIN activities a "
-                + "ON ah.activities_id = a.id "
-                + "WHERE ah.users_id = ? "
+                + "ON ah.activity_id = a.id "
+                + "WHERE ah.user_id = ? "
                 + "AND ah.c_at >= ? "
                 + "AND ah.c_at < ? "
                 + "ORDER BY ah.c_at DESC, ah.id DESC";
@@ -215,9 +215,7 @@ public class ActivityHistoryDao {
                 while (rs.next()) {
                     RecordHistoryDto dto = new RecordHistoryDto();
 
-                    dto.setId(
-                            rs.getInt("history_id")
-                    );
+                    dto.setId(rs.getInt("history_id"));
 
                     dto.setActivityId(rs.getInt("activity_id"));
                     dto.setActivityName(rs.getString("activity_name"));
