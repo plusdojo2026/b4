@@ -181,7 +181,7 @@
     
     
     
-    <script src="/b4/js/chat.js"> </script>
+    <script src="${pageContext.request.contextPath}/js/chat.js"> </script>
     
 </body>
 </html>
