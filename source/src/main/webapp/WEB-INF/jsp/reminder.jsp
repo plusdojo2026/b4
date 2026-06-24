@@ -30,34 +30,35 @@
 	<form id="input" method="POST" action="/b4/ReminderServlet">
 	  <label>やること: <input type= "text" name="todoName"></label><br>
 	  <label>期限: <input type="date" name="todoDate"></label><br>
-	  <input type="submit" id="submit" name="submit" value="登録">
+	  <button type="submit" name="id" value="input">
+         登録
+	  </button>
 	</form>
 	
-	
+	<form id="delete" method="POST" action="/b4/ReminderServlet">
 		<table id="todo">
 		    <tr>
-		    	<th></th>
 		     	<th>やること</th>
 		     	<th>期限</th>
 		     	<th></th>
 		    </tr>
+		    
 		   <c:forEach var="t" items="${TodoList}" >
-		    <form id="input" method="POST" action="/b4/ReminderServlet">
-		
 			<tr>
-					<td>
-				<input type="text" name="id" value="${t.id}"> 
-				</td>
 				<td class="todo" data-label="やること">${t.todoName}</td>
 				<td class="todo" data-label="期限">${t.todoDate}</td>
 				<td>
+				<button type="submit" name="id" value="${t.id}">
+                    削除
+				</button>
+				<!-- <input type="text" name="id" value="${t.id}"> 
 				<input type="submit" id="submit" name="submit" value="削除">
-				</td>
-								
+				 -->
+				</td>				
 			</tr>
-</form>
 			</c:forEach>
 		</table>
+	</form>
 
 </main>
 <script>
