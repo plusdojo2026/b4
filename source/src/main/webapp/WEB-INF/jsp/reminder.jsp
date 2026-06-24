@@ -5,12 +5,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>リマインダー</title>
 <link rel="stylesheet" href="css/reminder.css">
 </head>
 <body>
+<jsp:include page="sidebar.jspf" flush="true|false" />
+
 <header class="header">
+
 	<div class="title">
+	
+	<!-- サイドバー -->
+<%-- <jsp:include page="sidebar.jspf" flush="true|false" /> --%>
+<img src="/b4/img/sidebar.png" id="toggleBtn">
+<link rel="stylesheet" href="/b4/css/sidebar.css">
+<script src="/b4/js/sidebar.js"> </script>
+
 		<h1>ここる</h1>
 		<a href="/b4/LogoutServlet" id="logout"><img src="/b4/img/logout.png" class="logout-icon" ></a>
 	</div>

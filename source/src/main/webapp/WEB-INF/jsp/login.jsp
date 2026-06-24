@@ -11,6 +11,14 @@
 </head>
 <body>
 <div class="header">
+
+<!-- サイドバー -->
+<jsp:include page="sidebar.jspf" flush="true|false" />
+<img src="/b4/img/sidebar.png" id="toggleBtn">
+<link rel="stylesheet" href="/b4/css/sidebar.css">
+<script src="/b4/js/sidebar.js"> </script>
+<!-- ここまで必要なjspに書き込む -->
+
 <h1>ここる
 <img src="/b4/img/mascot.png" alt="ペンギンのここるイラスト" id="mascot">
 </h1>

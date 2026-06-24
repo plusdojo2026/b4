@@ -1,0 +1,16 @@
+<!-- サイドバーの部品 -->
+
+<aside id="toggleSidebar" class="toggle-sidebar">
+
+<!-- <%-- <img src="${Iconlist.icon_path}" id="icon" style="display:none;" > --%> -->
+<!-- <p>ニックネーム</p> -->
+
+  <ul>
+    <li><a href="/b4/ChatServlet">チャット</a></li>
+    <li><a href="/b4/SettingServlet">ユーザー設定</a></li>
+    <li><a href="/b4/RecordDetailServlet">記録一覧</a></li>
+    <li><a href="/b4/ReminderServlet">リマインダー</a></li>
+  </ul>
+
+</aside>
+

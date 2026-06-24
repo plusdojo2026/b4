@@ -15,9 +15,13 @@ body {
     text-align: center;
 }
 
-main {
-	margin: 0 auto 0 auto;
-	max-width: 1000px;
+/* main { */
+/* 	margin: 0 auto 0 auto; */
+/* 	max-width: 1000px; */
+/* } */
+
+header {
+	margin-top: 0;
 }
 
 .header {
@@ -91,4 +95,26 @@ button {
     width: 40%;
 	margin: 7px auto;
 	border-collapse:  collapse;     /* セルの線を重ねる */
+}
+
+/*  スマホ画面用 */
+
+@media screen and (max-width: 767px) {
+	img#mascot{
+		width: 100px;
+	}
+		h1{
+			margin: 5px;
+			color: #80350E;
+		}
+
+	.title {
+		padding: 10px;
+	}
+
+	.logout-icon {
+		right: 1px;
+		top: 40px;
+		width: 100px;
+	}
 }
