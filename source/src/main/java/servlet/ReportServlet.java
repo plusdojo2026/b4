@@ -13,13 +13,13 @@ import dao.ActivityHistoryDao;
 import dto.LoginUser;
 
 /**
- * 活動履歴を登録するServlet
+ * 活動履歴を登録するServlet。
  *
- * 役割;
- * 1. 最初の「何か家事やった？」で報告された活動を登録
- * 2. 提案後に「終わったよ」を押した活動を登録
+ * JavaScriptからの受信：
+ * application/x-www-form-urlencoded
  *
- * 
+ * JavaScriptへの返却：
+ * JSON
  */
 @WebServlet("/ReportServlet")
 public class ReportServlet extends HttpServlet {
@@ -32,11 +32,15 @@ public class ReportServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/plain; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
+        setJsonResponse(response);
 
-        response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-        response.getWriter().write("POSTでアクセスしてください。");
+        writeJson(
+                response,
+                HttpServletResponse.SC_METHOD_NOT_ALLOWED,
+                false,
+                "POSTでアクセスしてください。",
+                0
+        );
     }
 
     @Override
@@ -46,83 +50,116 @@ public class ReportServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/plain; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
+        setJsonResponse(response);
 
         /*
-         * ChatServletで作成されたセッションを取得
-         * getSession(false)にすると、セッションがない場合に新規作成しない。
+         * ChatServletで作られたセッションを取得する。
+         * falseを指定すると、セッションがない場合に新しく作成しない。
          */
         HttpSession session = request.getSession(false);
 
         if (session == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("ログイン情報がありません。");
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_UNAUTHORIZED,
+                    false,
+                    "ログイン情報がありません。",
+                    0
+            );
             return;
         }
 
         /*
-         * ChatServletでは idnamepw という名前でLoginUserを保存している。
+         * ChatServletで保存したLoginUserを取得する。
          */
         LoginUser loginUser = (LoginUser) session.getAttribute("idnamepw");
 
         if (loginUser == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("ログイン情報がありません。");
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_UNAUTHORIZED,
+                    false,
+                    "ログイン情報がありません。",
+                    0
+            );
+            return;
+        }
+
+        String action = request.getParameter("action");
+
+        if (action == null || action.isEmpty()) {
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    false,
+                    "actionが指定されていません。",
+                    0
+            );
             return;
         }
 
         int userId = loginUser.getUserId();
 
-        String action = request.getParameter("action");
-
-        if (action == null || action.isEmpty()) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("actionが指定されていません。");
-            return;
-        }
-
         try {
             if ("checkActivity".equals(action)) {
 
                 /*
-                 * 最初の報告
-                 * 複数のactivityIdを受け取る
+                 * 最初にユーザーが報告した、
+                 * 複数の活動を登録する。
                  */
-                registerCheckedActivities(request, response, userId);
+                registerCheckedActivities(
+                        request,
+                        response,
+                        userId
+                );
 
             } else if ("complete".equals(action)) {
 
                 /*
-                 * 提案された活動の完了
-                 * activityIdは1件だけ
+                 * 提案された活動の完了を1件登録する。
                  */
-                registerCompletedActivity(request, response, userId);
+                registerCompletedActivity(
+                        request,
+                        response,
+                        userId
+                );
 
             } else {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("不正なactionです。");
+                writeJson(
+                        response,
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        false,
+                        "不正なactionです。",
+                        0
+                );
             }
 
         } catch (NumberFormatException e) {
 
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("activityIdは数値で指定してください。");
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    false,
+                    "activityIdは数値で指定してください。",
+                    0
+            );
 
         } catch (Exception e) {
 
             e.printStackTrace();
 
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("活動履歴の登録に失敗しました。");
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    false,
+                    "活動履歴の登録に失敗しました。",
+                    0
+            );
         }
     }
 
     /**
-     * 最初の報告で選ばれた活動を登録
-     *
-     * activityId=1&activityId=2 のように
-     * 複数件送られてくる想定
+     * 最初に選択された複数の活動を登録する。
      */
     private void registerCheckedActivities(
             HttpServletRequest request,
@@ -130,12 +167,21 @@ public class ReportServlet extends HttpServlet {
             int userId)
             throws IOException {
 
+        /*
+         * activityIdが複数送られてくるため、
+         * getParameterValues()を使用する。
+         */
         String[] activityIdTexts = request.getParameterValues("activityId");
 
-        if (activityIdTexts == null|| activityIdTexts.length == 0) {
+        if (activityIdTexts == null || activityIdTexts.length == 0) {
 
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("活動が選択されていません。");
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    false,
+                    "活動が選択されていません。",
+                    0
+            );
             return;
         }
 
@@ -155,26 +201,42 @@ public class ReportServlet extends HttpServlet {
                 continue;
             }
 
-            boolean result = historyDao.insert(userId, activityId);
+            /*
+             * create()だけを呼ぶ。
+             * insert()とcreate()を両方呼ぶと二重登録になる。
+             */
+            int historyId = historyDao.create(
+                            userId,
+                            activityId
+                    		);
 
-            if (result) {
+            if (historyId > 0) {
                 insertCount++;
             }
         }
 
         if (insertCount == 0) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    false,
+                    "活動履歴を登録できませんでした。",
+                    0
             );
-            response.getWriter().write("活動履歴を登録できませんでした。");
             return;
         }
 
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(insertCount + "件の活動を記録しました。");
+        writeJson(
+                response,
+                HttpServletResponse.SC_OK,
+                true,
+                insertCount + "件の活動を記録しました。",
+                insertCount
+        );
     }
 
     /**
-     * 提案された活動の完了を登録
+     * 提案後に完了した活動を1件登録する。
      */
     private void registerCompletedActivity(
             HttpServletRequest request,
@@ -186,39 +248,109 @@ public class ReportServlet extends HttpServlet {
 
         if (activityIdText == null || activityIdText.isEmpty()) {
 
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("activityIdが指定されていません。");
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    false,
+                    "activityIdが指定されていません。",
+                    0
+            );
             return;
         }
 
         int activityId = Integer.parseInt(activityIdText);
 
         if (activityId <= 0) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("activityIdが不正です。");
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    false,
+                    "activityIdが不正です。",
+                    0
+            );
             return;
         }
 
         ActivityHistoryDao historyDao = new ActivityHistoryDao();
 
-        boolean result = historyDao.insert(userId, activityId);
-
-        if (!result) {
-        	//エラー500 サーバーエラーを通知
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("活動履歴を登録できませんでした。");
-            return;
-        }
-        
-        int historyId = historyDao.create(userId, activityId);
+        int historyId = historyDao.create(
+                        userId,
+                        activityId
+                		);
 
         if (historyId == 0) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("活動履歴を登録できませんでした。");
+            writeJson(
+                    response,
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    false,
+                    "活動履歴を登録できませんでした。",
+                    0
+            );
             return;
         }
 
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write("活動の完了を記録しました。");
+        writeJson(
+                response,
+                HttpServletResponse.SC_OK,
+                true,
+                "活動の完了を記録しました。",
+                1
+        );
+    }
+
+    /**
+     * JSON形式のレスポンスを設定する。
+     */
+    private void setJsonResponse(
+            HttpServletResponse response) {
+
+        response.setContentType("application/json; charset=UTF-8");
+
+        response.setCharacterEncoding("UTF-8");
+    }
+
+    /**
+     * JSONをJavaScriptへ返す。
+     */
+    private void writeJson(
+            HttpServletResponse response,
+            int status,
+            boolean success,
+            String message,
+            int recordedCount)
+            throws IOException {
+
+        response.setStatus(status);
+
+        String json =
+                "{"
+                + "\"success\":"
+                + success
+                + ","
+                + "\"message\":\""
+                + escapeJson(message)
+                + "\","
+                + "\"recordedCount\":"
+                + recordedCount
+                + "}";
+
+        response.getWriter().write(json);
+    }
+
+    /**
+     * JSON文字列内で問題になる文字を変換する。
+     */
+    private String escapeJson(String value) {
+
+        if (value == null) {
+            return "";
+        }
+
+        return value
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\r", "\\r")
+                .replace("\n", "\\n")
+                .replace("\t", "\\t");
     }
 }
