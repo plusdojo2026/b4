@@ -310,6 +310,7 @@ button:hover {
     align-items: center;
     gap:6px;
     cursor:pointer;
+    text-align:center;
 }
 
 details summary {
