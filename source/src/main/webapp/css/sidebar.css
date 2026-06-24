@@ -7,7 +7,8 @@ ul {
 	color: #80350E;
 }
 
-a {
+/* aタグの部分 */
+.side {
 	margin: 20px;
 	display: block;
 	width: 180px;
@@ -17,22 +18,22 @@ a {
 	border-radius: 5px;
 }
 
-a:link {
+.side:link {
 	color: #80350E;
 	text-decoration: none;
 }
 
-a:visited {
+.side:visited {
 	color: #80350E;
 	text-decoration: none;
 }
 
-a:hover {
+.side:hover {
 	color: #80350E;
 	text-decoration: underline;
 }
 
-a:active {
+.side:active {
 	color: #80350E;
 	text-decoration: none;
 }

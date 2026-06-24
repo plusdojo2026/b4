@@ -6,10 +6,10 @@
 <!-- <p>ニックネーム</p> -->
 
   <ul>
-    <li><a href="/b4/ChatServlet">チャット</a></li>
-    <li><a href="/b4/SettingServlet">ユーザー設定</a></li>
-    <li><a href="/b4/RecordDetailServlet">記録一覧</a></li>
-    <li><a href="/b4/ReminderServlet">リマインダー</a></li>
+    <li><a href="/b4/ChatServlet" class="side">チャット</a></li>
+    <li><a href="/b4/SettingServlet" class="side">ユーザー設定</a></li>
+    <li><a href="/b4/RecordDetailServlet" class="side">記録一覧</a></li>
+    <li><a href="/b4/ReminderServlet" class="side">リマインダー</a></li>
   </ul>
 
 </aside>
