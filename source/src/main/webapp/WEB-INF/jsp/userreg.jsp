@@ -34,14 +34,14 @@ String errorMessage = (String) request.getAttribute("errorMessage");
 
 
 	<div>ユーザーニックネーム</div>
-		<input type="text" id="name" name="user_nickname">
+		<input type="text" id="name" name="user_nickname" required>
 		
 	<div class="password-wrapper">パスワード</div>
-		<input type="password" id="password" name="password">
+		<input type="password" id="password" name="password" required>
 		<img src="img/eye.png" id="togglePassword" class="toggle-eye">
 		
 	<div class="password-wrapper">パスワード確認</div>
-		<input type="password" id="password2" name="password2">
+		<input type="password" id="password2" name="password2" required>
 		<img src="img/eye.png" id="togglePassword2" class="toggle-eye">
 		
 	
