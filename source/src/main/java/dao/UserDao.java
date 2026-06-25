@@ -27,7 +27,7 @@ public class UserDao {
 				// SELECT文を準備する
 				String sql = "SELECT count(*) FROM users WHERE user_nickname=? AND password=?";
 				PreparedStatement pStmt = conn.prepareStatement(sql);
-				// pStmt.setInt(1, namepw.getId());
+				//pStmt.setInt(1, namepw.getId());
 				pStmt.setString(1, namepassword.getUserNickname());
 				pStmt.setString(2, namepassword.getPassword());
 				
@@ -88,8 +88,8 @@ public class UserDao {
 
 				// 結果表をコレクションにコピーする
 				rs.next();
-				ls.setUserNickname(userNickname);
-				ls.setUserId(rs.getInt("userId"));
+				ls.setUserNickname(rs.getString("user_nickname"));
+				ls.setUserId(rs.getInt("id"));
 				ls.setPassword(rs.getString("password"));
 				
 			// エラー対応	

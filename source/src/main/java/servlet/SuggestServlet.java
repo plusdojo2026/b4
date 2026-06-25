@@ -500,7 +500,7 @@ public class SuggestServlet extends HttpServlet {
         }
 
         /*
-         * 騒音活動は17時以上20時未満だけ許可
+         * 騒音活動は9時以上18時未満だけ許可
          */
         if (activity.getIsNoise() && !isNoiseAllowedTime(currentTime)) {
 

@@ -19,7 +19,7 @@ import dao.ActivityHistoryDao;
 import dto.LoginUser;
 import dto.RecordHistoryDto;
 
-@WebServlet("/record")
+@WebServlet("/RecordDetailServlet")
 public class RecordDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -33,6 +33,9 @@ public class RecordDetailServlet extends HttpServlet {
 		try {
 			// セッション取得
 			HttpSession session = request.getSession(false);
+			
+			// ログインユーザー取得
+			LoginUser loginUser = (LoginUser) session.getAttribute("idnamepw");
 
 			// 未ログインの場合はログイン画面へ戻す
 			if (session == null || session.getAttribute("name") == null) {
@@ -40,8 +43,6 @@ public class RecordDetailServlet extends HttpServlet {
 				return;
 			}
 
-			// ログインユーザー取得
-			LoginUser loginUser = (LoginUser) session.getAttribute("name");
 
 			// ユーザーID取得
 			int userId = loginUser.getUserId();
