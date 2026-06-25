@@ -11,8 +11,8 @@ import java.util.List;
 import dto.Garbage;
 
 public class GarbageDao {
-	/*// 引数gbで指定されたレコードを登録し、成功したらtrueを返す
-	public boolean insert(int userId) {
+	// 引数gbで指定されたレコードを登録し、成功したらtrueを返す
+	public boolean insert(Garbage gb) {
 		Connection conn = null;
 		boolean result = false;
 		
@@ -26,11 +26,15 @@ public class GarbageDao {
 					"root", "password");
 			
 			// SQL文を準備する
-			String sql = "INSERT INTO garbages (user_id,garbage_day,garbage_name) VALUES (0, ?, ?)";
+			String sql = "INSERT INTO garbages (user_id,garbage_day,garbage_name) VALUES (?, ?, ?)";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
-			pStmt.setInt(1, userId);
+			if (gb.getUserId() != 0) {
+				pStmt.setInt(1, gb.getUserId());
+			} else {
+				pStmt.setString(1,"");
+				
 			if (gb.getGarbageDay() != null) {
 				pStmt.setString(2, gb.getGarbageDay());
 			} else {
@@ -45,9 +49,13 @@ public class GarbageDao {
 			// SQL文を実行する
 			if (pStmt.executeUpdate() == 1) {
 				result = true;
+			
 			}
 			
-		} catch (SQLException e) {
+				
+			}	
+				
+			}catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -63,7 +71,7 @@ public class GarbageDao {
 		}
 		// 結果を返す
 		return result;
-	}*/
+	}
 	
 	public List<Garbage> select(int userId) {
 		Connection conn = null; 	// データベースに接続していない
