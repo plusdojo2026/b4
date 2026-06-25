@@ -292,8 +292,7 @@ function decideHw() {
 		},
 		body:
 			"action=start" +
-			"&mode=TIME" +
-			"&time=" + encodeURIComponent(time)
+			"&mode=AUTO" 
 	})
 		.then(response => response.json())
 		.then(data => {
