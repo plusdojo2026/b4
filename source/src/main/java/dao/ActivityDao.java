@@ -67,10 +67,10 @@ public class ActivityDao {
                 + "base_point, "
                 + "can_with_child, "
                 + "is_noise, "
-                + "has_garbage, "
+                + "has_garbages, "
                 + "flow_group, "
                 + "flow_step, "
-                + "garbage_action_type, "
+//                + "garbage_action_type, "
                 + "wait_minutes "
                 + "FROM activities "
                 + "ORDER BY id ASC";
@@ -117,10 +117,10 @@ public class ActivityDao {
                 + "base_point, "
                 + "can_with_child, "
                 + "is_noise, "
-                + "has_garbage, "
+                + "has_garbages, "
                 + "flow_group, "
                 + "flow_step, "
-                + "garbage_action_type, "
+//                + "garbage_action_type, "
                 + "wait_minutes "
                 + "FROM activities "
                 + "WHERE id = ?";
@@ -175,10 +175,10 @@ public class ActivityDao {
                 + "base_point, "
                 + "can_with_child, "
                 + "is_noise, "
-                + "is_garbage, "
+                + "has_garbages, "
                 + "flow_group, "
                 + "flow_step, "
-                + "garbage_action_type, "
+//                + "garbage_action_type, "
                 + "wait_minutes "
                 + "FROM activities "
                 + "WHERE required_time <= ? "
@@ -234,7 +234,7 @@ public class ActivityDao {
         activity.setBasePoint(rs.getInt("base_point"));
         activity.setIsCanWithChild(rs.getBoolean("can_with_child"));
         activity.setIsNoise(rs.getBoolean("is_noise"));
-        activity.setIsGarbage(rs.getBoolean("is_garbage"));
+        activity.setHasGarbage(rs.getBoolean("has_garbages"));
         activity.setFlowGroup(rs.getString("flow_group"));
         activity.setFlowStep(getNullableInteger(rs, "flow_step"));
         activity.setGarbageActionType(rs.getString("garbage_action_type"));

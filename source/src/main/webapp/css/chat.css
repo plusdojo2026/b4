@@ -9,6 +9,16 @@ html {
 	background-color: #FBFAF7;
 }
 
+.page-frame {
+	max-width: 430px;
+	min-height: 100vh;
+	margin: 0 auto;
+/* 	background-color: #F8FCFA; */
+/* 	border-left: 1px solid #E2EFEA; */
+/* 	border-right: 1px solid #E2EFEA; */
+	position: relative;
+}
+
 body {
 	margin: 0 0 0 0;
 	/* マージンなし */
@@ -36,7 +46,7 @@ h1{
 
 .logout-icon {
 	position: absolute;
-	right: 45px;
+	right: 20px;
 	top: 80px;
 	transform: translateY(-50%);
 	width: 140px;
@@ -284,8 +294,8 @@ button:hover {
 	gap: 10px;
 	margin: 0;
 }
-
 }
+
 /*やった家事洗濯 */
 .check-area details {
     margin-bottom: 10px;
