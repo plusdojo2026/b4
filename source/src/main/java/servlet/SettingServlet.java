@@ -89,6 +89,7 @@ public class SettingServlet extends HttpServlet {
             gdao.insert(new Garbage(userId,garbageDay,garbageName)); 
         }
         
+        
         System.out.println("--------------------------------");
         
         request.getRequestDispatcher("/WEB-INF/jsp/setting.jsp").forward(request, response);
