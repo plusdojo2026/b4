@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
+<div class="page-frame">
 <div class="header">
 
 <!-- サイドバー --> 
@@ -43,5 +44,7 @@ String errorMessage = (String) request.getAttribute("errorMessage");
 <div><input type="submit" id="regist" name="submit" value="新規登録"></div>
 </form>
 	<script src="/b4/js/login.js"> </script>
+	
+</div>
 </body>
 </html>

@@ -37,11 +37,11 @@ public class RecordDetailServlet extends HttpServlet {
 			// ログインユーザー取得
 			LoginUser loginUser = (LoginUser) session.getAttribute("idnamepw");
 
-			// 未ログインの場合はログイン画面へ戻す
-			if (session == null || session.getAttribute("name") == null) {
-				response.sendRedirect(request.getContextPath() + "/LoginServlet");
-				return;
-			}
+//			// 未ログインの場合はログイン画面へ戻す
+//			if (session == null || session.getAttribute("name") == null) {
+//				response.sendRedirect(request.getContextPath() + "/LoginServlet");
+//				return;
+//			}
 
 
 			// ユーザーID取得

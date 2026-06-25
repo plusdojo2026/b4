@@ -56,6 +56,14 @@ input#login , input#regist{
 	font-weight: 500;
 }
 
+/*  スマホのサイズに調整 */
+.page-frame {
+	max-width: 430px;
+	min-height: 100vh;
+	margin: 0 auto;
+	position: relative;
+}
+
 /*  スマホ画面用 */
 
 @media screen and (max-width: 767px) {
