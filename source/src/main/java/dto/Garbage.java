@@ -45,6 +45,12 @@ public class Garbage implements Serializable {
 		this.garbageDay = garbageDay;
 		this.garbageName = garbageName;
 	}
+	public Garbage(int userId, String garbageDay, String garbageName) {
+		this.userId = userId;
+		this.garbageDay = garbageDay;
+		this.garbageName = garbageName;
+	}
+
 	public Garbage(String garbageDay, String garbageName) {
 		this.garbageDay = garbageDay;
 		this.garbageName = garbageName;

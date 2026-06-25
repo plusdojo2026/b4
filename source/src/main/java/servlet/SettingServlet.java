@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.GarbageDao;
 import dao.usersettingDao;
+import dto.Garbage;
 import dto.LoginUser;
 
 @WebServlet("/SettingServlet")
@@ -85,7 +86,7 @@ public class SettingServlet extends HttpServlet {
             
             request.setAttribute("message", "ゴミ捨て設定を保存しました。");
             GarbageDao gdao = new GarbageDao();
-            gdao.update(userId,1); 
+            gdao.insert(new Garbage(userId,garbageDay,garbageName)); 
         }
         
         System.out.println("--------------------------------");

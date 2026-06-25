@@ -82,7 +82,7 @@ public class usersettingDao {
 			        "root", "Aoisql");
 
 			// SQL文を準備する
-			String sql = "UPDATE users SET icon_id=? WHERE user_id=?";
+			String sql = "UPDATE user_settings SET icon_id=? WHERE user_id=?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
 			// SQL文を完成させる
