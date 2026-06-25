@@ -20,14 +20,18 @@ public class UserDao {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 
 				// データベースに接続する
+				// サーバー環境
+				/* conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Tokyo&connectTimeout=30000",
+						"b4", "6vvRyvdGp4t4Cr3C");*/
+				// ローカル環境
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?"
 						+ "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
-						"root", "password");
+						"root", "password"); 
 			
 				// SELECT文を準備する
 				String sql = "SELECT count(*) FROM users WHERE user_nickname=? AND password=?";
 				PreparedStatement pStmt = conn.prepareStatement(sql);
-				// pStmt.setInt(1, namepw.getId());
+				//pStmt.setInt(1, namepw.getId());
 				pStmt.setString(1, namepassword.getUserNickname());
 				pStmt.setString(2, namepassword.getPassword());
 				
@@ -88,8 +92,8 @@ public class UserDao {
 
 				// 結果表をコレクションにコピーする
 				rs.next();
-				ls.setUserNickname(userNickname);
-				ls.setUserId(rs.getInt("userId"));
+				ls.setUserNickname(rs.getString("user_nickname"));
+				ls.setUserId(rs.getInt("id"));
 				ls.setPassword(rs.getString("password"));
 				
 			// エラー対応	

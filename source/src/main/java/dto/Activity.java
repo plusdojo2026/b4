@@ -11,7 +11,7 @@ public class Activity implements Serializable {
 	private int basePoint; //基本ポイント
 	private boolean isCanWithChild; //子供とできるか判定
 	private boolean isNoise; //騒音か(掃除機など)
-	private boolean garbage; //ゴミの有無
+	private boolean isgarbage; //ゴミの有無
 	private String flowGroup; //家事の流れ
 	private Integer flowStep; //家事の順番
 	private String garbageActionType; //なんのゴミか
@@ -77,11 +77,11 @@ public class Activity implements Serializable {
 	}
 	
 	//ゴミの有無
-	public boolean getGarbage() {
-		return garbage;
+	public boolean getIsGarbage() {
+		return isgarbage;
 	}
-	public void setGarbage(boolean garbage) {
-		this.garbage = garbage;
+	public void setIsGarbage(boolean isgarbage) {
+		this.isgarbage = isgarbage;
 	}
 	
 	//家事の流れ
@@ -142,7 +142,7 @@ public class Activity implements Serializable {
 			int basePoint, 
 			boolean isCanWithChild, 
 			boolean isNoise, 
-			boolean garbage, 
+			boolean isgarbage, 
 			String flowGroup,
 			Integer flowStep, 
 			String garbageActionType, 
@@ -158,7 +158,7 @@ public class Activity implements Serializable {
 		this.basePoint = basePoint;
 		this.isCanWithChild = isCanWithChild;
 		this.isNoise = isNoise;
-		this.garbage = garbage;
+		this.isgarbage = isgarbage;
 		this.flowGroup = flowGroup;
 		this.flowStep = flowStep;
 		this.garbageActionType = garbageActionType;

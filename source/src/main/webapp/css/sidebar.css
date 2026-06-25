@@ -48,7 +48,7 @@ ul {
   top: 0;
   left: -250px;
   transition: left 0.3s;
-  margin-top: 70px;
+  margin-top: 120px;
   z-index: 2000;
 }
 
@@ -64,8 +64,8 @@ ul {
 #toggleBtn {
   margin: 15px;
   width: 60px;
-  top: 10px; 
-  left: 10px;
+  top: 45px; 
+  left: 180px;
   position: fixed;
   /*   transition: left 0.3s; ← サイドバーと同じ動き */
 }
@@ -74,4 +74,15 @@ ul {
 /*   left:220px; */ 
 /* } */
 
+/*  スマホ画面用 */
 
+@media screen and (max-width: 767px) {
+	.toggle-sidebar {
+		margin-top: 70px;
+	}
+	#toggleBtn {
+		top: 10px;
+		left: 10px;
+	}
+	
+}

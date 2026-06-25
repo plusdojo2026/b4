@@ -63,12 +63,11 @@ public class SuggestServlet extends HttpServlet {
             throws ServletException, IOException {
 
         setJsonResponse(response);
-
         writeError(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "POSTでアクセスしてください。");
     }
 
     /**
-     * 提案処理。
+     * 提案処理
      */
     @Override
     protected void doPost(
@@ -117,13 +116,11 @@ public class SuggestServlet extends HttpServlet {
             }
 
         } catch (NumberFormatException e) {
-
             writeError(response, HttpServletResponse.SC_BAD_REQUEST, "数値の指定が正しくありません。");
 
         } catch (Exception e) {
 
             e.printStackTrace();
-
             writeError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "提案処理中にエラーが発生しました。");
         }
     }
@@ -149,11 +146,7 @@ public class SuggestServlet extends HttpServlet {
 
             int selectedMinutes = Integer.parseInt(timeText);
 
-            /*
-             * 今回の仕様では30分、45分、60分のみ。
-             */
-            if (selectedMinutes != 30 && selectedMinutes != 45 && selectedMinutes != 60) {
-
+            if (selectedMinutes != 10 && selectedMinutes != 15 && selectedMinutes != 30 && selectedMinutes != 45 && selectedMinutes != 60) {
                 writeError(response, HttpServletResponse.SC_BAD_REQUEST, "時間は10分、15分、30分、45分、60分から選択してください。");
                 return;
             }
@@ -164,7 +157,6 @@ public class SuggestServlet extends HttpServlet {
         } else if ("AUTO".equals(mode)) {
 
             session.setAttribute(SESSION_MODE,"AUTO");
-
             session.removeAttribute(SESSION_REMAINING_MINUTES);
 
         } else {
@@ -177,9 +169,9 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 活動完了後の処理。
+     * 活動完了後の処理
      *
-     * ReportServletで履歴登録した後に呼び出す。
+     * ReportServletで履歴登録した後に呼び出す
      */
     private void completeSuggestion(
             HttpServletRequest request,
@@ -188,8 +180,7 @@ public class SuggestServlet extends HttpServlet {
             int userId)
             throws IOException {
 
-        String mode =
-                (String) session.getAttribute(SESSION_MODE);
+        String mode = (String) session.getAttribute(SESSION_MODE);
 
         if (mode == null) {
             writeError(response, HttpServletResponse.SC_BAD_REQUEST,"提案が開始されていません。");
@@ -207,9 +198,7 @@ public class SuggestServlet extends HttpServlet {
         int activityId = Integer.parseInt(activityIdText);
 
         ActivityDao activityDao = new ActivityDao();
-
         List<Activity> activityList = activityDao.selectAll();
-
         Activity completedActivity =findActivityById(activityList, activityId);
 
         if (completedActivity == null) {
@@ -218,7 +207,7 @@ public class SuggestServlet extends HttpServlet {
         }
 
         /*
-         * TIMEモード(時間して)のときだけ残り時間を減らす
+         * TIMEモード(時間指定)のときだけ残り時間を減らす
          */
         if ("TIME".equals(mode)) {
 
@@ -240,13 +229,13 @@ public class SuggestServlet extends HttpServlet {
 
         /*
          * 更新された残り時間と履歴を使用して、
-         * 候補を再計算する。
+         * 候補を再計算
          */
         writeCurrentSuggestions(response, session, userId);
     }
 
     /**
-     * 残り時間を減らさずに候補を再取得する。
+     * 残り時間を減らさずに候補を再取得
      */
     private void refreshSuggestion(
             HttpServletResponse response,
@@ -265,7 +254,7 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 現在のセッション状態から候補を作成して返す。
+     * 現在のセッション状態から候補を作成して返す
      */
     private void writeCurrentSuggestions(
             HttpServletResponse response,
@@ -274,7 +263,6 @@ public class SuggestServlet extends HttpServlet {
             throws IOException {
 
         String mode =(String) session.getAttribute(SESSION_MODE);
-
         Integer remainingMinutes = null;
 
         if ("TIME".equals(mode)) {
@@ -287,7 +275,7 @@ public class SuggestServlet extends HttpServlet {
             }
 
             /*
-             * 残り時間が5分以下なら提案を終了する。
+             * 残り時間が5分以下なら提案を終了
              */
             if (remainingMinutes <= PREPARE_MINUTES) {
 
@@ -307,7 +295,7 @@ public class SuggestServlet extends HttpServlet {
                 createSuggestions(userId, mode, remainingMinutes);
 
         /*
-         * 提案できる活動がない場合。
+         * 提案できる活動がない場合
          */
         if (suggestions.isEmpty()) {
 
@@ -348,7 +336,7 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 活動候補を取得し、スコアを計算する。
+     * 活動候補を取得し、スコアを計算
      */
     private List<ScoredActivity> createSuggestions(
             int userId,
@@ -356,7 +344,6 @@ public class SuggestServlet extends HttpServlet {
             Integer remainingMinutes) {
 
         ActivityDao activityDao = new ActivityDao();
-
         ActivityHistoryDao historyDao = new ActivityHistoryDao();
 
         List<Activity> activityList = activityDao.selectAll();
@@ -366,16 +353,13 @@ public class SuggestServlet extends HttpServlet {
         }
 
         /*
-         * 今日の開始時刻と終了時刻。
+         * 今日の開始時刻と終了時刻
          */
         LocalDate today = LocalDate.now();
-
         LocalDateTime startAt = today.atStartOfDay();
-
         LocalDateTime endAt = startAt.plusDays(1);
 
         List<RecordHistoryDto> todayHistoryList =historyDao.findRecordHistoryList(userId, startAt, endAt);
-
         Set<Integer> doneTodayActivityIds = new HashSet<>();
 
         int houseworkCount = 0;
@@ -385,15 +369,11 @@ public class SuggestServlet extends HttpServlet {
 
             doneTodayActivityIds.add(history.getActivityId());
 
-            if ("HOUSEWORK".equals(
-                    history.getCategory())) {
-
+            if ("HOUSEWORK".equals(history.getCategory())) {
                 houseworkCount++;
             }
 
-            if ("CHILD".equals(
-                    history.getCategory())) {
-
+            if ("CHILD".equals(history.getCategory())) {
                 childCount++;
             }
         }
@@ -406,8 +386,7 @@ public class SuggestServlet extends HttpServlet {
 
         for (Activity activity : activityList) {
 
-            int score =
-                    calculateScore(
+            int score = calculateScore(
                             activity,
                             doneTodayActivityIds,
                             overworkLevel,
@@ -415,7 +394,7 @@ public class SuggestServlet extends HttpServlet {
                             currentTime,
                             mode,
                             remainingMinutes
-                    );
+            				);
 
             if (score == EXCLUDED_SCORE) {
                 continue;
@@ -430,52 +409,38 @@ public class SuggestServlet extends HttpServlet {
         }
 
         /*
-         * スコアが高い順。
-         * 同点の場合は所要時間が短い順。
-         * さらに同点の場合はCHILDを優先する。
+         * スコアが高い順
+         * 同点の場合は所要時間が短い順
+         * さらに同点の場合はCHILDを優先
          */
-        scoredList.sort(
-        		new Comparator<ScoredActivity>() {
+        scoredList.sort(new Comparator<ScoredActivity>() {
 
                     @Override
                     public int compare(
                             ScoredActivity first,
                             ScoredActivity second) {
 
-                        int scoreCompare =
-                                Integer.compare(
-                                        second.score,
-                                        first.score
-                                );
+                        int scoreCompare = Integer.compare(second.score, first.score);
 
                         if (scoreCompare != 0) {
                             return scoreCompare;
                         }
 
-                        int timeCompare =
-                                Integer.compare(
-                                        first.activity.getRequiredTime(),
-                                        second.activity.getRequiredTime()
-                                );
+                        int timeCompare = Integer.compare(first.activity.getRequiredTime(), second.activity.getRequiredTime());
 
                         if (timeCompare != 0) {
                             return timeCompare;
                         }
 
-                        boolean firstChild =
-                                "CHILD".equals(first.activity.getCategory()
-                                );
+                        boolean firstChild = "CHILD".equals(first.activity.getCategory());
 
-                        boolean secondChild =
-                                "CHILD".equals(second.activity.getCategory()
-                                );
+                        boolean secondChild = "CHILD".equals(second.activity.getCategory());
 
                         if (firstChild != secondChild) {
                             return firstChild ? -1 : 1;
                         }
 
-                        return Integer.compare(first.activity.getId(), second.activity.getId()
-                        );
+                        return Integer.compare(first.activity.getId(), second.activity.getId());
                     }
                 }
         );
@@ -484,7 +449,7 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 活動1件のスコアを計算する。
+     * 活動1件のスコアを計算
      */
     private int calculateScore(
             Activity activity,
@@ -496,16 +461,15 @@ public class SuggestServlet extends HttpServlet {
             Integer remainingMinutes) {
 
         /*
-         * 今日実施済みなら除外する。
+         * 今日実施済みなら除外
          */
-        if (doneTodayActivityIds.contains(
-                activity.getId())) {
+        if (doneTodayActivityIds.contains(activity.getId())) {
 
             return EXCLUDED_SCORE;
         }
 
         /*
-         * FINISHは21時以降だけ提案する。
+         * FINISHは21時以降だけ提案
          */
         if ("FINISH".equals(
                 activity.getCategory())) {
@@ -518,8 +482,7 @@ public class SuggestServlet extends HttpServlet {
         }
 
         /*
-         * TIMEモードでは、
-         * 最後の5分を準備時間として確保する。
+         * TIMEモードでは、最後の5分を準備時間として確保
          */
         if ("TIME".equals(mode)) {
 
@@ -537,7 +500,7 @@ public class SuggestServlet extends HttpServlet {
         }
 
         /*
-         * 騒音活動は17時以上20時未満だけ許可する。
+         * 騒音活動は9時以上18時未満だけ許可
          */
         if (activity.getIsNoise() && !isNoiseAllowedTime(currentTime)) {
 
@@ -547,30 +510,30 @@ public class SuggestServlet extends HttpServlet {
         int score = activity.getBasePoint();
 
         /*
-         * 頑張りすぎ防止補正。
+         * 頑張りすぎ防止補正
          */
         score += calculateOverworkPoint(activity, overworkLevel);
 
         /*
-         * 子供時間補正。
+         * 子供時間補正
          */
         score += calculateChildPoint(activity, childCount);
 
         /*
-         * 時間帯補正。
+         * 時間帯補正
          */
         score += calculateTimeZonePoint(activity, currentTime);
 
         /*
          * ゴミの日補正と家事フロー補正は、
-         * GarbageDaoとフロー管理が完成後に追加する。
+         * GarbageDaoとフロー管理が完成後に追加
          */
 
         return score;
     }
 
     /**
-     * 頑張りすぎレベルを判定する。
+     * 頑張りすぎレベルを判定
      */
     private int calculateOverworkLevel(
             int houseworkCount) {
@@ -587,7 +550,7 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 頑張りすぎ防止ポイント。
+     * 頑張りすぎ防止ポイント
      */
     private int calculateOverworkPoint(Activity activity, int overworkLevel) {
 
@@ -627,7 +590,7 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 今日の子供時間補正。
+     * 今日の子供時間補正
      */
     private int calculateChildPoint(Activity activity, int childCount) {
 
@@ -654,7 +617,7 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 時間帯補正。
+     * 時間帯補正
      */
     private int calculateTimeZonePoint(
             Activity activity,
@@ -663,27 +626,19 @@ public class SuggestServlet extends HttpServlet {
         String category = activity.getCategory();
 
         /*
-         * 昼：10時以上15時未満。
+         * 昼：10時以上15時未満
          */
-        if (isBetween(
-                currentTime,
-                LocalTime.of(10, 0),
-                LocalTime.of(15, 0))) {
-
-            if ("HOUSEWORK".equals(category)
-                    || "REST".equals(category)) {
-
+        if (isBetween(currentTime, LocalTime.of(10, 0), LocalTime.of(15, 0))) {
+        	
+            if ("HOUSEWORK".equals(category) || "REST".equals(category)) {
                 return 10;
             }
         }
 
         /*
-         * 夕方：15時以上18時未満。
+         * 夕方：15時以上18時未満
          */
-        if (isBetween(
-                currentTime,
-                LocalTime.of(15, 0),
-                LocalTime.of(18, 0))) {
+        if (isBetween(currentTime, LocalTime.of(15, 0), LocalTime.of(18, 0))) {
 
             if ("CHILD".equals(category)) {
                 return 10;
@@ -696,7 +651,7 @@ public class SuggestServlet extends HttpServlet {
         }
 
         /*
-         * 夜：18時以上21時未満。
+         * 夜：18時以上21時未満
          */
         if (isBetween(
                 currentTime,
@@ -714,7 +669,7 @@ public class SuggestServlet extends HttpServlet {
         }
 
         /*
-         * 21時以上または5時未満。
+         * 21時以上または5時未満
          */
         if (isFinishTime(currentTime)) {
 
@@ -728,20 +683,17 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 騒音活動を提案できる時間か判定する。
+     * 騒音活動を提案できる時間か判定
      */
     private boolean isNoiseAllowedTime(
             LocalTime currentTime) {
 
-        return isBetween(
-                currentTime,
-                LocalTime.of(17, 0),
-                LocalTime.of(20, 0)
+        return isBetween(currentTime, LocalTime.of(9, 0), LocalTime.of(18, 0)
         );
     }
 
     /**
-     * FINISHを表示する時間か判定する。
+     * FINISHを表示する時間か判定
      */
     private boolean isFinishTime(LocalTime currentTime) {
 
@@ -749,7 +701,7 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * start以上、end未満か判定する。
+     * start以上、end未満か判定
      */
     private boolean isBetween(
             LocalTime value,
@@ -762,9 +714,7 @@ public class SuggestServlet extends HttpServlet {
     /**
      * IDから活動を検索する。
      */
-    private Activity findActivityById(
-            List<Activity> activityList,
-            int activityId) {
+    private Activity findActivityById(List<Activity> activityList, int activityId) {
 
         if (activityList == null) {
             return null;
@@ -781,9 +731,7 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 提案結果をJSONで返す。
-     *
-     * Gsonは使用しない。
+     * 提案結果をJSONで返却
      */
     private void writeSuggestionResponse(
             HttpServletResponse response,
@@ -794,7 +742,7 @@ public class SuggestServlet extends HttpServlet {
             List<ScoredActivity> suggestions)
             throws IOException {
 
-        StringBuilder json =new StringBuilder();
+        StringBuilder json = new StringBuilder();
 
         json.append("{");
 
@@ -830,15 +778,11 @@ public class SuggestServlet extends HttpServlet {
 
         json.append("\"suggestions\":[");
 
-        for (int i = 0;
-                i < suggestions.size();
-                i++) {
+        for (int i = 0; i < suggestions.size(); i++) {
+        	
+            ScoredActivity scored = suggestions.get(i);
 
-            ScoredActivity scored =
-                    suggestions.get(i);
-
-            Activity activity =
-                    scored.activity;
+            Activity activity = scored.activity;
 
             if (i > 0) {
                 json.append(",");
@@ -888,23 +832,17 @@ public class SuggestServlet extends HttpServlet {
         json.append("]");
         json.append("}");
 
-        response.setStatus(
-                HttpServletResponse.SC_OK
-        );
+        response.setStatus(HttpServletResponse.SC_OK);
 
-        response.getWriter().write(
-                json.toString()
-        );
+        response.getWriter().write(json.toString());
     }
 
     /**
-     * 活動ごとの表示メッセージを作る。
+     * 活動ごとの表示メッセージを作る
      */
-    private String createActivityMessage(
-            Activity activity) {
+    private String createActivityMessage(Activity activity) {
 
-        String category =
-                activity.getCategory();
+        String category = activity.getCategory();
 
         if ("REST".equals(category)) {
 
@@ -929,10 +867,9 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * JSONで使用する文字列をエスケープする。
+     * JSONで使用する文字列をエスケープ
      */
-    private String escapeJson(
-            String value) {
+    private String escapeJson(String value) {
 
         if (value == null) {
             return "";
@@ -947,22 +884,18 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * JSONレスポンスを設定する。
+     * JSONレスポンスを設定
      */
     private void setJsonResponse(
             HttpServletResponse response) {
 
-        response.setContentType(
-                "application/json; charset=UTF-8"
-        );
+        response.setContentType("application/json; charset=UTF-8");
 
-        response.setCharacterEncoding(
-                "UTF-8"
-        );
+        response.setCharacterEncoding("UTF-8");
     }
 
     /**
-     * エラーをJSONで返す。
+     * エラーをJSONで返却
      */
     private void writeError(
             HttpServletResponse response,
@@ -984,7 +917,7 @@ public class SuggestServlet extends HttpServlet {
     }
 
     /**
-     * 活動と計算後スコアを保持する内部クラス。
+     * 活動と計算後スコアを保持する内部クラス
      */
     private static class ScoredActivity {
 
