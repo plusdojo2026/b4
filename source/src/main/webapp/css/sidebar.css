@@ -65,7 +65,7 @@ ul {
   margin: 15px;
   width: 60px;
   top: 45px; 
-  left: 180px;
+  left: 230px;
   position: fixed;
   /*   transition: left 0.3s; ← サイドバーと同じ動き */
 }
