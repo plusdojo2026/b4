@@ -7,8 +7,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import dao.GarbageDao;
 import dao.usersettingDao;
+import dto.LoginUser;
 
 @WebServlet("/SettingServlet")
 public class SettingServlet extends HttpServlet {
@@ -43,19 +46,27 @@ public class SettingServlet extends HttpServlet {
         System.out.println("--- ユーザー設定 doPost 開始 ---");
         System.out.println("押されたボタン: " + action);
         
+     // アイコンテスト用 完成版では消す
+     		LoginUser loginUser = new LoginUser(1,"ueda","password");
+     		HttpSession session = request.getSession();
+     		session.setAttribute("idnamepw", loginUser);
+     		// ここまで
+    		int userId = loginUser.getUserId();
+
+        
         if ("profile".equals(action)) {
             // アイコン名を受け取る
             int iconId = Integer.parseInt(request.getParameter("iconName"));
             String userName = request.getParameter("userName");
             String childCountStr = request.getParameter("childCount");
-            
+                       
             System.out.println("[プロフィールデータ受信]");
             System.out.println("選択されたアイコン: " + iconId); // 
             System.out.println("ユーザー名: " + userName);
             System.out.println("子どもの人数: " + childCountStr);
             
             
-            //テスト用ではuser_idは「1」とす
+            //テスト用ではuser_idは「1」とする
             request.setAttribute("message", "プロフィールを保存しました。");
             usersettingDao udao = new usersettingDao();
             udao.update(iconId,1); //true or false	が戻り値なのでそれを利用する
@@ -66,11 +77,15 @@ public class SettingServlet extends HttpServlet {
             String garbageName = request.getParameter("garbage_name");
             String garbageDay = request.getParameter("garbage_day");
             
+            
+            
             System.out.println("[ゴミ捨てデータ受信]");
             System.out.println("ゴミ分類名: " + garbageName);
             System.out.println("ゴミ捨て曜日: " + garbageDay);
             
             request.setAttribute("message", "ゴミ捨て設定を保存しました。");
+            GarbageDao gdao = new GarbageDao();
+            gdao.update(userId,1); 
         }
         
         System.out.println("--------------------------------");
