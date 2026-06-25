@@ -77,16 +77,13 @@ public class ActivityDao {
 
         try (
             Connection conn = getConnection();
-
             PreparedStatement pstmt =conn.prepareStatement(sql);
-
             ResultSet rs = pstmt.executeQuery()
         ) {
 
             while (rs.next()) {
 
                 Activity activity = createActivityFromResultSet(rs);
-
                 activityList.add(activity);
             }
 
