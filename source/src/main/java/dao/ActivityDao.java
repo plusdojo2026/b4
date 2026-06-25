@@ -228,65 +228,24 @@ public class ActivityDao {
             ResultSet rs)
             throws SQLException {
 
-        Activity activity =
-                new Activity();
+        Activity activity = new Activity();
 
-        activity.setId(
-                rs.getInt("id")
-        );
-
-        activity.setCategory(
-                rs.getString("category")
-        );
-
-        activity.setActivityName(
-                rs.getString("activity_name")
-        );
-
-        activity.setRequiredTime(
-                rs.getInt("required_time")
-        );
-
-        activity.setBasePoint(
-                rs.getInt("base_point")
-        );
-
-        /*
-         * MySQLのTINYINT(1)をbooleanとして取得する。
-         * NULLの場合もfalseになる。
-         */
-        activity.setIsCanWithChild(
-                rs.getBoolean("can_with_child")
-        );
-
-        activity.setIsNoise(
-                rs.getBoolean("is_noise")
-        );
-
-        activity.setGarbage(
-                rs.getBoolean("is_garbage")
-        );
-
-        activity.setFlowGroup(
-                rs.getString("flow_group")
-        );
-
-        activity.setFlowStep(
-                getNullableInteger(
-                        rs,
-                        "flow_step"
-                )
-        );
-
-        activity.setGarbageActionType(
-                rs.getString("garbage_action_type")
-        );
+        activity.setId(rs.getInt("id"));
+        activity.setCategory(rs.getString("category"));
+        activity.setActivityName(rs.getString("activity_name"));
+        activity.setRequiredTime(rs.getInt("required_time"));
+        activity.setBasePoint(rs.getInt("base_point"));
+        activity.setIsCanWithChild(rs.getBoolean("can_with_child"));
+        activity.setIsNoise(rs.getBoolean("is_noise"));
+        activity.setIsGarbage(rs.getBoolean("is_garbage"));
+        activity.setFlowGroup(rs.getString("flow_group"));
+        activity.setFlowStep(getNullableInteger(rs, "flow_step"));
+        activity.setGarbageActionType(rs.getString("garbage_action_type"));
 
         /*
          * wait_minutesがNULLの場合は0として扱う。
          */
-        int waitMinutes =
-                rs.getInt("wait_minutes");
+        int waitMinutes = rs.getInt("wait_minutes");
 
         if (rs.wasNull()) {
             waitMinutes = 0;
@@ -315,8 +274,7 @@ public class ActivityDao {
             String columnName)
             throws SQLException {
 
-        int value =
-                rs.getInt(columnName);
+        int value = rs.getInt(columnName);
 
         if (rs.wasNull()) {
             return null;
