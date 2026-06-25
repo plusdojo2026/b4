@@ -285,17 +285,26 @@ function decideHw() {
 //	addMessage("終わったら教えてね！", false);
 	
 	fetch("SuggestServlet", {
-		method:"POST"
+		method: "POST",
+		headers: {
+			"Content-Type":
+				"application/x-www-form-urlencoded"
+		},
+		body:
+			"action=start" +
+			"&mode=TIME" +
+			"&time=" + encodeURIComponent(time)
 	})
-    .then(response => response.json())
-    .then(data => {
+		.then(response => response.json())
+		.then(data => {
 
-        suggestionViewState = data;
+			suggestionViewState = data;
+			const housework = suggestionViewState.suggestions[0];
 
-        const housework = suggestionViewState.suggestions[suggestionViewState.currentIndex];
+			addMessage(housework.message, false);
+			addMessage("終わったら教えてね！", false);
+		});
 
-        addMessage(housework.message, false);
-    });
 
 	suggestionButtons();
 	state = 6;
@@ -447,7 +456,7 @@ function answer(value) {
 			} else {
 				const btn2 = document.getElementById("buttons1");
 				if (btn2) btn2.remove();
-				//addMessage("おまかせだね！", false);
+				addMessage("おまかせだね！", false);
 				//addMessage("この家事をやろう！", false);
 				//suggestionButtons();
 				//state = 5;
