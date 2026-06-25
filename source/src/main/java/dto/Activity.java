@@ -81,7 +81,7 @@ public class Activity implements Serializable {
 		return isgarbage;
 	}
 	public void setIsGarbage(boolean isgarbage) {
-		this.isgarbage = garbage;
+		this.isgarbage = isgarbage;
 	}
 	
 	//家事の流れ
