@@ -193,48 +193,55 @@ function decideTime() {
 		;
 
 	// ここで家事提案処理
-	suggestionViewState = {
-		currentIndex: 0,
-		status:"PREPARE",
-		remainingMinutes:5,
+//	suggestionViewState = {
+//		currentIndex: 0,
+//		status:"PREPARE",
+//		remainingMinutes:5,
+//	
+//
+//		suggestions: [
+//			{
+//				activityId: 1,
+//				category: "HOUSEWORK",
+//				title: "テーブルを拭く",
+//				requiredTime: 5,
+//				message: "5分だけテーブルを整えましょう"
+//			},
+//			{
+//				activityId: 8,
+//				category: "REST",
+//				title: "暖かい飲み物を飲む",
+//				requiredTime: 10,
+//				message: "少し休憩しましょう"
+//			}
+//		]
+//	};
+//
+//	const housework = suggestionViewState.suggestions[
+//		suggestionViewState.currentIndex
+//	];
+//	addMessage("まずは" + housework.title + "をやろう！", false
+//	);
+//	addMessage("終わったら教えてね！", false);
 	
+	fetch("SuggestServlet", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded"
+		},
+		body: "action=start"
+	})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
 
-		suggestions: [
-			{
-				activityId: 1,
-				category: "HOUSEWORK",
-				title: "テーブルを拭く",
-				requiredTime: 5,
-				message: "5分だけテーブルを整えましょう"
-			},
-			{
-				activityId: 8,
-				category: "REST",
-				title: "暖かい飲み物を飲む",
-				requiredTime: 10,
-				message: "少し休憩しましょう"
-			}
-		]
-	};
+			suggestionViewState = data;
 
-	const housework = suggestionViewState.suggestions[
-		suggestionViewState.currentIndex
-	];
-	addMessage("まずは" + housework.title + "をやろう！", false
-	);
-	addMessage("終わったら教えてね！", false);
-	
-//	fetch("SuggestServlet", ...)
-//    .then(response => response.json())
-//    .then(data => {
-//
-//        suggestionViewState = data;
-//
-//        const housework = suggestionViewState.suggestions[suggestionViewState.currentIndex];
-//
-//        addMessage("まずは" + housework.title + "をやろう！", false);
-//        addMessage("終わったら教えてね！", false);
-//    });
+			const housework = suggestionViewState.suggestions[0];
+
+			addMessage(housework.message, false);
+			addMessage("終わったら教えてね！", false);
+		});
 
 	suggestionButtons();
 	state = 5;
@@ -244,47 +251,49 @@ function decideTime() {
 
 //おまかせの処理
 function decideHw() {
-	suggestionViewState = {
-		currentIndex: 0,
-		status:"PREPARE",
-		remainingMinutes:5,
-
-		suggestions: [
-			{
-				activityId: 1,
-				category: "HOUSEWORK",
-				title: "テーブルを拭く",
-				requiredTime: 5,
-				message: "5分だけテーブルを整えましょう"
-			},
-			{
-				activityId: 8,
-				category: "REST",
-				title: "温かい飲み物を飲む",
-				requiredTime: 10,
-				message: "少し休憩しましょう"
-			}
-		]
-	}
-
-	const housework = suggestionViewState.suggestions[
-		suggestionViewState.currentIndex
-	];
-
-	addMessage(housework.message, false
-	);
-	addMessage("終わったら教えてね！", false);
+//	suggestionViewState = {
+//		currentIndex: 0,
+//		status:"PREPARE",
+//		remainingMinutes:5,
+//
+//		suggestions: [
+//			{
+//				activityId: 1,
+//				category: "HOUSEWORK",
+//				title: "テーブルを拭く",
+//				requiredTime: 5,
+//				message: "5分だけテーブルを整えましょう"
+//			},
+//			{
+//				activityId: 8,
+//				category: "REST",
+//				title: "温かい飲み物を飲む",
+//				requiredTime: 10,
+//				message: "少し休憩しましょう"
+//			}
+//		]
+//	}
+//
+//	const housework = suggestionViewState.suggestions[
+//		suggestionViewState.currentIndex
+//	];
+//
+//	addMessage(housework.message, false
+//	);
+//	addMessage("終わったら教えてね！", false);
 	
-//	fetch("SuggestServlet", ...)
-//    .then(response => response.json())
-//    .then(data => {
-//
-//        suggestionViewState = data;
-//
-//        const housework = suggestionViewState.suggestions[suggestionViewState.currentIndex];
-//
-//        addMessage("まずは" + housework.title + "をやろう！", false);
-//    });
+	fetch("SuggestServlet", {
+		method:"POST"
+	})
+    .then(response => response.json())
+    .then(data => {
+
+        suggestionViewState = data;
+
+        const housework = suggestionViewState.suggestions[suggestionViewState.currentIndex];
+
+        addMessage(housework.message, false);
+    });
 
 	suggestionButtons();
 	state = 6;
