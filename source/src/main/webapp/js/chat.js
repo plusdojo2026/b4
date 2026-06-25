@@ -227,16 +227,18 @@ function decideTime() {
 	fetch("SuggestServlet", {
 		method: "POST",
 		headers: {
-			"Content-Type": "application/x-www-form-urlencoded"
+			"Content-Type":
+				"application/x-www-form-urlencoded"
 		},
-		body: "action=start"
+		body:
+			"action=start" +
+			"&mode=TIME" +
+			"&time=" + encodeURIComponent(time)
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
 
 			suggestionViewState = data;
-
 			const housework = suggestionViewState.suggestions[0];
 
 			addMessage(housework.message, false);
