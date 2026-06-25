@@ -3,41 +3,52 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ユーザー設定</title>
 <link rel="stylesheet" href="css/setting.css">
 <script src="js/setting.js" defer></script>
 </head>
 <body>
 
-    <div id="sidebar" class="sidebar">
-        <div class="sidebar-user">
-            <div class="sidebar-user-icon">
-                <img src="img/icon1.png" alt="ユーザーアイコン">
-            </div>
-            <div class="sidebar-username">${user.userName}</div>
-        </div>
+<!--     <div id="sidebar" class="sidebar"> -->
+<!--         <div class="sidebar-user"> -->
+<!--             <div class="sidebar-user-icon"> -->
+<!--                 <img src="img/icon1.png" alt="ユーザーアイコン"> -->
+<!--             </div> -->
+<%--             <div class="sidebar-username">${user.userName}</div> --%>
+<!--         </div> -->
 
-        <div class="sidebar-menu">
-            <button type="button" class="menu-item">ユーザー設定 <span class="arrow">＞</span></button>
-            <button type="button" class="menu-item">記録一覧 <span class="arrow">＞</span></button>
-            <button type="button" class="menu-item">リマインダー <span class="arrow">＞</span></button>
-        </div>
-    </div>
+<!--         <div class="sidebar-menu"> -->
+<!--             <button type="button" class="menu-item">ユーザー設定 <span class="arrow">＞</span></button> -->
+<!--             <button type="button" class="menu-item">記録一覧 <span class="arrow">＞</span></button> -->
+<!--             <button type="button" class="menu-item">リマインダー <span class="arrow">＞</span></button> -->
+<!--         </div> -->
+<!--     </div> -->
 
-    <div id="overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+<!--     <div id="overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div> -->
 
-    <div class="header">
-        <div class="menu-btn" onclick="toggleSidebar()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+<header class="header">
+<jsp:include page="sidebar.jspf" flush="true|false" />
+    <div class="title">
+
+<!-- サイドバー -->
+<%-- <jsp:include page="sidebar.jspf" flush="true|false" /> --%>
+<img src="/b4/img/sidebar.png" id="toggleBtn">
+<link rel="stylesheet" href="/b4/css/sidebar.css">
+<script src="/b4/js/sidebar.js"> </script>
+
+<!--         <div class="menu-btn" onclick="toggleSidebar()"> -->
+<!--             <span></span> -->
+<!--             <span></span> -->
+<!--             <span></span> -->
+<!--         </div> -->
         <h1 class="header-title">ここる</h1>
         
-        <a href="LogoutServlet" class="header-logout">
-            <img src="img/logout.png" alt="ログアウト">
+        <a href="LogoutServlet" id="logout" class="header-logout">
+            <img src="img/logout.png" class="logout-icon" alt="ログアウト">
         </a>
     </div>
+  </header>
 
     <div class="container">
 
