@@ -154,27 +154,34 @@ function decideTime() {
 
 		suggestions: [
 			{
-				activityId: 1,
+				activityId: 10,
 				category: "HOUSEWORK",
-				title: "テーブルを拭く",
-				requiredTime: 5,
-				message: "5分だけテーブルを整えましょう"
+				title: "洗濯物をたたむ",
+				requiredTime: 8,
+				message: "洗濯物をたたみましょう"
 			},
 			{
-				activityId: 8,
+				activityId: 2,
 				category: "REST",
-				title: "暖かい飲み物を飲む",
-				requiredTime: 10,
-				message: "少し休憩しましょう"
+				title: "食器洗い",
+				requiredTime: 8,
+				message: "食器洗いをしましょう"
+			},
+			{
+				activityId: 20,
+				category: "REST",
+				title: "トイレ掃除",
+				requiredTime: 7,
+				message: "トイレを軽く掃除しましょう"
 			}
+			
 		]
 	};
 
 	const housework = suggestionViewState.suggestions[
 		suggestionViewState.currentIndex
 	];
-	addMessage("まずは" + housework.title + "をやろう！", false
-	);
+	addMessage(housework.message, false);
 	addMessage("終わったら教えてね！", false);
 
 	suggestionButtons();
@@ -371,7 +378,7 @@ function answer(value) {
 				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length){
 					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
 
-					addMessage("じゃあ、" + nextwork.title + "はどう？", false);
+					addMessage(nextwork.message, false);
 					addMessage("終わったら教えてね！", false);
 					suggestionButtons();
 					state = 5;
@@ -445,7 +452,7 @@ function answer(value) {
 
 					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
 
-					addMessage("次は" + nextwork.title + "はどう？", false);
+					addMessage(nextwork.message, false);
 					addMessage("終わったら教えてね！", false);
 					suggestionButtons();
 					state = 6;
