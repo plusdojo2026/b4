@@ -6,122 +6,95 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import dto.UserSetting;
-
 public class usersettingDao {
-    private final String URL = "jdbc:mysql://localhost/your_db_name";
+    private final String URL = "jdbc:mysql://localhost:3306/b4?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true";
     private final String USER = "your_user";
     private final String PASS = "your_password";
 
-    // 保存用
-    public void save(UserSetting user) {
-        String sql = "UPDATE user_profiles SET icon_name=?, user_name=?, child_count=?, garbage_name=?, garbage_day=? WHERE id=1";
-        
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, user.getIconName());
-            ps.setString(2, user.getUserName());
-            ps.setInt(3, user.getChildCount());
-            ps.setString(4, user.getGarbageName());
-            ps.setString(5, user.getGarbageDay());
-            
-            int affectedRows = ps.executeUpdate();
-            
-            if (affectedRows == 0) {
-                insertNewRecord(user);
-            }
-        } catch (Exception e) { e.printStackTrace(); }
-    }
+    // ユーザー設定がすでに存在するか確認
+    public boolean userSearch(int user_id) {
+        Connection conn = null;
+        boolean settingResult = false;
 
-    // 新規追加
-    private void insertNewRecord(UserSetting user) {
-        String sql = "INSERT INTO user_profiles (id, icon_name, user_name, child_count, garbage_name, garbage_day) VALUES (1, ?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, user.getIconName());
-            ps.setString(2, user.getUserName());
-            ps.setInt(3, user.getChildCount());
-            ps.setString(4, user.getGarbageName());
-            ps.setString(5, user.getGarbageDay());
-            ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
-    }
-    
-    // 取得用
-    public UserSetting find() {
-        UserSetting user = new UserSetting();
-                String sql = "SELECT * FROM user_profiles WHERE id=1";
-        
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(URL, USER, PASS);
+
+            String sql = "SELECT count(*) FROM user_settings WHERE user_id=?";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, user_id);
+            
+            ResultSet rs = pStmt.executeQuery();
             if (rs.next()) {
-                user.setIconName(rs.getString("icon_name"));
-                user.setUserName(rs.getString("user_name"));
-                user.setChildCount(rs.getInt("child_count"));
-                user.setGarbageName(rs.getString("garbage_name"));
-                user.setGarbageDay(rs.getString("garbage_day"));
+                if (rs.getInt("count(*)") >= 1) {
+                    settingResult = true;
+                }
             }
-        } catch (Exception e) { e.printStackTrace(); }
-        return user;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+        return settingResult;
     }
-    
-    
-    //アイコン追加用メソッド
-    public boolean update(int icon_id,int user_id) {
-		Connection conn = null;
-		boolean result = false;
 
-		try {
-			// JDBCドライバを読み込む
-			Class.forName("com.mysql.cj.jdbc.Driver");
+    // 初回登録用
+    public boolean insertSetting(int user_id, int icon_id) {
+        Connection conn = null;
+        boolean result = false;
 
-			// データベースに接続する
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?"
-			        + "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true", // ★末尾に「&allowPublicKeyRetrieval=true」を追記
-			        "root", "Aoisql");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(URL, USER, PASS);
 
-			// SQL文を準備する
-			String sql = "UPDATE user_settings SET icon_id=? WHERE user_id=?";
-			PreparedStatement pStmt = conn.prepareStatement(sql);
+            String sql = "INSERT INTO user_settings (user_id, icon_id) VALUES (?, ?)";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, user_id);
+            pStmt.setInt(2, icon_id);
 
-			// SQL文を完成させる
-			if (icon_id != 0) {
-				pStmt.setInt(1, icon_id);
-			} else {
-				pStmt.setInt(1, 0);
-			}
-			if (user_id != 0) {
-				pStmt.setInt(2, user_id);
-			} else {
-				pStmt.setInt(2, 0);
-			}
-			
+            if (pStmt.executeUpdate() == 1) {
+                result = true;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+        return result;
+    }
 
+    // 更新用
+    public boolean updateSetting(int user_id, int icon_id) {
+        Connection conn = null;
+        boolean result = false;
 
-			// SQL文を実行する
-			if (pStmt.executeUpdate() == 1) {
-				result = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			// データベースを切断
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(URL, USER, PASS);
 
-		// 結果を返す
-		return result;
-	}
-    
-    
-    
+            String sql = "UPDATE user_settings SET icon_id=? WHERE user_id=?";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, icon_id);
+            pStmt.setInt(2, user_id);
+
+            if (pStmt.executeUpdate() == 1) {
+                result = true;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+        return result;
+    }
+
+    public boolean update(int icon_id, int user_id) {
+        return updateSetting(user_id, icon_id);
+    }
 }
