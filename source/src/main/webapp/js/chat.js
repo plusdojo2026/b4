@@ -394,7 +394,7 @@ function answer(value) {
 				console.log("完了した活動ID:", currentWork.activityId);
 				
 				//reportServletに通信する
-				fetch("SuggestServlet", {
+				fetch("ReportServlet", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/x-www-form-urlencoded"
@@ -467,7 +467,7 @@ function answer(value) {
 				console.log("完了した活動ID:", currentWork.activityId);
 
 				//reportServletに通信する
-				fetch("ChatServlet", {
+				fetch("ReportServlet", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/x-www-form-urlencoded"
