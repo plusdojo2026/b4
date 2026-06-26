@@ -46,14 +46,16 @@ ul {
   color: white;
   position: fixed;
   top: 0;
-  left: -250px;
   transition: left 0.3s;
   margin-top: 120px;
-  z-index: 2000;
+  z-index: 0;
+  transform: translateX(-300%);
+  transition: transform 0.3s ease;
 }
 
 .toggle-sidebar.active {
-  left: 0;
+    transform: translateX(0);
+    z-index: 2000;
 }
 
 .toggle-main {
@@ -62,12 +64,20 @@ ul {
 }
 
 #toggleBtn {
-  margin: 15px;
-  width: 60px;
-  top: 45px; 
-  left: 370px;
-  position: fixed;
+/*   margin: 15px; */
+/*   width: 60px; */
+/*   top: 45px;  */
+/*   left: 370px; */
+/*   position: fixed; */
   /*   transition: left 0.3s; ← サイドバーと同じ動き */
+  
+  margin: 15px;
+    width: 60px;
+    left: 40px;
+    position: absolute;
+    top: 80px;
+    transform: translateY(-70%);
+    cursor: pointer;
 }
 
 /* #toggleBtn.active { */
@@ -81,7 +91,7 @@ ul {
 		margin-top: 70px;
 	}
 	#toggleBtn {
-		top: 10px;
+		top: 40px;
 		left: 10px;
 	}
 	

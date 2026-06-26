@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-<div class="page-frame">
 <div class="header">
 
 <!-- サイドバー --> 
@@ -45,6 +44,6 @@ String errorMessage = (String) request.getAttribute("errorMessage");
 </form>
 	<script src="/b4/js/login.js"> </script>
 	
-</div>
+
 </body>
 </html>

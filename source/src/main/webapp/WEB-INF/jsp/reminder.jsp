@@ -12,7 +12,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/reminder.css">
 </head>
+
 <body>
+
 <jsp:include page="sidebar.jspf" flush="true|false" />
 
 <header class="header">

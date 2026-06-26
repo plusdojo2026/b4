@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="/b4/css/chat.css">
 </head>
 <body>
-<div class="page-frame">
+
 <jsp:include page="sidebar.jspf" flush="true|false" />
 
 <header class="header">
@@ -194,6 +194,6 @@
     
     
     <script src="${pageContext.request.contextPath}/js/chat.js"> </script>
-</div>
+
 </body>
 </html>
