@@ -32,6 +32,7 @@ public class ActivityDao {
             "jdbc:mysql://localhost:3306/b4"
             + "?characterEncoding=UTF-8"
             + "&useSSL=false"
+            + "&allowPublicKeyRetrieval=true"
             + "&serverTimezone=Asia/Tokyo";
 
     private static final String DB_USER = "root"/*"b4"*/;

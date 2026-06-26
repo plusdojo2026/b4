@@ -15,9 +15,9 @@ import java.util.Map;
 import dto.RecordHistoryDto;
 
 /**
- * 活動履歴テーブルを操作するDAO。
+ * 活動履歴テーブルを操作するDAO
  *
- * 使用するテーブル：
+ * 使用テーブル：
  * ・activity_histories
  * ・activities
  *
@@ -40,13 +40,14 @@ public class ActivityHistoryDao {
 			"jdbc:mysql://localhost:3306/b4"
 			+ "?characterEncoding=UTF-8"
 			+ "&useSSL=false"
+			+ "&allowPublicKeyRetrieval=true"
 			+ "&serverTimezone=Asia/Tokyo";
 
 	private static final String DB_USER = "root"/*"b4"*/;
 	private static final String DB_PASSWORD = "password"/*"6vvRyvdGp4t4Cr3C"*/;
 
 	/**
-	 * DBへ接続する。
+	 * DBへ接続
 	 *
 	 * @return DB接続
 	 * @throws Exception JDBCドライバーの読込またはDB接続に失敗した場合
@@ -103,9 +104,9 @@ public class ActivityHistoryDao {
 	}
 
 	/**
-	 * 活動履歴を1件登録する。
+	 * 活動履歴を1件登録
 	 *
-	 * ReportServlet側でbooleanとして判定したい場合に使用する。
+	 * ReportServlet側でbooleanとして判定したい場合に使用
 	 *
 	 * @param userId ユーザーID
 	 * @param activityId 活動ID
@@ -116,9 +117,9 @@ public class ActivityHistoryDao {
 	}
 
 	/**
-	 * 複数の活動履歴を登録する。
+	 * 複数の活動履歴を登録
 	 *
-	 * 最初の「やったものを教えて」で複数の活動が選択された場合に使用する。
+	 * 最初の「やったものを教えて」で複数の活動が選択された場合に使用
 	 *
 	 * @param userId ユーザーID
 	 * @param activityIds 活動ID一覧
@@ -145,10 +146,10 @@ public class ActivityHistoryDao {
 	}
 
 	/**
-	 * 指定期間の活動履歴一覧を取得する。
+	 * 指定期間の活動履歴一覧を取得
 	 *
-	 * RecordDetailServletやSuggestServletから使用する。
-	 * startAt以上、endAt未満の履歴を新しい順で取得する。
+	 * RecordDetailServletやSuggestServletから使用
+	 * startAt以上、endAt未満の履歴を新しい順で取得
 	 *
 	 * @param userId ユーザーID
 	 * @param startAt 開始日時
@@ -199,14 +200,10 @@ public class ActivityHistoryDao {
 	}
 
 	/**
-	 * ユーザーが最後に実施した活動履歴を1件取得する。
+	 * ユーザーが最後に実施した活動履歴を1件取得
 	 *
-	 * SuggestServletで「直前に行った活動」による補正を行うときに使用する。
-	 *
-	 * 例：
-	 * ・直前が子供と一緒にできない家事なら、CHILDやRESTを優先する
-	 * ・直前の活動カテゴリーを確認する
-	 *
+	 * SuggestServletで「直前に行った活動」による補正を行うときに使用
+	 * 
 	 * @param userId ユーザーID
 	 * @return 最後の活動履歴。履歴がない場合はnull
 	 */
@@ -304,10 +301,6 @@ public class ActivityHistoryDao {
 	 * ・値：その活動を最後に実施した日時
 	 *
 	 * SuggestServletで全活動の「最後に実施してから何日経過したか」を判定するときに使用
-	 *
-	 * 例：
-	 * activityId=1 → 2026-06-20 10:30
-	 * activityId=2 → 2026-06-23 18:00
 	 *
 	 * 履歴が一度もない活動はMapに含まれない
 	 *

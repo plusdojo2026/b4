@@ -25,7 +25,7 @@ public class UserDao {
 						"b4", "6vvRyvdGp4t4Cr3C");
 				// ローカル環境
 						/*conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?"
-						+ "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
+						+ "characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
 						"root", "password");*/
 			
 				// SELECT文を準備する

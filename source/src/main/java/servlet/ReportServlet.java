@@ -53,8 +53,8 @@ public class ReportServlet extends HttpServlet {
         setJsonResponse(response);
 
         /*
-         * ChatServletで作られたセッションを取得する。
-         * falseを指定すると、セッションがない場合に新しく作成しない。
+         * ChatServletで作られたセッションを取得
+         * falseを指定すると、セッションがない場合に新しく作成しない
          */
         HttpSession session = request.getSession(false);
 
@@ -104,8 +104,7 @@ public class ReportServlet extends HttpServlet {
             if ("checkActivity".equals(action)) {
 
                 /*
-                 * 最初にユーザーが報告した、
-                 * 複数の活動を登録する。
+                 * 最初にユーザーが報告した複数の活動を登録する
                  */
                 registerCheckedActivities(
                         request,
@@ -116,7 +115,7 @@ public class ReportServlet extends HttpServlet {
             } else if ("complete".equals(action)) {
 
                 /*
-                 * 提案された活動の完了を1件登録する。
+                 * 提案された活動の完了を1件登録
                  */
                 registerCompletedActivity(
                         request,
@@ -159,7 +158,7 @@ public class ReportServlet extends HttpServlet {
     }
 
     /**
-     * 最初に選択された複数の活動を登録する。
+     * 最初に選択された複数の活動を登録
      */
     private void registerCheckedActivities(
             HttpServletRequest request,
@@ -168,8 +167,7 @@ public class ReportServlet extends HttpServlet {
             throws IOException {
 
         /*
-         * activityIdが複数送られてくるため、
-         * getParameterValues()を使用する。
+         * activityIdが複数送られてくるため、getParameterValues()を使用
          */
         String[] activityIdTexts = request.getParameterValues("activityId");
 

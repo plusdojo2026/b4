@@ -21,8 +21,13 @@ public class GarbageDao {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			// データベースに接続する
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?"
-					+ "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
+			conn = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/b4?"
+					+ "characterEncoding=utf8"
+					+ "&useSSL=false"
+					+ "&allowPublicKeyRetrieval=true"
+					+ "&serverTimezone=GMT%2B9"
+					+ "&rewriteBatchedStatements=true",
 					"root", "password");
 			
 			// SQL文を準備する
