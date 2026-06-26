@@ -1,6 +1,8 @@
 <!-- サイドバーの部品 -->
 
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
 <aside id="toggleSidebar" class="toggle-sidebar">
 
 <!-- <%-- <img src="${Iconlist.icon_path}" id="icon" style="display:none;" > --%> -->
