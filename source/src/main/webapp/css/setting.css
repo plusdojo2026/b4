@@ -81,7 +81,7 @@ body {
 
 html {
 	font-size: 16px;
-	font-family: "Zen Maru Gothic";
+	font-family: "Zen Maru Gothic", sans-serif;
 	background-color: #FBFAF7;
 }
 
@@ -89,6 +89,7 @@ body {
     margin: 0 0 0 0; /* マージンなし */
     padding: 0 0 0 0; /* パディングなし */
     font-size: 20px;
+    font-family: "Zen Maru Gothic", sans-serif;
     text-align: center;
 }
 
