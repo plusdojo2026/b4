@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 let state = 0;
 let remainTime = 0;
 let currentTaskTime = 0;
@@ -86,26 +82,6 @@ function reportButtons() {
 		document.getElementById("chatArea").scrollHeight;
 }
 
-//報告完了ボタン
-function reportCompleteButtons() {
-	const existing = document.getElementById("buttons2");
-	if (existing) existing.remove();
-
-	//家事やったかの選択ボタン
-	const div = document.createElement("div");
-	div.id = "buttons";
-
-	const report = document.createElement("button");
-	report.textContent = "報告する";
-	report.onclick = () => answer("○○と○○をやったよ！");
-
-	div.appendChild(report);
-	document.getElementById("chatArea").appendChild(div);
-
-	document.getElementById("chatArea").scrollTop =
-		document.getElementById("chatArea").scrollHeight;
-}
-
 
 
 //時間指定かおまかせか
@@ -137,14 +113,11 @@ function openModal() {
 	document.getElementById("modal")
 		.classList.remove("hidden");
 }
-
+//時間指定のポップアップを開く
 function openTimeModal() {
-	// const buttons1 = document.getElementById("buttons1");
-	// if (buttons1) buttons1.remove();
 	document.getElementById("timeModal")
 		.classList.remove("hidden");
 }
-
 
 function closeModal() {
 	document.getElementById("modal")
@@ -162,8 +135,6 @@ function decideTime() {
 	const btn2 = document.getElementById("buttons1");
 	if (btn2) btn2.remove();
 
-    //console.log("decideTime実行");
-
 	const time = document.getElementById("timeSelect").value;
    
 	
@@ -176,28 +147,10 @@ function decideTime() {
 
 	closeTimeModal();
 
-//	fetch("SuggestServlet", {
-//		method: "POST",
-//		headers: {
-//			"Content-Type": "application/x-www-form-urlencoded"
-//		},
-//		body: "action=decideTime&time=" + time
-//	})
-//		.then(response => response.text())
-//		.then(data => {
-//			console.log(data);
-//		})
-//		.catch(error => {
-//			console.error("エラー:", error);
-//		})
-//		;
 
 	// ここで家事提案処理
 	suggestionViewState = {
 		currentIndex: 0,
-//		status:"PREPARE",
-//		remainingMinutes:5,
-//	
 
 		suggestions: [
 			{
@@ -223,28 +176,7 @@ function decideTime() {
 	addMessage("まずは" + housework.title + "をやろう！", false
 	);
 	addMessage("終わったら教えてね！", false);
-	
-//	fetch("SuggestServlet", {
-//		method: "POST",
-//		headers: {
-//			"Content-Type":
-//				"application/x-www-form-urlencoded"
-//		},
-//		body:
-//			"action=start" +
-//			"&mode=TIME" +
-//			"&time=" + encodeURIComponent(time)
-//	})
-//		.then(response => response.json())
-//		.then(data => {
-//
-//			suggestionViewState = data;
-//			const housework = suggestionViewState.suggestions[0];
-//
-//			addMessage(housework.message, false);
-//			addMessage("終わったら教えてね！", false);
-//		});
-//
+
 	suggestionButtons();
 	state = 5;
 
@@ -253,10 +185,9 @@ function decideTime() {
 
 //おまかせの処理
 function decideHw() {
+		// ここで家事提案処理
 	suggestionViewState = {
 		currentIndex: 0,
-//		status:"PREPARE",
-//		remainingMinutes:5,
 
 		suggestions: [
 			{
@@ -269,12 +200,12 @@ function decideHw() {
 			{
 				activityId: 8,
 				category: "REST",
-				title: "温かい飲み物を飲む",
+				title: "暖かい飲み物を飲む",
 				requiredTime: 10,
 				message: "少し休憩しましょう"
 			}
 		]
-	}
+	};
 
 	const housework = suggestionViewState.suggestions[
 		suggestionViewState.currentIndex
@@ -283,26 +214,6 @@ function decideHw() {
 	addMessage(housework.message, false
 	);
 	addMessage("終わったら教えてね！", false);
-	
-//	fetch("SuggestServlet", {
-//		method: "POST",
-//		headers: {
-//			"Content-Type":
-//				"application/x-www-form-urlencoded"
-//		},
-//		body:
-//			"action=start" +
-//			"&mode=AUTO" 
-//	})
-//		.then(response => response.json())
-//		.then(data => {
-//
-//			suggestionViewState = data;
-//			const housework = suggestionViewState.suggestions[0];
-//
-//			addMessage(housework.message, false);
-//			addMessage("終わったら教えてね！", false);
-//		});
 
 
 	suggestionButtons();
@@ -321,13 +232,10 @@ function reportHw() {
 	const btn1 = document.getElementById("buttons");
 	if (btn1) btn1.remove();
 
-
-	//let result = [];
 	const activityIds = [];
     const activityNames = [];
 
 	checked.forEach(item => {
-		//result.push(item.value);
 		activityIds.push(item.value);
         activityNames.push(item.dataset.name);
 	});
@@ -341,10 +249,6 @@ function reportHw() {
 	const params = new URLSearchParams();
 
 	params.append("action", "checkActivity");
-
-//	result.forEach(activityId => {
-//		params.append("activityId", activityId);
-//	});
 
 	activityIds.forEach(activityId => {
 		params.append("activityId", activityId);
@@ -418,10 +322,6 @@ function answer(value) {
 	const buttons = document.getElementById("buttons");
 	if (buttons) buttons.remove();
 
-	// const buttons3 = document.getElementById("buttons3");
-	// if (buttons3) buttons.remove();
-	// const buttons5 = document.getElementById("buttons5");
-	// if (buttons5) buttons.remove();
 	addMessage(value, true);
 	switch (state) {
 		case 0: //家事をやったかの選択
@@ -456,21 +356,10 @@ function answer(value) {
 				const btn2 = document.getElementById("buttons1");
 				if (btn2) btn2.remove();
 				addMessage("おまかせだね！", false);
-				//addMessage("この家事をやろう！", false);
-				//suggestionButtons();
-				//state = 5;
 				decideHw();
 			}
 			break;
 
-		//case 4: //指定するボタン
-		//    if (value == "○分間で家事をする！") {
-		//        addMessage("○分間だね！", false);
-		//        addMessage("この家事をやろう！", false);
-		//        suggestionButtons();
-		//        state = 5;
-		//    }
-		//    break;
 
 		case 5: //時間指定の再提案と終わったよ
 			console.log(value);
@@ -526,7 +415,6 @@ function answer(value) {
 				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length) {
 					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
 
-                    //addMessage("残り時間は〇分だよ！", false);
 					addMessage("次は" + nextwork.message, false);
 					addMessage("終わったら教えてね！");
 					suggestionButtons();
