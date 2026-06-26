@@ -24,13 +24,18 @@ public class ActivityDao {
      * ActivityHistoryDaoなど、ほかのDAOと同じ内容に統一する。
      */
     private static final String JDBC_URL =
+    		// サーバー環境
+			/*"jdbc:mysql://localhost:3306/b4?"
+			+ "useSSL=false&allowPublicKeyRetrieval=true&server"
+			+ "Timezone=Asia/Tokyo&connectTimeout=30000";*/
+    		// ローカル環境
             "jdbc:mysql://localhost:3306/b4"
             + "?characterEncoding=UTF-8"
             + "&useSSL=false"
             + "&serverTimezone=Asia/Tokyo";
 
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "password";
+    private static final String DB_USER = "root"/*"b4"*/;
+    private static final String DB_PASSWORD = "password"/*"6vvRyvdGp4t4Cr3C"*/;
 
     /**
      * DB接続を取得する。

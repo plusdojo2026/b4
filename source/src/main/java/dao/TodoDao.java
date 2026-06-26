@@ -21,6 +21,10 @@ public class TodoDao {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 
 				// データベースに接続する
+				// サーバー環境
+				/*conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Tokyo&connectTimeout=30000",
+						"b4", "6vvRyvdGp4t4Cr3C");*/
+				// ローカル環境
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?"
 						+ "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
 						"root", "password");
