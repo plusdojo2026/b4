@@ -132,7 +132,7 @@
      * RecordDetailServlet から渡された記録一覧を取得
      *
      * request.getAttribute() の戻り値は Object 型のため、
-     * List<RecordHistoryDto> にキャストする必要あり。
+     * List<RecordHistoryDto> にキャストする必要あり
      *
      * 直接キャストすると警告が出る
      * → 一度 Object として受け取り、List かどうか確認
@@ -245,20 +245,24 @@
     <header class="record-header">
 
         <!-- サイドバー -->
-        <a href="#"
+<!--         <a href="#"
            class="header-icon sidebar-button"
            aria-label="サイドバーを開く">
-            <span></span>
-        </a>
+           
+        </a> -->
+        
+        <%-- <jsp:include page="sidebar.jspf" flush="true|false" /> --%>
 
         <h1 class="header-title">記録一覧</h1>
 
         <!--右上の戻るボタン。 現時点ではチャット画面へ戻す。-->
-        <a href="<%= contextPath %>/ChatServlet"
+<!--        <a href="
+<%=// contextPath %>
+/ChatServlet"
            class="header-icon exit-button"
            aria-label="ホームへ戻る">
-            <span></span>
         </a>
+-->  
 
     </header>
 

@@ -21,13 +21,7 @@
 }
 
 /*
-   body全体の基本設定。
-
-   background:
-   → アプリ全体をやわらかいミント系の背景にする。
-
-   font-family:
-   → Windows環境でも見やすい日本語フォントを指定。フォントは後で合わせる
+全体設定
 */
 body {
     margin: 0;
@@ -46,10 +40,6 @@ a {
    2. 画面全体の枠
 ========================================================= */
 
-/*
-   background-color:
-   → 中央のアプリ画面部分を白っぽい色に
-*/
 .page-frame {
     max-width: 430px;
     min-height: 100vh;
@@ -72,11 +62,6 @@ a {
    中央：記録一覧タイトル
    右：チャット画面へ戻るボタン
 
-   display: flex;
-   → 横並びにする。
-
-   justify-content: space-between;
-   → 左右にアイコン、中央にタイトルを置く。
 */
 .record-header {
     height: 64px;
@@ -89,7 +74,7 @@ a {
 }
 
 /*
-   ヘッダー中央のタイトル。
+   ヘッダー中央のタイトル
 */
 .header-title {
     margin: 0;
@@ -100,9 +85,9 @@ a {
 }
 
 /*
-   ヘッダー左右の丸いアイコンボタン共通設定。
+   ヘッダー左右の丸いアイコンボタン共通設定
 
-   sidebar-button と exit-button の土台になる。
+   sidebar-button と exit-button の土台になる
 */
 .header-icon {
     width: 42px;
@@ -117,10 +102,6 @@ a {
     box-shadow: 0 4px 12px rgba(91, 168, 143, 0.12);
 }
 
-/*
-   ホバー時に少しだけ背景を変える。
-   操作できることを視覚的に伝えるため。
-*/
 .header-icon:hover {
     background-color: #EAF6F1;
 }
@@ -155,21 +136,21 @@ a {
 }
 
 /*
-   真ん中の線。
+   真ん中の線
 */
 .sidebar-button span {
     top: 20px;
 }
 
 /*
-   上の線。
+   上の線
 */
 .sidebar-button span::before {
     top: -6px;
 }
 
 /*
-   下の線。
+   下の線
 */
 .sidebar-button span::after {
     top: 6px;
@@ -181,10 +162,10 @@ a {
 ========================================================= */
 
 /*
-   exit-button は「×」に近い形をCSSで作る。
+   exit-button は「×」に近い形をCSSで作る
 
    span::before と span::after を斜めにして、
-   閉じる/戻るボタンのように見せる。
+   閉じる/戻るボタンのように見せる
 */
 .exit-button span::before,
 .exit-button span::after {
@@ -199,14 +180,14 @@ a {
 }
 
 /*
-   斜め線1本目。
+   斜め線1本目
 */
 .exit-button span::before {
     transform: rotate(45deg);
 }
 
 /*
-   斜め線2本目。
+   斜め線2本目
 */
 .exit-button span::after {
     transform: rotate(-45deg);
@@ -216,13 +197,6 @@ a {
 /* =========================================================
    6. メイン領域
 ========================================================= */
-
-/*
-   record-main はヘッダー下のメインコンテンツ部分。
-
-   padding-bottom を多めにしているのは、
-   下部リンクやボタンが窮屈に見えないようにするため。
-*/
 .record-main {
     padding: 22px 18px 40px;
 }
@@ -232,11 +206,6 @@ a {
    7. 記録パネル
 ========================================================= */
 
-/*
-   record-panel は、家事ごとの記録表を包むカード。
-
-   白背景 + 角丸 + 影で、やわらかいカードUIにする。
-*/
 .record-panel {
     background-color: #FFFFFF;
     border: 1px solid #DDEBE6;
@@ -246,7 +215,7 @@ a {
 }
 
 /*
-   パネル上部のタイトル行。
+   パネル上部のタイトル行
 
    左：家事ごとの記録
    右：期間ラベル
@@ -263,7 +232,7 @@ a {
 }
 
 /*
-   期間ラベル側は少し控えめにする。
+   期間ラベル側は少し控えめにする
 */
 .record-panel-title span:last-child {
     font-size: 12px;
