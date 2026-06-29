@@ -23,20 +23,20 @@ public class ReminderServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
-		// テスト用　完成版では消す
+		/*// テスト用　完成版では消す
 		LoginUser loginUser = new LoginUser(1,"ueda","password");
 		HttpSession session = request.getSession();
 		session.setAttribute("idnamepw", loginUser);
-		// ここまで
-		/* テスト時コメントアウト
-		 * // もしもログインしていなかったらログインサーブレットにリダイレクトする
+		// ここまで*/
+		
+		  // もしもログインしていなかったらログインサーブレットにリダイレクトする
 		HttpSession session = request.getSession();
 		if (session.getAttribute("userId") == null) {
 			response.sendRedirect("/b4/LoginServlet");
 			return;
 		}
-		 * LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw");
-		*/
+		 LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw");
+		
 		
 		int userId = loginUser.getUserId();
 			
@@ -60,18 +60,18 @@ public class ReminderServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// テスト用　完成版では消す
+		/*// テスト用　完成版では消す
 		LoginUser loginUser = new LoginUser(1,"ueda","password");
 		HttpSession session = request.getSession();
 		session.setAttribute("idnamepw", loginUser);
-		// ここまで
-		/* テスト時コメントアウト
-		 * // もしもログインしていなかったらログインサーブレットにリダイレクトする
+		// ここまで*/
+		
+		 // もしもログインしていなかったらログインサーブレットにリダイレクトする
 		HttpSession session = request.getSession();
 		if (session.getAttribute("userId") == null) {
 			response.sendRedirect("/b4/LoginServlet");
 			return;
-		}*/
+		}
 		// リクエストパラメータを取得する
 		request.setCharacterEncoding("UTF-8");
 		// HttpSession session = request.getSession();
