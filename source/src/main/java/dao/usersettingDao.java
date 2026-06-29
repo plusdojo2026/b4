@@ -14,7 +14,7 @@ public class usersettingDao {
 			+ "&serverTimezone=Asia/Tokyo"
 			+ "&connectTimeout=30000";*/
     		// ローカル環境
-    		"jdbc:mysql://localhost:3306/b4?"
+			"jdbc:mysql://localhost:3306/b4?"
     		+ "characterEncoding=utf8&useSSL=false"
     		+ "&serverTimezone=GMT%2B9&rewriteBatchedStatements=true"
     		+ "&allowPublicKeyRetrieval=true";

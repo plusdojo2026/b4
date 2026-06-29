@@ -21,10 +21,12 @@ import dto.Garbage;
 public class GarbageDao {
 
 	private static final String JDBC_URL =
+			// サーバー環境
 			/*"jdbc:mysql://localhost:3306/b4?"
 			+ "useSSL=false&allowPublicKeyRetrieval=true"
 			+ "&serverTimezone=Asia/Tokyo"
 			+ "&connectTimeout=30000";*/
+			// ローカル環境
 			"jdbc:mysql://localhost:3306/b4"
 			+ "?characterEncoding=UTF-8"
 			+ "&useSSL=false"

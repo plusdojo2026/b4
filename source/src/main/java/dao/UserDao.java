@@ -26,7 +26,7 @@ public class UserDao {
 						/*"jdbc:mysql://localhost:3306/b4?"
 						+ "useSSL=false&allowPublicKeyRetrieval=true"
 						+ "&serverTimezone=Asia/Tokyo"
-						+ "&connectTimeout=30000"*/
+						+ "&connectTimeout=30000","b4","6vvRyvdGp4t4Cr3C"*/
 						// ローカル環境
 						"jdbc:mysql://localhost:3306/b4?"
 						+ "characterEncoding=utf8"
@@ -84,12 +84,19 @@ public class UserDao {
 
 				// データベースに接続する
 				conn = DriverManager.getConnection(
+						// サーバー環境
+						/*"jdbc:mysql://localhost:3306/b4?"
+						+ "useSSL=false&allowPublicKeyRetrieval=true"
+						+ "&serverTimezone=Asia/Tokyo"
+						+ "&connectTimeout=30000","b4","6vvRyvdGp4t4Cr3C"*/
+						// ローカル環境
 						"jdbc:mysql://localhost:3306/b4?"
 						+ "characterEncoding=utf8"
 						+ "&useSSL=false"
 						+ "&serverTimezone=GMT%2B9"
 						+ "&rewriteBatchedStatements=true",
-						"root", "password");
+						"root", "password"
+						);
 
 				// SQL文を準備する
 				String sql = "SELECT id, user_nickname, password FROM users WHERE user_nickname = ?";		// user_nicknameの値でデータを指定
@@ -142,9 +149,18 @@ public class UserDao {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 
 				// データベースに接続する
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/b4?"
-						+ "characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
-						"root", "password");
+				conn = DriverManager.getConnection(
+						// サーバー環境
+						/*"jdbc:mysql://localhost:3306/b4?"
+						+ "useSSL=false&allowPublicKeyRetrieval=true"
+						+ "&serverTimezone=Asia/Tokyo"
+						+ "&connectTimeout=30000", "b4", "6vvRyvdGp4t4Cr3C"*/
+						// ローカル環境
+						"jdbc:mysql://localhost:3306/b4?"
+						+ "characterEncoding=utf8&useSSL=false"
+						+ "&serverTimezone=GMT%2B9&rewriteBatchedStatements=true",
+						"root", "password"
+						);
 
 				// SQL文を準備する
 				String sql = "INSERT INTO Users (user_nickname,password,mail_address) VALUES (?, ?, ?)";
