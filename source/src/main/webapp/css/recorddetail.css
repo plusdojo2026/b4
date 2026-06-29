@@ -1,536 +1,443 @@
 /* =========================================================
-   recorddetail.css
-   記録一覧画面専用CSS
-
-   対象JSP：
-   /WEB-INF/jsp/recorddetail.jsp
-
-   画面方針：
-   ・できた/できていないを強く見せすぎない！！
-   ・記録がある箇所にペンギンアイコンを表示する
-   ・スマホでも崩れにくいレイアウト！！
+   1. 配色
 ========================================================= */
+
+:root {
+	--page-background: #FBFAF7;
+	--main-color: #D2EBE6;
+	--title-color: #80350E;
+	--border-color: #000080;
+	--panel-color: #FFFFFF;
+	--text-color: #332A25;
+	--sub-text-color: #6F625B;
+	--empty-cell-color: #FBFAF7;
+	--light-border-color: #D9DDD9;
+	--shadow-color: rgba(0, 0, 0, 0.15);
+}
 
 
 /* =========================================================
-   1. 全体共通設定
+   2. 全体設定
 ========================================================= */
 
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
-/*
-全体設定
-*/
+html {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+	font-family: "Zen Maru Gothic", sans-serif;
+	background: #FBFAF7 !important;
+	background-color: #FBFAF7 !important;
+	background-image: none !important;
+}
+
 body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
-    color: #2F3A3A;
-    background: linear-gradient(180deg, #F7FCFA 0%, #F4FAF7 100%);
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+	font-family: "Zen Maru Gothic", sans-serif;
+	color: var(--text-color);
+	text-align: center;
+	background: #FBFAF7 !important;
+	background-color: #FBFAF7 !important;
+	background-image: none !important;
 }
 
 a {
-    text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }
 
 
 /* =========================================================
-   2. 画面全体の枠
+   3. 画面全体
 ========================================================= */
 
 .page-frame {
-    max-width: 430px;
-    min-height: 100vh;
-    margin: 0 auto;
-    background-color: #F8FCFA;
-    border-left: 1px solid #E2EFEA;
-    border-right: 1px solid #E2EFEA;
-    position: relative;
+	width: 100%;
+	min-height: 100vh;
+	margin: 0;
+	padding: 0;
+	background: #FBFAF7 !important;
+	background-color: #FBFAF7 !important;
+	background-image: none !important;
 }
 
 
 /* =========================================================
-   3. ヘッダー
+   4. ヘッダー
 ========================================================= */
 
-/*
-   record-header は画面上部の固定的なヘッダー。
-
-   左：サイドバーボタン
-   中央：記録一覧タイトル
-   右：チャット画面へ戻るボタン
-
-*/
 .record-header {
-    height: 64px;
-    padding: 0 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #F8FCFA;
-    border-bottom: 1px solid #E2EFEA;
+	width: 100%;
+	min-height: 72px;
+	padding: 16px 24px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	background: #FBFAF7 !important;
+	background-color: #FBFAF7 !important;
+	background-image: none !important;
+	border-bottom: 1px solid #E4E0DA;
 }
 
-/*
-   ヘッダー中央のタイトル
-*/
 .header-title {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 700;
-    color: #2F3A3A;
-    letter-spacing: 0.04em;
-}
-
-/*
-   ヘッダー左右の丸いアイコンボタン共通設定
-
-   sidebar-button と exit-button の土台になる
-*/
-.header-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background-color: #FFFFFF;
-    border: 1px solid #DDEBE6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    box-shadow: 0 4px 12px rgba(91, 168, 143, 0.12);
-}
-
-.header-icon:hover {
-    background-color: #EAF6F1;
+	margin: 0;
+	color: var(--title-color);
+	font-size: 30px;
+	font-weight: bold;
+	letter-spacing: 0.04em;
+	text-align: left;
 }
 
 
 /* =========================================================
-   4. サイドバーボタンの見た目
+   5. メイン領域
 ========================================================= */
 
-/*
-   サイドバーボタンは、CSSだけで三本線を作る。
-
-   span:
-   → 真ん中の線
-
-   span::before:
-   → 上の線
-
-   span::after:
-   → 下の線
-*/
-.sidebar-button span,
-.sidebar-button span::before,
-.sidebar-button span::after {
-    width: 18px;
-    height: 2px;
-    background-color: #5BA88F;
-    border-radius: 999px;
-    display: block;
-    position: absolute;
-    content: "";
-}
-
-/*
-   真ん中の線
-*/
-.sidebar-button span {
-    top: 20px;
-}
-
-/*
-   上の線
-*/
-.sidebar-button span::before {
-    top: -6px;
-}
-
-/*
-   下の線
-*/
-.sidebar-button span::after {
-    top: 6px;
-}
-
-
-/* =========================================================
-   5. 右上の戻るボタンの見た目
-========================================================= */
-
-/*
-   exit-button は「×」に近い形をCSSで作る
-
-   span::before と span::after を斜めにして、
-   閉じる/戻るボタンのように見せる
-*/
-.exit-button span::before,
-.exit-button span::after {
-    content: "";
-    width: 18px;
-    height: 2px;
-    background-color: #5BA88F;
-    border-radius: 999px;
-    position: absolute;
-    left: 11px;
-    top: 20px;
-}
-
-/*
-   斜め線1本目
-*/
-.exit-button span::before {
-    transform: rotate(45deg);
-}
-
-/*
-   斜め線2本目
-*/
-.exit-button span::after {
-    transform: rotate(-45deg);
-}
-
-
-/* =========================================================
-   6. メイン領域
-========================================================= */
 .record-main {
-    padding: 22px 18px 40px;
+	width: 100%;
+	max-width: 1050px;
+	min-height: calc(100vh - 72px);
+	margin: 0 auto;
+	padding: 28px 20px 50px;
+	background: #FBFAF7 !important;
+	background-color: #FBFAF7 !important;
+	background-image: none !important;
 }
 
 
 /* =========================================================
-   7. 記録パネル
+   6. 記録パネル
 ========================================================= */
 
 .record-panel {
-    background-color: #FFFFFF;
-    border: 1px solid #DDEBE6;
-    border-radius: 28px;
-    padding: 20px 16px 22px;
-    box-shadow: 0 10px 28px rgba(91, 168, 143, 0.12);
+	width: 100%;
+	padding: 24px;
+	background-color: var(--panel-color);
+	border: 1px solid #D9DDD9;
+	border-radius: 24px;
+	box-shadow: 0 6px 18px var(--shadow-color);
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
-/*
-   パネル上部のタイトル行
-
-   左：家事ごとの記録
-   右：期間ラベル
-*/
 .record-panel-title {
-    margin-bottom: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    font-size: 14px;
-    font-weight: 700;
-    color: #2F3A3A;
+	margin-bottom: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	color: var(--text-color);
+	font-size: 22px;
+	font-weight: bold;
+	text-align: left;
 }
 
-/*
-   期間ラベル側は少し控えめにする
-*/
 .record-panel-title span:last-child {
-    font-size: 12px;
-    color: #6F7E7A;
-    font-weight: 600;
-    white-space: nowrap;
+	color: var(--sub-text-color);
+	font-size: 16px;
+	font-weight: normal;
+	white-space: nowrap;
 }
 
 
 /* =========================================================
-   8. 記録グリッド全体
+   7. 記録グリッド
 ========================================================= */
 
-/*
-   record-grid は、家事名 × 曜日の表。
-
-   grid-template-columns:
-   1列目：活動名
-   2〜8列目：月〜日
-
-   84px:
-   → 活動名列の幅
-
-   repeat(7, 1fr):
-   → 曜日列を均等幅にする。
-*/
 .record-grid {
-    display: grid;
-    grid-template-columns: 84px repeat(7, 1fr);
-    gap: 8px;
-    align-items: center;
+	width: 100%;
+	min-width: 760px;
+	display: grid;
+	grid-template-columns:
+		minmax(150px, 1.6fr)
+		repeat(7, minmax(62px, 1fr));
+	gap: 8px;
+	align-items: stretch;
 }
 
-/*
-   左上の空セル。
-   活動名列と曜日列の交差部分。
-*/
 .grid-empty {
-    height: 30px;
+	min-height: 42px;
+	background-color: transparent;
 }
 
 
 /* =========================================================
-   9. 曜日ラベル
+   8. 曜日ラベル
 ========================================================= */
 
-/*
-   day-label は「月 火 水 木 金 土 日」のヘッダー部分。
-*/
 .day-label {
-    height: 30px;
-    border-radius: 999px;
-    background-color: #EAF6F1;
-    color: #4E8F7A;
-    font-size: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	min-height: 42px;
+	padding: 8px 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #478A78;
+	background-color: var(--main-color);
+	border: 1px solid #C5E0DA;
+	border-radius: 999px;
+	font-size: 17px;
+	font-weight: bold;
 }
 
 
 /* =========================================================
-   10. 活動名ラベル
+   9. 活動名ラベル
 ========================================================= */
 
-/*
-   activity-label は左端の家事名。
-
-   例：
-   掃除
-   洗濯
-   料理
-   片付け
-*/
 .activity-label {
-    min-height: 44px;
-    padding: 8px 10px;
-    border-radius: 16px;
-    background-color: #F3FAF7;
-    color: #2F3A3A;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
+	min-height: 58px;
+	padding: 10px 14px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	color: var(--text-color);
+	background-color: #F5F9F7;
+	border: 1px solid #E1E9E5;
+	border-radius: 16px;
+	font-size: 17px;
+	font-weight: bold;
+	text-align: left;
+	word-break: break-word;
 }
 
 
 /* =========================================================
-   11. 記録セル
+   10. 記録セル
 ========================================================= */
 
-/*
-   record-cell は、曜日ごとの記録表示セル。
-
-   記録がない場合：
-   → 空の白いセル
-
-   記録がある場合：
-   → done クラスが付き、ペンギン画像を表示する。
-*/
 .record-cell {
-    height: 44px;
-    border-radius: 16px;
-    background-color: #F9FCFB;
-    border: 1px solid #E7F0EC;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	min-height: 58px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #FBFCFA;
+	border: 1px solid var(--light-border-color);
+	border-radius: 16px;
 }
 
-/*
-   記録があるセル。
-
-   背景を少しだけミント色にして、
-   ペンギンアイコンが自然に見えるようにする。
-*/
 .record-cell.done {
-    background-color: #EAF6F1;
-    border-color: #CFE9DE;
+	background-color: var(--main-color);
+	border-color: #B7DAD2;
 }
 
-/*
-   セル内のペンギン画像。
-
-   画像自体が大きすぎても崩れないように、
-   width / height を固定する。
-*/
 .record-cell img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-    display: block;
+	width: 42px;
+	height: 42px;
+	object-fit: contain;
+	display: block;
 }
 
 
 /* =========================================================
-   12. 前週・翌週ボタン
+   11. 前週・翌週
 ========================================================= */
 
-/*
-   week-buttons は、前週・翌週ボタンを横並びにする領域。
-*/
 .week-buttons {
-    margin-top: 24px;
-    display: flex;
-    justify-content: center;
-    gap: 18px;
+	margin-top: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	background-color: transparent;
 }
 
-/*
-   前週・翌週ボタン。
-
-   押しやすいように横幅と高さを確保する。
-*/
 .week-button {
-    min-width: 110px;
-    padding: 12px 18px;
-    border-radius: 999px;
-    background-color: #FFFFFF;
-    border: 1px solid #DDEBE6;
-    color: #4E8F7A;
-    font-size: 14px;
-    font-weight: 700;
-    text-align: center;
-    box-shadow: 0 6px 16px rgba(91, 168, 143, 0.10);
+	width: 150px;
+	min-height: 64px;
+	padding: 12px 18px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #478A78;
+	background-color: var(--panel-color);
+	border: 1px solid #D2E3DE;
+	border-radius: 999px;
+	font-size: 20px;
+	font-weight: bold;
+	box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease,
+		background-color 0.2s ease;
+	cursor: pointer;
 }
 
-/*
-   ホバー時。
-*/
 .week-button:hover {
-    background-color: #EAF6F1;
+	transform: translateY(3px);
+	background-color: var(--main-color);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 
 /* =========================================================
-   13. ホームへ戻るリンク
+   12. ホームへ戻る
 ========================================================= */
 
-/*
-   home-link-wrap は、下部の「ホームへ戻る」を中央寄せするための枠。
-*/
 .home-link-wrap {
-    margin-top: 22px;
-    text-align: center;
+	margin-top: 24px;
+	display: flex;
+	justify-content: center;
+	background-color: transparent;
 }
 
-/*
-   ホームへ戻るリンク。
-
-   week-button より控えめに見せる。
-*/
 .home-link {
-    display: inline-block;
-    color: #6F7E7A;
-    font-size: 13px;
-    font-weight: 700;
-    padding: 8px 10px;
+	padding: 10px 18px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #657873;
+	background-color: transparent;
+	font-size: 18px;
+	font-weight: bold;
+	transition: color 0.2s ease;
 }
 
-/*
-   ホバー時。
-*/
 .home-link:hover {
-    color: #4E8F7A;
+	color: var(--title-color);
 }
 
 
 /* =========================================================
-   14. レスポンシブ対応：小さめスマホ
+   13. フォーカス
 ========================================================= */
 
-/*
-   画面幅が390px以下の場合、
-   活動名列と各セルを少し小さくする。
-
-   小さい画面でも横スクロールなしで見やすくするため。
-*/
-@media (max-width: 390px) {
-
-    .page-frame {
-        border-left: none;
-        border-right: none;
-    }
-
-    .record-main {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .record-panel {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .record-grid {
-        grid-template-columns: 72px repeat(7, 1fr);
-        gap: 6px;
-    }
-
-    .activity-label {
-        font-size: 12px;
-        padding: 7px 8px;
-    }
-
-    .day-label {
-        font-size: 11px;
-    }
-
-    .record-cell {
-        height: 40px;
-        border-radius: 14px;
-    }
-
-    .record-cell img {
-        width: 24px;
-        height: 24px;
-    }
-
-    .week-buttons {
-        gap: 12px;
-    }
-
-    .week-button {
-        min-width: 96px;
-        padding: 11px 14px;
-        font-size: 13px;
-    }
+.week-button:focus-visible,
+.home-link:focus-visible {
+	outline: 3px solid rgba(0, 0, 128, 0.25);
+	outline-offset: 3px;
 }
 
 
 /* =========================================================
-   15. レスポンシブ対応：さらに狭い画面
+   14. タブレット・スマートフォン
 ========================================================= */
 
-/*
-   350px以下のかなり狭い画面では、
-   グリッド全体が潰れやすいため、
-   活動名列をさらに縮める。
-*/
-@media (max-width: 350px) {
+@media screen and (max-width: 767px) {
 
-    .record-grid {
-        grid-template-columns: 64px repeat(7, 1fr);
-        gap: 5px;
-    }
+	.record-header {
+		min-height: 64px;
+		padding: 12px 16px;
+	}
 
-    .activity-label {
-        font-size: 11px;
-    }
+	.header-title {
+		font-size: 24px;
+	}
 
-    .record-cell {
-        height: 36px;
-    }
+	.record-main {
+		min-height: calc(100vh - 64px);
+		padding: 16px 8px 30px;
+	}
 
-    .record-cell img {
-        width: 22px;
-        height: 22px;
-    }
+	.record-panel {
+		padding: 16px 10px 18px;
+		border-radius: 20px;
+	}
+
+	.record-panel-title {
+		margin-bottom: 16px;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+		font-size: 19px;
+	}
+
+	.record-panel-title span:last-child {
+		font-size: 14px;
+	}
+
+	.record-grid {
+		min-width: 650px;
+		grid-template-columns:
+			130px
+			repeat(7, 66px);
+		gap: 6px;
+	}
+
+	.grid-empty,
+	.day-label {
+		min-height: 36px;
+	}
+
+	.day-label {
+		font-size: 14px;
+	}
+
+	.activity-label {
+		min-height: 50px;
+		padding: 8px 10px;
+		font-size: 14px;
+	}
+
+	.record-cell {
+		min-height: 50px;
+	}
+
+	.record-cell img {
+		width: 34px;
+		height: 34px;
+	}
+
+	.week-buttons {
+		margin-top: 20px;
+		gap: 12px;
+	}
+
+	.week-button {
+		width: 120px;
+		min-height: 52px;
+		padding: 8px 12px;
+		font-size: 16px;
+	}
+
+	.home-link-wrap {
+		margin-top: 18px;
+	}
+
+	.home-link {
+		font-size: 15px;
+	}
+}
+
+
+/* =========================================================
+   15. 小さいスマートフォン
+========================================================= */
+
+@media screen and (max-width: 390px) {
+
+	.record-header {
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+
+	.header-title {
+		font-size: 22px;
+	}
+
+	.record-main {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+
+	.record-panel {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	.record-grid {
+		min-width: 610px;
+		grid-template-columns:
+			120px
+			repeat(7, 64px);
+	}
+
+	.week-button {
+		width: 108px;
+		font-size: 15px;
+	}
 }

@@ -330,3 +330,39 @@ details {
     margin-left: 20px;
     margin-top: 5px;
 }
+
+/*背景色の調整*/
+html,
+body {
+	background-color: #FBFAF7 !important;
+	background-image: none !important;
+}
+
+.page-frame,
+.record-main {
+	background-color: #FBFAF7 !important;
+	background-image: none !important;
+}
+
+/* ヘッダーはchat.cssと同じミント色 */
+.record-header {
+	background-color: #D2EBE6 !important;
+	border-bottom: 1px solid #000080;
+}
+
+/* 記録パネルは白 */
+.record-panel {
+	background-color: #FFFFFF !important;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 表の左上もベージュ背景になじませる */
+.grid-empty {
+	background-color: transparent;
+}
+
+/* ページ下部までベージュにする */
+.home-link-wrap,
+.week-buttons {
+	background-color: transparent;
+}
