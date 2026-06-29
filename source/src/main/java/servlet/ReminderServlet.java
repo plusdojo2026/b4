@@ -75,9 +75,9 @@ public class ReminderServlet extends HttpServlet {
 		// リクエストパラメータを取得する
 		request.setCharacterEncoding("UTF-8");
 		 HttpSession session = request.getSession();
-		LoginUser user = (LoginUser)session.getAttribute("idnamepw"); 
+		LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw"); 
 
-		int userId =user.getUserId();
+		int userId =loginUser.getUserId();
 		String todoName = request.getParameter("todoName");	
 		String todoDate = request.getParameter("todoDate");	
 		
@@ -99,9 +99,9 @@ public class ReminderServlet extends HttpServlet {
 		}
 		TodoDao tdao = new TodoDao();			// DAOをインスタンス化
 		// TodoDaoのselectメソッドでuserIdのTodoデータを取得
-		List<Todo> tod = tdao.select(userId);	
+		List<Todo> td = tdao.select(userId);	
 		// リクエストスコープに「TodoList」と名付けて格納する
-		request.setAttribute("TodoList",tod);
+		request.setAttribute("TodoList",td);
 		
 		// リマインダーページにフォワードする
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/reminder.jsp");
