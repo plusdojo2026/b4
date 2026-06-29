@@ -31,12 +31,11 @@ public class ReminderServlet extends HttpServlet {
 		
 		  // もしもログインしていなかったらログインサーブレットにリダイレクトする
 		HttpSession session = request.getSession();
-		if (session.getAttribute("userId") == null) {
+		LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw");
+		if (loginUser == null) {
 			response.sendRedirect("/b4/LoginServlet");
 			return;
 		}
-		 LoginUser loginUser = (LoginUser)session.getAttribute("idnamepw");
-		
 		
 		int userId = loginUser.getUserId();
 			
@@ -66,15 +65,16 @@ public class ReminderServlet extends HttpServlet {
 		session.setAttribute("idnamepw", loginUser);
 		// ここまで*/
 		
-		 // もしもログインしていなかったらログインサーブレットにリダイレクトする
+		/* // もしもログインしていなかったらログインサーブレットにリダイレクトする
 		HttpSession session = request.getSession();
 		if (session.getAttribute("userId") == null) {
 			response.sendRedirect("/b4/LoginServlet");
 			return;
-		}
+		}*/
+		
 		// リクエストパラメータを取得する
 		request.setCharacterEncoding("UTF-8");
-		// HttpSession session = request.getSession();
+		 HttpSession session = request.getSession();
 		LoginUser user = (LoginUser)session.getAttribute("idnamepw"); 
 
 		int userId =user.getUserId();
