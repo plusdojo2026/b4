@@ -3,256 +3,432 @@ let remainTime = 0;
 let currentTaskTime = 0;
 let suggestionViewState = null;
 let nextwork = null;
+let isSubmitting = false;
+
+// アプリケーションのパス
+const CONTEXT_PATH =
+	document.body.dataset.contextPath || "";
+
+// チャットを一番下まで移動
+function scrollChatArea() {
+	const chatArea =document.getElementById("chatArea");
+
+	chatArea.scrollTop =chatArea.scrollHeight;
+}
+
+// 指定した要素を削除
+function removeElement(elementId) {
+	const element =document.getElementById(elementId);
+
+	if (element) {
+		element.remove();
+	}
+}
+
+// ユーザーアイコンのパスを取得
+function getUserIconPath() {
+	const icon = document.getElementById("icon");
+
+	if (!icon) {
+		return CONTEXT_PATH + "/img/penguin.png";
+	}
+
+	const iconPath = icon.getAttribute("src");
+
+	if (iconPath && iconPath.trim() !== "") {
+		return iconPath;
+	}
+
+	return icon.dataset.fallback || CONTEXT_PATH + "/img/penguin.png";
+}
+
+// ServletへPOST送信
+async function postForm(servletPath, params) {
+	const response = await fetch(
+		CONTEXT_PATH + servletPath,
+		{
+			method: "POST",
+			headers: {
+				"Content-Type":
+					"application/x-www-form-urlencoded; charset=UTF-8"
+			},
+			body: params.toString()
+		}
+	);
+
+	const responseText = await response.text();
+
+	let data = {};
+
+	if (responseText !== "") {
+		try {
+			data = JSON.parse(responseText);
+		} catch (error) {
+			data = {message: responseText};
+		}
+	}
+
+	if (!response.ok) {
+		console.error(
+			"Servletエラー",
+			response.status,
+			responseText
+		);
+
+		throw new Error(data.message || "サーバー処理に失敗しました");
+	}
+
+	if (data.success === false) {
+		throw new Error(data.message || "サーバー処理に失敗しました");
+	}
+
+	return data;
+}
 
 // メッセージ追加
 function addMessage(message, user) {
-
+	const row =document.createElement("div");
+	const icon =document.createElement("img");
+	const balloon =document.createElement("div");
 
 	if (user) {
-		const row = document.createElement("div");
-		const iconPath = document.getElementById("icon").src;
 		row.className = "user-row";
+		balloon.className = "user";
+		icon.className = "user-icon";
+		icon.src = getUserIconPath();
 
-		row.innerHTML = `
-             
-            <div class="user">${message}</div>
-            <img src="${iconPath}" class="user-icon">
-            `;
+		balloon.textContent = message;
 
-		document.getElementById("chatArea").appendChild(row)
+		row.appendChild(balloon);
+		row.appendChild(icon);
+
 	} else {
-		const row = document.createElement("div");
 		row.className = "bot-row";
-		row.innerHTML = `
-            <img src="/b4/img/penguin.png" class="bot-icon">
-            <div class="bot">${message}</div>
-        `;
-		document.getElementById("chatArea").appendChild(row);
+		balloon.className = "bot";
+		icon.className = "bot-icon";
+		icon.src =CONTEXT_PATH + "/img/penguin.png";
+
+		balloon.textContent = message;
+
+		row.appendChild(icon);
+		row.appendChild(balloon);
 	}
 
+	document
+		.getElementById("chatArea")
+		.appendChild(row);
 
-	// 一番下までスクロール
-	document.getElementById("chatArea").scrollTop =
-		document.getElementById("chatArea").scrollHeight;
+	scrollChatArea();
 }
 
-
-// ボタンをchatArea内に表示
+// 最初の選択ボタンを表示
 function showButtons() {
-	const existing = document.getElementById("buttons");
-	if (existing) existing.remove();
+	removeElement("buttons");
+	removeElement("buttons1");
+	removeElement("buttons5");
 
-	//家事やったかの選択ボタン
 	const div = document.createElement("div");
+
 	div.id = "buttons";
 
 	const yes = document.createElement("button");
+
+	yes.type = "button";
 	yes.textContent = "やったよ";
-	yes.onclick = () => answer("やったよ！");
+	yes.onclick =
+		() => answer("やったよ！");
 
 	const no = document.createElement("button");
+
+	no.type = "button";
 	no.textContent = "これから";
-	no.onclick = () => answer("これからだよ！");
+	no.onclick =
+		() => answer("これからだよ！");
 
 	div.appendChild(yes);
 	div.appendChild(no);
-	document.getElementById("chatArea").appendChild(div);
 
-	document.getElementById("chatArea").scrollTop =
-		document.getElementById("chatArea").scrollHeight;
+	document
+		.getElementById("chatArea")
+		.appendChild(div);
+
+	scrollChatArea();
 }
 
-//報告するボタン
+// 報告ボタンを表示
 function reportButtons() {
-	const existing = document.getElementById("buttons1");
-	if (existing) existing.remove();
+	removeElement("buttons");
 
-	//家事やったかの選択ボタン
 	const div = document.createElement("div");
+
 	div.id = "buttons";
 
 	const report = document.createElement("button");
+
+	report.type = "button";
 	report.textContent = "報告";
-	report.onclick = () => openModal();
+	report.onclick = openModal;
 
 	div.appendChild(report);
-	document.getElementById("chatArea").appendChild(div);
 
-	document.getElementById("chatArea").scrollTop =
-		document.getElementById("chatArea").scrollHeight;
+	document
+		.getElementById("chatArea")
+		.appendChild(div);
+
+	scrollChatArea();
 }
 
-
-
-//時間指定かおまかせか
+// 時間指定とおまかせを表示
 function showTimeselect() {
-	const existing = document.getElementById("buttons3");
-	if (existing) existing.remove();
+	removeElement("buttons");
+	removeElement("buttons1");
+	removeElement("buttons5");
 
 	const div = document.createElement("div");
+
 	div.id = "buttons1";
 
-	const sitei = document.createElement("button");
-	sitei.textContent = "時間指定";
-	sitei.onclick = () => openTimeModal();
+	const timeButton = document.createElement("button");
 
-	const omakase = document.createElement("button");
-	omakase.textContent = "おまかせ";
-	omakase.onclick = () => answer("おまかせする！");
+	timeButton.type = "button";
+	timeButton.textContent = "時間指定";
+	timeButton.onclick = openTimeModal;
 
-	div.appendChild(sitei);
-	div.appendChild(omakase);
-	document.getElementById("chatArea").appendChild(div);
+	const autoButton = document.createElement("button");
 
-	document.getElementById("chatArea").scrollTop =
-		document.getElementById("chatArea").scrollHeight;
+	autoButton.type = "button";
+	autoButton.textContent = "おまかせ";
+	autoButton.onclick =
+		() => answer("おまかせする！");
+
+	div.appendChild(timeButton);
+	div.appendChild(autoButton);
+
+	document
+		.getElementById("chatArea")
+		.appendChild(div);
+
+	scrollChatArea();
 }
 
-//ポップアップを表示するためのjavascript
+// 活動報告画面を開く
 function openModal() {
-	document.getElementById("modal")
+	document
+		.getElementById("modal")
 		.classList.remove("hidden");
 }
-//時間指定のポップアップを開く
+
+// 時間指定画面を開く
 function openTimeModal() {
-	document.getElementById("timeModal")
+	document
+		.getElementById("timeModal")
 		.classList.remove("hidden");
 }
 
+// 活動報告画面を閉じる
 function closeModal() {
-	document.getElementById("modal")
+	document
+		.getElementById("modal")
 		.classList.add("hidden");
 }
 
+// 時間指定画面を閉じる
 function closeTimeModal() {
-	document.getElementById("timeModal")
+	document
+		.getElementById("timeModal")
 		.classList.add("hidden");
 }
 
-//時間指定した後の処理
-function decideTime() {
+// SuggestServletの結果を保存
+function setSuggestionViewState(data) {
+	if (!data || typeof data.status !== "string" || !Array.isArray(data.suggestions)) {
 
-	const btn2 = document.getElementById("buttons1");
-	if (btn2) btn2.remove();
+		throw new Error("提案データの形式が正しくありません");
+	}
 
-	const time = document.getElementById("timeSelect").value;
-   
-	
+	suggestionViewState = {
+		currentIndex: 0,
+		status: data.status,
+		mode: data.mode,
+		remainingMinutes:
+			data.remainingMinutes,
+		message: data.message,
+		suggestions: data.suggestions
+	};
+
+	if (data.remainingMinutes !== null && data.remainingMinutes !== undefined) {
+
+		remainTime = Number(data.remainingMinutes);
+	}
+}
+
+// 提案結果を画面へ表示
+function showSuggestionResult(nextState, displayType) {
+	removeElement("buttons5");
+
+	if (!suggestionViewState) {
+		addMessage("提案情報を取得できませんでした",false);
+		return;
+	}
+
+	if (suggestionViewState.status === "PREPARE") {
+		addMessage(suggestionViewState.message || "家事はここまでにして次の用事の準備をしよう！",false);
+		return;
+	}
+
+	if (suggestionViewState.status === "FINISH") {
+		addMessage(suggestionViewState.message || "お疲れ様！今日の提案はここまでにしよう！",false);
+		return;
+	}
+
+	if (suggestionViewState.status === "NO_SUGGESTION") {
+		addMessage(suggestionViewState.message || "現在の条件で提案できる活動がありません", false);
+
+		state = 3;
+		showTimeselect();
+		return;
+	}
+
+	if (suggestionViewState.status !== "CONTINUE" || suggestionViewState.suggestions.length === 0) {
+
+		addMessage("提案できる活動がありません", false);
+		return;
+	}
+
+	const currentWork =suggestionViewState.suggestions[suggestionViewState.currentIndex];
+
+	if (suggestionViewState.mode === "TIME"
+		&& displayType === "next"
+		&& suggestionViewState.remainingMinutes !== null) {
+
+		addMessage(
+			"残り時間は"
+			+ suggestionViewState.remainingMinutes
+			+ "分だよ！",
+			false
+		);
+	}
+
+	if (displayType === "next") {
+		addMessage(
+			"次は" + currentWork.message,
+			false
+		);
+	} else {
+		addMessage(
+			currentWork.message,
+			false
+		);
+	}
+
+	addMessage(
+		"終わったら教えてね！",
+		false
+	);
+
+	suggestionButtons();
+	state = nextState;
+	scrollChatArea();
+}
+
+// 時間指定で提案を開始
+async function decideTime() {
+	if (isSubmitting) {
+		return;
+	}
+
+	const time =document.getElementById("timeSelect").value;
+
+	const allowedTimes =["10", "15", "30", "45", "60"];
+
+	if (!allowedTimes.includes(time)) {
+		alert("時間は10分、15分、30分、45分、60分から選択してください");
+		return;
+	}
+
+	removeElement("buttons1");
+	closeTimeModal();
 	addMessage(time + "分間で家事をする！", true);
-
-	//ユーザーの所要時間
-	remainTime = time;
-
 	addMessage(time + "分間だね！", false);
 
-	closeTimeModal();
+	remainTime = Number(time);
+	isSubmitting = true;
 
+	const params =new URLSearchParams();
 
-	// ここで家事提案処理
-	suggestionViewState = {
-		currentIndex: 0,
+	params.append("action", "start");
+	params.append("mode", "TIME");
+	params.append("time", time);
 
-		suggestions: [
-			{
-				activityId: 10,
-				category: "HOUSEWORK",
-				title: "洗濯物をたたむ",
-				requiredTime: 8,
-				message: "洗濯物をたたみましょう"
-			},
-			{
-				activityId: 2,
-				category: "REST",
-				title: "食器洗い",
-				requiredTime: 8,
-				message: "食器洗いをしましょう"
-			},
-			{
-				activityId: 20,
-				category: "REST",
-				title: "トイレ掃除",
-				requiredTime: 7,
-				message: "トイレを軽く掃除しましょう"
-			}
-			
-		]
-	};
+	try {
+		const data =
+			await postForm("/SuggestServlet",params);
 
-	const housework = suggestionViewState.suggestions[
-		suggestionViewState.currentIndex
-	];
-	addMessage(housework.message, false);
-	addMessage("終わったら教えてね！", false);
+		setSuggestionViewState(data);
+		showSuggestionResult(5, "start");
 
-	suggestionButtons();
-	state = 5;
+	} catch (error) {
+		console.error(error);
 
-	document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
+		addMessage("提案を取得できませんでした", false);
+
+		alert(error.message);
+		showTimeselect();
+
+	} finally {
+		isSubmitting = false;
+	}
 }
 
-//おまかせの処理
-function decideHw() {
-		// ここで家事提案処理
-	suggestionViewState = {
-		currentIndex: 0,
+// おまかせで提案を開始
+async function decideHw() {
+	if (isSubmitting) {
+		return;
+	}
 
-		suggestions: [
-			{
-				activityId: 10,
-				category: "HOUSEWORK",
-				title: "洗濯物をたたむ",
-				requiredTime: 8,
-				message: "洗濯物をたたみましょう"
-			},
-			{
-				activityId: 2,
-				category: "REST",
-				title: "食器洗い",
-				requiredTime: 8,
-				message: "食器洗いをしましょう"
-			},
-			{
-				activityId: 20,
-				category: "REST",
-				title: "トイレ掃除",
-				requiredTime: 7,
-				message: "トイレを軽く掃除しましょう"
-			}
-			
-		]
-	};
+	removeElement("buttons1");
+	isSubmitting = true;
 
-	const housework = suggestionViewState.suggestions[
-		suggestionViewState.currentIndex
-	];
+	const params = new URLSearchParams();
 
-	addMessage(housework.message, false
-	);
-	addMessage("終わったら教えてね！", false);
+	params.append("action", "start");
+	params.append("mode", "AUTO");
 
+	try {
+		const data =
+			await postForm("/SuggestServlet", params);
 
-	suggestionButtons();
-	state = 6;
+		setSuggestionViewState(data);
+		showSuggestionResult(6, "start");
 
-	document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
+	} catch (error) {
+		console.error(error);
+
+		addMessage("提案を取得できませんでした",false);
+
+		alert(error.message);
+		showTimeselect();
+
+	} finally {
+		isSubmitting = false;
+	}
 }
 
-function reportHw() {
+// 実施済み活動を登録
+async function reportHw() {
+	if (isSubmitting) {
+		return;
+	}
 
 	const checked =
-		document.querySelectorAll(
-			'#modal input[type="checkbox"]:checked'
-		);
-
-	const btn1 = document.getElementById("buttons");
-	if (btn1) btn1.remove();
+		document.querySelectorAll('#modal input[type="checkbox"]:checked');
 
 	const activityIds = [];
-    const activityNames = [];
+	const activityNames = [];
 
-	checked.forEach(item => {
-		activityIds.push(item.value);
-        activityNames.push(item.dataset.name);
+	checked.forEach(item => {activityIds.push(item.value);
+
+		activityNames.push(item.dataset.name|| item.value);
 	});
 
 	if (activityIds.length === 0) {
@@ -260,7 +436,17 @@ function reportHw() {
 		return;
 	}
 
-	// Servletへ送るデータ作成
+	const invalidId =
+		activityIds.some(
+			activityId =>
+				!/^[0-9]+$/.test(activityId)
+		);
+
+	if (invalidId) {
+		alert("活動IDが正しく設定されていません");
+		return;
+	}
+
 	const params = new URLSearchParams();
 
 	params.append("action", "checkActivity");
@@ -269,258 +455,325 @@ function reportHw() {
 		params.append("activityId", activityId);
 	});
 
-    //ReportServletへデータを渡す
-	fetch("ReportServlet", {
-		method: "POST",
-		headers: {
-			"Content-Type":
-				"application/x-www-form-urlencoded"
-		},
-		body: params.toString()
-	})
-	.then(response => response.text())
-	.then(data => {
+	isSubmitting = true;
 
-		console.log(data);
+	try {
+		await postForm("/ReportServlet", params
+		);
 
-	addMessage(
-		activityNames.join("、") + "をやったよ！",
-		true
-	);
+		removeElement("buttons");
 
-	addMessage("ok！頑張ったね！", false);
-	addMessage("時間指定する？お任せにする？", false);
-	showTimeselect();
+		addMessage(
+			activityNames.join("、")
+			+ "をやったよ！",
+			true
+		);
 
-	state = 3;
-	closeModal();
+		addMessage("OK！頑張ったね！",false);
 
-	document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
-})
-	.catch(error => {
+		addMessage("時間指定する？おまかせにする？",false);
+
+		checked.forEach(item => {
+			item.checked = false;
+		});
+
+		closeModal();
+		state = 3;
+		showTimeselect();
+
+	} catch (error) {
 		console.error(error);
-		alert("履歴の登録に失敗しました");
-	});
+
+		alert(
+			"履歴の登録に失敗しました\n"
+			+ error.message
+		);
+
+	} finally {
+		isSubmitting = false;
+	}
 }
 
-//提案時表示ボタン
+// 提案操作ボタンを表示
 function suggestionButtons() {
-	const existing = document.getElementById("buttons5");
-	if (existing) existing.remove();
+	removeElement("buttons5");
 
 	const div = document.createElement("div");
+
 	div.id = "buttons5";
 
 	const resuggestion = document.createElement("button");
+
+	resuggestion.type = "button";
 	resuggestion.textContent = "再提案";
-	resuggestion.onclick = () => answer("再提案！");
+	resuggestion.onclick =
+		() => answer("再提案！");
 
 	const finish = document.createElement("button");
+
+	finish.type = "button";
 	finish.textContent = "終わったよ";
-	finish.onclick = () => answer("終わったよ！");
+	finish.onclick =
+		() => answer("終わったよ！");
 
 	div.appendChild(resuggestion);
 	div.appendChild(finish);
-	document.getElementById("chatArea").appendChild(div);
 
-	document.getElementById("chatArea").scrollTop =
-		document.getElementById("chatArea").scrollHeight;
+	document
+		.getElementById("chatArea")
+		.appendChild(div);
+
+	scrollChatArea();
 }
 
-// 最初の質問
-addMessage("お疲れ様！何か家事やった？", false);
-showButtons();
+// 次の候補を表示
+function showNextSuggestion(nextState) {
+	if (!suggestionViewState) {
+		return;
+	}
 
+	removeElement("buttons5");
+
+	suggestionViewState.currentIndex++;
+
+	if (suggestionViewState.currentIndex
+		>= suggestionViewState.suggestions.length) {
+
+		addMessage(
+			"ほかの提案候補はありません",
+			false
+		);
+
+		addMessage(
+			"時間指定する？おまかせにする？",
+			false
+		);
+
+		suggestionViewState = null;
+		state = 3;
+		showTimeselect();
+		return;
+	}
+	nextwork =
+		suggestionViewState.suggestions[
+		suggestionViewState.currentIndex
+		];
+
+	addMessage(
+		nextwork.message,
+		false
+	);
+
+	addMessage(
+		"終わったら教えてね！",
+		false
+	);
+
+	suggestionButtons();
+	state = nextState;
+}
+
+// 現在の提案を完了
+async function completeCurrentSuggestion(nextState) {
+	if (isSubmitting) {
+		return;
+	}
+
+	if (!suggestionViewState
+		|| !Array.isArray(
+			suggestionViewState.suggestions
+		)) {
+
+		alert("提案情報がありません");
+		return;
+	}
+
+	const currentWork =
+		suggestionViewState.suggestions[
+		suggestionViewState.currentIndex
+		];
+
+	if (!currentWork) {
+		alert("完了する活動がありません");
+		return;
+	}
+
+	isSubmitting = true;
+	removeElement("buttons5");
+
+	let historyRegistered = false;
+
+	try {
+		const reportParams = new URLSearchParams();
+
+		reportParams.append(
+			"action",
+			"complete"
+		);
+
+		reportParams.append(
+			"activityId",
+			String(currentWork.activityId)
+		);
+
+		await postForm(
+			"/ReportServlet",
+			reportParams
+		);
+
+		historyRegistered = true;
+
+		const suggestParams = new URLSearchParams();
+
+		suggestParams.append(
+			"action",
+			"complete"
+		);
+
+		suggestParams.append(
+			"activityId",
+			String(currentWork.activityId)
+		);
+
+		const suggestData =
+			await postForm(
+				"/SuggestServlet",
+				suggestParams
+			);
+
+		addMessage(
+			"できたね！",
+			false
+		);
+
+		setSuggestionViewState(
+			suggestData
+		);
+
+		showSuggestionResult(
+			nextState,
+			"next"
+		);
+
+	} catch (error) {
+		console.error(error);
+
+		if (historyRegistered) {
+			addMessage(
+				"活動は記録できたけど次の提案を取得できなかったよ...",
+				false
+			);
+
+			state = 3;
+			showTimeselect();
+
+		} else {
+			alert(
+				"活動の登録に失敗しました\n"
+				+ error.message
+			);
+
+			suggestionButtons();
+		}
+
+	} finally {
+		isSubmitting = false;
+	}
+}
+
+// ボタン選択時の処理
 function answer(value) {
-
-	// ボタンを消さない
-	const buttons = document.getElementById("buttons");
-	if (buttons) buttons.remove();
+	removeElement("buttons");
 
 	addMessage(value, true);
+
 	switch (state) {
-		case 0: //家事をやったかの選択
-			if (value == "やったよ！") {
-				addMessage("もうやったんだ、すごい！何やったか教えて！", false);
+		case 0:
+			// 実施済み活動の確認
+			if (value === "やったよ！") {
+				addMessage(
+					"もうやったんだ、すごい！何やったか教えて！",
+					false
+				);
+
 				state = 1;
 				reportButtons();
+
 			} else {
-				addMessage("OK！これから頑張ろう！", false);
-				showTimeselect();
+				addMessage(
+					"OK！これから頑張ろう！",
+					false
+				);
+
 				state = 3;
+				showTimeselect();
 			}
 			break;
 
-		case 1: //報告ボタン表示(6/18変更)
-			if (value == "報告") {
+		case 1:
+			// 報告画面を表示
+			if (value === "報告") {
 				openModal();
 			}
 			break;
 
-		case 2: //やった家事の報告
-			if (value == "報告する！") {
-				addMessage("OK！頑張ったね！", false);
+		case 2:
+			// 報告完了
+			if (value === "報告する！") {
+				addMessage(
+					"OK！頑張ったね！",
+					false
+				);
 			}
+			break;
 
-		case 3: //時間指定かお任せの選択
-			if (value == "時間指定する！") {
-				addMessage("時間指定", false);
-				state = 4;
-				specifiedButtons();
-			} else {
-				const btn2 = document.getElementById("buttons1");
-				if (btn2) btn2.remove();
-				addMessage("おまかせだね！", false);
+		case 3:
+			// おまかせを開始
+			if (value === "おまかせする！") {
+				removeElement("buttons1");
+
+				addMessage(
+					"おまかせだね！",
+					false
+				);
+
 				decideHw();
 			}
 			break;
 
+		case 5:
+			// 時間指定の提案操作
+			if (value === "再提案！") {
+				showNextSuggestion(5);
 
-		case 5: //時間指定の再提案と終わったよ
-			console.log(value);
-			if (value == "再提案！") {
-				console.log(value);
-
-				suggestionViewState.currentIndex++;
-
-				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length){
-					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
-
-					addMessage(nextwork.message, false);
-					addMessage("終わったら教えてね！", false);
-					suggestionButtons();
-					state = 5;
-				} else {
-					addMessage("お疲れ様！家事はここまでにしよう！", false);
-					const btn1 = document.getElementById("buttons");
-					if (btn1) btn1.remove();
-
-					const btn2 = document.getElementById("buttons1");
-					if (btn2) btn2.remove();
-
-					const btn5 = document.getElementById("buttons5");
-					if (btn5) btn5.remove();
-				}
-			} else if (value == "終わったよ！") {
-
-                //終わったよボタンが押された時に活動IDをjavaに送信
-				const currentWork =suggestionViewState.suggestions[suggestionViewState.currentIndex];
-
-				console.log("完了した活動ID:", currentWork.activityId);
-				
-				//reportServletに通信する
-				fetch("ReportServlet", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/x-www-form-urlencoded"
-					},
-					//activityIdを取得
-					body:
-						"action=complete" +
-						"&activityId=" +
-						currentWork.activityId  
-				})
-				//サーバから返ってきたデータを文字列として受け取る
-					.then(response => response.text())
-				//受け取ったデータをコンソールに表示
-					.then(data => {console.log(data);});
-
-				suggestionViewState.currentIndex++;
-
-				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length) {
-					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
-
-					addMessage("次は" + nextwork.message, false);
-					addMessage("終わったら教えてね！");
-					suggestionButtons();
-					state = 5;
-				}
-				else {
-					addMessage("お疲れ様！家事はここまでにしよう！", false);
-					const btn1 = document.getElementById("buttons");
-					if (btn1) btn1.remove();
-
-					const btn2 = document.getElementById("buttons1");
-					if (btn2) btn2.remove();
-
-					const btn5 = document.getElementById("buttons5");
-					if (btn5) btn5.remove();
-				}
-			}
-
-			break;
-
-		case 6: //おまかせ→再提案/終わったよ
-			if (value == "再提案！") {
-				console.log(value);
-
-				suggestionViewState.currentIndex++;
-
-				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length) {
-
-					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
-
-					addMessage(nextwork.message, false);
-					addMessage("終わったら教えてね！", false);
-					suggestionButtons();
-					state = 6;
-				} else {
-					addMessage("お疲れ様！家事はここまでにしよう！", false);
-					const btn1 = document.getElementById("buttons");
-					if (btn1) btn1.remove();
-
-					const btn2 = document.getElementById("buttons1");
-					if (btn2) btn2.remove();
-
-					const btn5 = document.getElementById("buttons5");
-					if (btn5) btn5.remove();
-				}
-
-			} else if (value == "終わったよ！") {
-				const currentWork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
-
-				console.log("完了した活動ID:", currentWork.activityId);
-
-				//reportServletに通信する
-				fetch("ReportServlet", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/x-www-form-urlencoded"
-					},
-					//activityIdを取得
-					body:
-						"action=complete" +
-						"&activityId=" +
-						currentWork.activityId
-				})
-					//サーバから返ってきたデータを文字列として受け取る
-					.then(response => response.text())
-					//受け取ったデータをコンソールに表示
-					.then(data => { console.log(data); });
-				suggestionViewState.currentIndex++;
-
-				if (suggestionViewState.currentIndex < suggestionViewState.suggestions.length) {
-					nextwork = suggestionViewState.suggestions[suggestionViewState.currentIndex];
-
-                    
-					addMessage("次は、" + nextwork.message, false);
-					addMessage("終わったら教えてね！", false);
-					suggestionButtons();
-					state = 6;
-
-				} else {
-					addMessage("お疲れ様！家事はここまでにしよう！", false);
-					const btn1 = document.getElementById("buttons");
-					if (btn1) btn1.remove();
-
-					const btn2 = document.getElementById("buttons1");
-					if (btn2) btn2.remove();
-
-					const btn5 = document.getElementById("buttons5");
-					if (btn5) btn5.remove();
-				}
+			} else if (
+				value === "終わったよ！"
+			) {
+				completeCurrentSuggestion(5);
 			}
 			break;
 
+		case 6:
+			// おまかせの提案操作
+			if (value === "再提案！") {
+				showNextSuggestion(6);
+
+			} else if (
+				value === "終わったよ！"
+			) {
+				completeCurrentSuggestion(6);
+			}
+			break;
+
+		default:
+			break;
 	}
 }
+
+// チャットを開始
+addMessage(
+	"お疲れ様！何か家事やった？",
+	false
+);
+
+showButtons();
