@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -44,15 +45,38 @@ public class SuggestServlet extends HttpServlet {
 	private static final int GARBAGE_PRIORITY_POINT = 60;
 
 	/** ゴミをまとめる活動名 */
-	private static final String GARBAGE_COLLECT_NAME = "ゴミをまとめる";
+	private static final String GARBAGE_COLLECT_NAME =
+			"ゴミをまとめる";
 
 	/** ゴミを出す活動名 */
-	private static final String GARBAGE_TAKE_OUT_NAME = "ゴミを出す";
+	private static final String GARBAGE_TAKE_OUT_NAME =
+			"ゴミを出す";
 
-	/** セッション属性名 */
-	private static final String SESSION_MODE = "suggestionMode";
+	/** 提案モードを保存するセッション属性名 */
+	private static final String SESSION_MODE =
+			"suggestionMode";
 
-	private static final String SESSION_REMAINING_MINUTES = "suggestionRemainingMinutes";
+	/** 残り時間を保存するセッション属性名 */
+	private static final String SESSION_REMAINING_MINUTES =
+			"suggestionRemainingMinutes";
+
+	/** 直前に画面へ返した活動ID */
+	private static final String SESSION_LAST_SUGGESTED_ACTIVITY_ID =
+			"lastSuggestedActivityId";
+
+	/** 直前に画面へ返したカテゴリ */
+	private static final String SESSION_LAST_SUGGESTED_CATEGORY =
+			"lastSuggestedCategory";
+
+	/** 同じカテゴリが先頭提案になった連続回数 */
+	private static final String SESSION_SAME_CATEGORY_COUNT =
+			"sameSuggestedCategoryCount";
+
+	/** CHILDカテゴリを連続提案するときの減点 */
+	private static final int CHILD_REPEAT_PENALTY = 25;
+
+	/** 同一活動を連続提案するときの減点 */
+	private static final int SAME_ACTIVITY_REPEAT_PENALTY = 50;
 
 	@Override
 	protected void doGet(
@@ -84,6 +108,7 @@ public class SuggestServlet extends HttpServlet {
 				request.getSession(false);
 
 		if (session == null) {
+
 			writeError(
 					response,
 					HttpServletResponse.SC_UNAUTHORIZED,
@@ -96,6 +121,7 @@ public class SuggestServlet extends HttpServlet {
 						"idnamepw");
 
 		if (loginUser == null) {
+
 			writeError(
 					response,
 					HttpServletResponse.SC_UNAUTHORIZED,
@@ -107,6 +133,7 @@ public class SuggestServlet extends HttpServlet {
 				request.getParameter("action");
 
 		if (action == null || action.isEmpty()) {
+
 			writeError(
 					response,
 					HttpServletResponse.SC_BAD_REQUEST,
@@ -115,10 +142,12 @@ public class SuggestServlet extends HttpServlet {
 		}
 
 		try {
+
 			int userId =
 					loginUser.getUserId();
 
 			if ("start".equals(action)) {
+
 				startSuggestion(
 						request,
 						response,
@@ -126,6 +155,7 @@ public class SuggestServlet extends HttpServlet {
 						userId);
 
 			} else if ("complete".equals(action)) {
+
 				completeSuggestion(
 						request,
 						response,
@@ -133,12 +163,14 @@ public class SuggestServlet extends HttpServlet {
 						userId);
 
 			} else if ("refresh".equals(action)) {
+
 				refreshSuggestion(
 						response,
 						session,
 						userId);
 
 			} else {
+
 				writeError(
 						response,
 						HttpServletResponse.SC_BAD_REQUEST,
@@ -146,12 +178,14 @@ public class SuggestServlet extends HttpServlet {
 			}
 
 		} catch (NumberFormatException e) {
+
 			writeError(
 					response,
 					HttpServletResponse.SC_BAD_REQUEST,
 					"数値の指定が正しくありません。");
 
 		} catch (Exception e) {
+
 			e.printStackTrace();
 
 			writeError(
@@ -171,12 +205,16 @@ public class SuggestServlet extends HttpServlet {
 			int userId)
 			throws IOException {
 
-		String mode = request.getParameter("mode");
+		String mode =
+				request.getParameter("mode");
 
 		if ("TIME".equals(mode)) {
-			String timeText = request.getParameter("time");
 
-			if (timeText == null || timeText.isEmpty()) {
+			String timeText =
+					request.getParameter("time");
+
+			if (timeText == null
+					|| timeText.isEmpty()) {
 
 				writeError(
 						response,
@@ -185,7 +223,8 @@ public class SuggestServlet extends HttpServlet {
 				return;
 			}
 
-			int selectedMinutes = Integer.parseInt(timeText);
+			int selectedMinutes =
+					Integer.parseInt(timeText);
 
 			if (selectedMinutes != 10
 					&& selectedMinutes != 15
@@ -209,6 +248,7 @@ public class SuggestServlet extends HttpServlet {
 					selectedMinutes);
 
 		} else if ("AUTO".equals(mode)) {
+
 			session.setAttribute(
 					SESSION_MODE,
 					"AUTO");
@@ -217,12 +257,19 @@ public class SuggestServlet extends HttpServlet {
 					SESSION_REMAINING_MINUTES);
 
 		} else {
+
 			writeError(
 					response,
 					HttpServletResponse.SC_BAD_REQUEST,
 					"modeにはTIMEまたはAUTOを指定してください。");
 			return;
 		}
+
+		/*
+		 * 新しく提案を開始した場合は、
+		 * 前回の連続提案情報をリセットする。
+		 */
+		resetSuggestionHistory(session);
 
 		writeCurrentSuggestions(
 				response,
@@ -240,9 +287,12 @@ public class SuggestServlet extends HttpServlet {
 			int userId)
 			throws IOException {
 
-		String mode = (String) session.getAttribute(SESSION_MODE);
+		String mode =
+				(String) session.getAttribute(
+						SESSION_MODE);
 
 		if (mode == null) {
+
 			writeError(
 					response,
 					HttpServletResponse.SC_BAD_REQUEST,
@@ -250,9 +300,11 @@ public class SuggestServlet extends HttpServlet {
 			return;
 		}
 
-		String activityIdText =request.getParameter("activityId");
+		String activityIdText =
+				request.getParameter("activityId");
 
-		if (activityIdText == null || activityIdText.isEmpty()) {
+		if (activityIdText == null
+				|| activityIdText.isEmpty()) {
 
 			writeError(
 					response,
@@ -261,9 +313,11 @@ public class SuggestServlet extends HttpServlet {
 			return;
 		}
 
-		int activityId =Integer.parseInt(activityIdText);
+		int activityId =
+				Integer.parseInt(activityIdText);
 
 		if (activityId <= 0) {
+
 			writeError(
 					response,
 					HttpServletResponse.SC_BAD_REQUEST,
@@ -271,13 +325,19 @@ public class SuggestServlet extends HttpServlet {
 			return;
 		}
 
-		ActivityDao activityDao =new ActivityDao();
+		ActivityDao activityDao =
+				new ActivityDao();
 
-		List<Activity> activityList =activityDao.selectAll();
+		List<Activity> activityList =
+				activityDao.selectAll();
 
-		Activity completedActivity =findActivityById(activityList, activityId);
+		Activity completedActivity =
+				findActivityById(
+						activityList,
+						activityId);
 
 		if (completedActivity == null) {
+
 			writeError(
 					response,
 					HttpServletResponse.SC_NOT_FOUND,
@@ -286,11 +346,13 @@ public class SuggestServlet extends HttpServlet {
 		}
 
 		if ("TIME".equals(mode)) {
+
 			Integer remainingMinutes =
 					(Integer) session.getAttribute(
 							SESSION_REMAINING_MINUTES);
 
 			if (remainingMinutes == null) {
+
 				writeError(
 						response,
 						HttpServletResponse.SC_BAD_REQUEST,
@@ -298,7 +360,8 @@ public class SuggestServlet extends HttpServlet {
 				return;
 			}
 
-			remainingMinutes -=completedActivity.getRequiredTime();
+			remainingMinutes -=
+					completedActivity.getRequiredTime();
 
 			if (remainingMinutes < 0) {
 				remainingMinutes = 0;
@@ -316,7 +379,7 @@ public class SuggestServlet extends HttpServlet {
 	}
 
 	/**
-	 * 現在の条件で再取得
+	 * 現在の条件で候補を再取得
 	 */
 	private void refreshSuggestion(
 			HttpServletResponse response,
@@ -329,6 +392,7 @@ public class SuggestServlet extends HttpServlet {
 						SESSION_MODE);
 
 		if (mode == null) {
+
 			writeError(
 					response,
 					HttpServletResponse.SC_BAD_REQUEST,
@@ -358,11 +422,13 @@ public class SuggestServlet extends HttpServlet {
 		Integer remainingMinutes = null;
 
 		if ("TIME".equals(mode)) {
+
 			remainingMinutes =
 					(Integer) session.getAttribute(
 							SESSION_REMAINING_MINUTES);
 
 			if (remainingMinutes == null) {
+
 				writeError(
 						response,
 						HttpServletResponse.SC_BAD_REQUEST,
@@ -388,10 +454,13 @@ public class SuggestServlet extends HttpServlet {
 				createSuggestions(
 						userId,
 						mode,
-						remainingMinutes);
+						remainingMinutes,
+						session);
 
 		if (suggestions.isEmpty()) {
+
 			if ("TIME".equals(mode)) {
+
 				writeSuggestionResponse(
 						response,
 						"NO_SUGGESTION",
@@ -401,6 +470,7 @@ public class SuggestServlet extends HttpServlet {
 						suggestions);
 
 			} else {
+
 				writeSuggestionResponse(
 						response,
 						"FINISH",
@@ -413,7 +483,8 @@ public class SuggestServlet extends HttpServlet {
 			return;
 		}
 
-		ScoredActivity firstSuggestion = suggestions.get(0);
+		ScoredActivity firstSuggestion =
+				suggestions.get(0);
 
 		if ("FINISH".equals(
 				firstSuggestion.activity.getCategory())) {
@@ -428,6 +499,14 @@ public class SuggestServlet extends HttpServlet {
 			return;
 		}
 
+		/*
+		 * 実際に画面へ返す先頭候補を記録する。
+		 * 次回の再提案時に同カテゴリを減点する。
+		 */
+		rememberSuggestion(
+				session,
+				firstSuggestion);
+
 		writeSuggestionResponse(
 				response,
 				"CONTINUE",
@@ -436,30 +515,47 @@ public class SuggestServlet extends HttpServlet {
 				null,
 				suggestions);
 	}
+
 	/**
 	 * 提案候補を作成
 	 */
 	private List<ScoredActivity> createSuggestions(
 			int userId,
 			String mode,
-			Integer remainingMinutes) {
+			Integer remainingMinutes,
+			HttpSession session) {
 
-		ActivityDao activityDao =new ActivityDao();
-		ActivityHistoryDao historyDao =new ActivityHistoryDao();
-		GarbageDao garbageDao =new GarbageDao();
+		ActivityDao activityDao =
+				new ActivityDao();
 
-		List<Activity> activityList = activityDao.selectAll();
+		ActivityHistoryDao historyDao =
+				new ActivityHistoryDao();
+
+		GarbageDao garbageDao =
+				new GarbageDao();
+
+		List<Activity> activityList =
+				activityDao.selectAll();
 
 		if (activityList == null) {
-			activityList = new ArrayList<>();
+			activityList =
+					new ArrayList<>();
 		}
 
-		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime now =
+				LocalDateTime.now();
 
-		LocalDate today = now.toLocalDate();
-		LocalDate tomorrow = today.plusDays(1);
-		LocalDateTime startAt =today.atStartOfDay();
-		LocalDateTime endAt =startAt.plusDays(1);
+		LocalDate today =
+				now.toLocalDate();
+
+		LocalDate tomorrow =
+				today.plusDays(1);
+
+		LocalDateTime startAt =
+				today.atStartOfDay();
+
+		LocalDateTime endAt =
+				startAt.plusDays(1);
 
 		List<String> todayGarbageNames =
 				garbageDao.selectGarbageNamesByDate(
@@ -471,9 +567,21 @@ public class SuggestServlet extends HttpServlet {
 						userId,
 						tomorrow);
 
-		boolean garbageDayToday = !todayGarbageNames.isEmpty();
+		if (todayGarbageNames == null) {
+			todayGarbageNames =
+					new ArrayList<>();
+		}
 
-		boolean garbageDayTomorrow = !tomorrowGarbageNames.isEmpty();
+		if (tomorrowGarbageNames == null) {
+			tomorrowGarbageNames =
+					new ArrayList<>();
+		}
+
+		boolean garbageDayToday =
+				!todayGarbageNames.isEmpty();
+
+		boolean garbageDayTomorrow =
+				!tomorrowGarbageNames.isEmpty();
 
 		List<RecordHistoryDto> todayHistoryList =
 				historyDao.findRecordHistoryList(
@@ -491,7 +599,9 @@ public class SuggestServlet extends HttpServlet {
 
 		int houseworkCount = 0;
 		int childCount = 0;
-		boolean garbageActivityDoneToday = false;
+
+		boolean garbageActivityDoneToday =
+				false;
 
 		for (RecordHistoryDto history
 				: todayHistoryList) {
@@ -520,14 +630,38 @@ public class SuggestServlet extends HttpServlet {
 					&& isGarbageActivity(
 							doneActivity)) {
 
-				garbageActivityDoneToday = true;
+				garbageActivityDoneToday =
+						true;
 			}
 		}
 
-		Map<Integer, LocalDateTime>
-				lastExecutedAtMap =
+		Map<Integer, LocalDateTime> lastExecutedAtMap =
 				historyDao.findLastExecutedAtMap(
 						userId);
+
+		if (lastExecutedAtMap == null) {
+			lastExecutedAtMap =
+					new HashMap<>();
+		}
+
+		Integer lastSuggestedActivityId =
+				getSessionInteger(
+						session,
+						SESSION_LAST_SUGGESTED_ACTIVITY_ID);
+
+		String lastSuggestedCategory =
+				(String) session.getAttribute(
+						SESSION_LAST_SUGGESTED_CATEGORY);
+
+		Integer sameCategoryCountValue =
+				getSessionInteger(
+						session,
+						SESSION_SAME_CATEGORY_COUNT);
+
+		int sameCategoryCount =
+				sameCategoryCountValue == null
+						? 0
+						: sameCategoryCountValue;
 
 		RecordHistoryDto latestHistory =
 				historyDao.findLatestHistory(
@@ -536,6 +670,7 @@ public class SuggestServlet extends HttpServlet {
 		Activity latestActivity = null;
 
 		if (latestHistory != null) {
+
 			latestActivity =
 					findActivityById(
 							activityList,
@@ -553,6 +688,7 @@ public class SuggestServlet extends HttpServlet {
 				new ArrayList<>();
 
 		for (Activity activity : activityList) {
+
 			int score =
 					calculateScore(
 							activity,
@@ -565,6 +701,9 @@ public class SuggestServlet extends HttpServlet {
 							garbageActivityDoneToday,
 							garbageDayToday,
 							garbageDayTomorrow,
+							lastSuggestedActivityId,
+							lastSuggestedCategory,
+							sameCategoryCount,
 							now,
 							currentTime,
 							mode,
@@ -600,61 +739,54 @@ public class SuggestServlet extends HttpServlet {
 		scoredList.sort(
 				new Comparator<ScoredActivity>() {
 
-			@Override
-			public int compare(
-					ScoredActivity first,
-					ScoredActivity second) {
+					@Override
+					public int compare(
+							ScoredActivity first,
+							ScoredActivity second) {
 
-				int scoreCompare =
-						Integer.compare(
-								second.score,
-								first.score);
+						int scoreCompare =
+								Integer.compare(
+										second.score,
+										first.score);
 
-				if (scoreCompare != 0) {
-					return scoreCompare;
-				}
+						if (scoreCompare != 0) {
+							return scoreCompare;
+						}
 
-				int lastExecutedCompare =
-						compareLastExecutedAt(
-								first.lastExecutedAt,
-								second.lastExecutedAt);
+						int lastExecutedCompare =
+								compareLastExecutedAt(
+										first.lastExecutedAt,
+										second.lastExecutedAt);
 
-				if (lastExecutedCompare != 0) {
-					return lastExecutedCompare;
-				}
+						if (lastExecutedCompare != 0) {
+							return lastExecutedCompare;
+						}
 
-				int timeCompare =
-						Integer.compare(
-								first.activity
-										.getRequiredTime(),
-								second.activity
-										.getRequiredTime());
+						int timeCompare =
+								Integer.compare(
+										first.activity
+												.getRequiredTime(),
+										second.activity
+												.getRequiredTime());
 
-				if (timeCompare != 0) {
-					return timeCompare;
-				}
+						if (timeCompare != 0) {
+							return timeCompare;
+						}
 
-				boolean firstChild =
-						"CHILD".equals(
-								first.activity
-										.getCategory());
+						/*
+						 * 同点時にCHILDを固定優先しない。
+						 */
+						return Integer.compare(
+								first.activity.getId(),
+								second.activity.getId());
+					}
+				});
 
-				boolean secondChild =
-						"CHILD".equals(
-								second.activity
-										.getCategory());
-
-				if (firstChild != secondChild) {
-					return firstChild ? -1 : 1;
-				}
-
-				return Integer.compare(
-						first.activity.getId(),
-						second.activity.getId());
-			}
-		});
-
-		return scoredList;
+		/*
+		 * JSON内の候補順でもCHILDが連続しないようにする。
+		 */
+		return diversifyChildSuggestions(
+				scoredList);
 	}
 
 	/**
@@ -664,25 +796,33 @@ public class SuggestServlet extends HttpServlet {
 			Activity activity,
 			List<Activity> activityList,
 			Set<Integer> doneTodayActivityIds,
-			Map<Integer, LocalDateTime>
-					lastExecutedAtMap,
+			Map<Integer, LocalDateTime> lastExecutedAtMap,
 			Activity latestActivity,
 			int overworkLevel,
 			int childCount,
 			boolean garbageActivityDoneToday,
 			boolean garbageDayToday,
 			boolean garbageDayTomorrow,
+			Integer lastSuggestedActivityId,
+			String lastSuggestedCategory,
+			int sameCategoryCount,
 			LocalDateTime now,
 			LocalTime currentTime,
 			String mode,
 			Integer remainingMinutes) {
 
+		/*
+		 * 今日実施済みなら除外する。
+		 */
 		if (doneTodayActivityIds.contains(
 				activity.getId())) {
 
 			return EXCLUDED_SCORE;
 		}
 
+		/*
+		 * FINISHは21時以降または5時未満だけ有効。
+		 */
 		if ("FINISH".equals(
 				activity.getCategory())) {
 
@@ -706,6 +846,7 @@ public class SuggestServlet extends HttpServlet {
 		}
 
 		if ("TIME".equals(mode)) {
+
 			if (remainingMinutes == null) {
 				return EXCLUDED_SCORE;
 			}
@@ -722,7 +863,10 @@ public class SuggestServlet extends HttpServlet {
 			}
 		}
 
-		if (Boolean.TRUE.equals(activity.getIsNoise())&& !isNoiseAllowedTime(currentTime)) {
+		if (Boolean.TRUE.equals(
+				activity.getIsNoise())
+				&& !isNoiseAllowedTime(
+						currentTime)) {
 
 			return EXCLUDED_SCORE;
 		}
@@ -736,6 +880,10 @@ public class SuggestServlet extends HttpServlet {
 			return EXCLUDED_SCORE;
 		}
 
+		/*
+		 * スコアは毎回基本ポイントから作り直す。
+		 * 前回の計算値は保持しない。
+		 */
 		int score =
 				activity.getBasePoint();
 
@@ -752,6 +900,12 @@ public class SuggestServlet extends HttpServlet {
 		score += calculateLatestActivityPoint(
 				activity,
 				latestActivity);
+
+		score += calculateSuggestedRepeatPoint(
+				activity,
+				lastSuggestedActivityId,
+				lastSuggestedCategory,
+				sameCategoryCount);
 
 		LocalDateTime lastExecutedAt =
 				lastExecutedAtMap.get(
@@ -923,28 +1077,30 @@ public class SuggestServlet extends HttpServlet {
 				activity.getCategory();
 
 		if (overworkLevel == 1) {
+
 			if ("HOUSEWORK".equals(category)) {
-				return -10;
+				return -5;
 			}
 
 			if ("CHILD".equals(category)
 					|| "REST".equals(category)) {
 
-				return 20;
+				return 10;
 			}
 		}
 
 		if (overworkLevel == 2) {
+
 			if ("HOUSEWORK".equals(category)) {
-				return -20;
+				return -10;
 			}
 
 			if ("CHILD".equals(category)) {
-				return 30;
+				return 15;
 			}
 
 			if ("REST".equals(category)) {
-				return 40;
+				return 20;
 			}
 		}
 
@@ -958,6 +1114,10 @@ public class SuggestServlet extends HttpServlet {
 			Activity activity,
 			int childCount) {
 
+		/*
+		 * 今日すでに子供時間を実施している場合は、
+		 * 子供時間補正を付けない。
+		 */
 		if (childCount > 0) {
 			return 0;
 		}
@@ -965,25 +1125,28 @@ public class SuggestServlet extends HttpServlet {
 		String category =
 				activity.getCategory();
 
+		/*
+		 * 今日まだ子供時間がない場合だけ少し優先する。
+		 */
 		if ("CHILD".equals(category)) {
-			return 30;
+			return 10;
 		}
 
-		if ("HOUSEWORK".equals(category)) {
-			if (Boolean.TRUE.equals(
-					activity.getIsCanWithChild())) {
+		/*
+		 * 子供と一緒にできる家事も少し優先する。
+		 */
+		if ("HOUSEWORK".equals(category)
+				&& Boolean.TRUE.equals(
+						activity.getIsCanWithChild())) {
 
-				return 10;
-			}
-
-			return -10;
+			return 5;
 		}
 
 		return 0;
 	}
 
 	/**
-	 * 直前活動補正を計算
+	 * 直前に完了した活動による補正を計算
 	 */
 	private int calculateLatestActivityPoint(
 			Activity activity,
@@ -993,40 +1156,281 @@ public class SuggestServlet extends HttpServlet {
 			return 0;
 		}
 
+		String currentCategory =
+				activity.getCategory();
+
+		String latestCategory =
+				latestActivity.getCategory();
+
+		/*
+		 * 子供時間を完了した直後は、
+		 * 次の子供時間を減点する。
+		 */
+		if ("CHILD".equals(latestCategory)
+				&& "CHILD".equals(currentCategory)) {
+
+			return -20;
+		}
+
+		/*
+		 * 休憩も連続しすぎないよう減点する。
+		 */
+		if ("REST".equals(latestCategory)
+				&& "REST".equals(currentCategory)) {
+
+			return -15;
+		}
+
 		boolean latestIsHousework =
 				"HOUSEWORK".equals(
-						latestActivity.getCategory());
+						latestCategory);
 
 		boolean latestCanWithChild =
 				Boolean.TRUE.equals(
 						latestActivity
 								.getIsCanWithChild());
 
+		/*
+		 * 直前が子供と一緒にできない家事の場合だけ、
+		 * 次の子供時間・休憩などを少し優先する。
+		 */
 		if (!latestIsHousework
 				|| latestCanWithChild) {
 
 			return 0;
 		}
 
-		String category =
-				activity.getCategory();
-
-		if ("CHILD".equals(category)) {
-			return 15;
+		if ("CHILD".equals(currentCategory)) {
+			return 5;
 		}
 
-		if ("HOUSEWORK".equals(category)
+		if ("HOUSEWORK".equals(currentCategory)
 				&& Boolean.TRUE.equals(
 						activity.getIsCanWithChild())) {
 
-			return 20;
+			return 10;
 		}
 
-		if ("REST".equals(category)) {
-			return 20;
+		if ("REST".equals(currentCategory)) {
+			return 5;
 		}
 
 		return 0;
+	}
+
+	/**
+	 * 直前に画面へ表示した提案との重複補正を計算
+	 */
+	private int calculateSuggestedRepeatPoint(
+			Activity activity,
+			Integer lastSuggestedActivityId,
+			String lastSuggestedCategory,
+			int sameCategoryCount) {
+
+		int point = 0;
+
+		/*
+		 * 再提案で同じ活動が再び先頭に来ることを防ぐ。
+		 */
+		if (lastSuggestedActivityId != null
+				&& activity.getId()
+					== lastSuggestedActivityId) {
+
+			point -= SAME_ACTIVITY_REPEAT_PENALTY;
+		}
+
+		String category =
+				activity.getCategory();
+
+		/*
+		 * 直前の提案がCHILDだった場合、
+		 * 次のCHILD候補を減点する。
+		 */
+		if ("CHILD".equals(lastSuggestedCategory)
+				&& "CHILD".equals(category)) {
+
+			int additionalPenalty =
+					Math.min(
+							Math.max(
+									sameCategoryCount - 1,
+									0) * 10,
+							20);
+
+			point -= CHILD_REPEAT_PENALTY
+					+ additionalPenalty;
+		}
+
+		/*
+		 * 休憩も連続しすぎないよう軽く減点する。
+		 */
+		if ("REST".equals(lastSuggestedCategory)
+				&& "REST".equals(category)) {
+
+			point -= 15;
+		}
+
+		return point;
+	}
+
+	/**
+	 * CHILD候補が候補一覧内で連続しないように並べ替える
+	 */
+	private List<ScoredActivity> diversifyChildSuggestions(
+			List<ScoredActivity> sortedList) {
+
+		List<ScoredActivity> remaining =
+				new ArrayList<>(sortedList);
+
+		List<ScoredActivity> result =
+				new ArrayList<>();
+
+		String previousCategory = null;
+
+		while (!remaining.isEmpty()) {
+
+			int selectedIndex = 0;
+
+			ScoredActivity highest =
+					remaining.get(0);
+
+			/*
+			 * 直前がCHILDで、次の最高点もCHILDの場合、
+			 * HOUSEWORKまたはRESTがあれば間に挟む。
+			 */
+			if ("CHILD".equals(previousCategory)
+					&& "CHILD".equals(
+							highest.activity.getCategory())) {
+
+				int nonChildIndex =
+						findFirstNonChildIndex(
+								remaining);
+
+				if (nonChildIndex >= 0) {
+					selectedIndex =
+							nonChildIndex;
+				}
+			}
+
+			ScoredActivity selected =
+					remaining.remove(
+							selectedIndex);
+
+			result.add(selected);
+
+			previousCategory =
+					selected.activity.getCategory();
+		}
+
+		return result;
+	}
+
+	/**
+	 * CHILD以外の候補位置を取得
+	 */
+	private int findFirstNonChildIndex(
+			List<ScoredActivity> list) {
+
+		for (int i = 0;
+				i < list.size();
+				i++) {
+
+			String category =
+					list.get(i)
+							.activity
+							.getCategory();
+
+			if (!"CHILD".equals(category)
+					&& !"FINISH".equals(category)) {
+
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	/**
+	 * 新しく提案を開始した場合に連続提案情報をリセット
+	 */
+	private void resetSuggestionHistory(
+			HttpSession session) {
+
+		session.removeAttribute(
+				SESSION_LAST_SUGGESTED_ACTIVITY_ID);
+
+		session.removeAttribute(
+				SESSION_LAST_SUGGESTED_CATEGORY);
+
+		session.removeAttribute(
+				SESSION_SAME_CATEGORY_COUNT);
+	}
+
+	/**
+	 * 今回画面へ返した先頭候補をセッションへ保存
+	 */
+	private void rememberSuggestion(
+			HttpSession session,
+			ScoredActivity suggestion) {
+
+		if (suggestion == null
+				|| suggestion.activity == null) {
+
+			return;
+		}
+
+		String currentCategory =
+				suggestion.activity.getCategory();
+
+		String previousCategory =
+				(String) session.getAttribute(
+						SESSION_LAST_SUGGESTED_CATEGORY);
+
+		Integer previousCountValue =
+				getSessionInteger(
+						session,
+						SESSION_SAME_CATEGORY_COUNT);
+
+		int previousCount =
+				previousCountValue == null
+						? 0
+						: previousCountValue;
+
+		int currentCount =
+				currentCategory != null
+				&& currentCategory.equals(
+						previousCategory)
+						? previousCount + 1
+						: 1;
+
+		session.setAttribute(
+				SESSION_LAST_SUGGESTED_ACTIVITY_ID,
+				suggestion.activity.getId());
+
+		session.setAttribute(
+				SESSION_LAST_SUGGESTED_CATEGORY,
+				currentCategory);
+
+		session.setAttribute(
+				SESSION_SAME_CATEGORY_COUNT,
+				currentCount);
+	}
+
+	/**
+	 * セッション属性をIntegerとして安全に取得
+	 */
+	private Integer getSessionInteger(
+			HttpSession session,
+			String attributeName) {
+
+		Object value =
+				session.getAttribute(
+						attributeName);
+
+		if (value instanceof Integer) {
+			return (Integer) value;
+		}
+
+		return null;
 	}
 
 	/**
@@ -1070,6 +1474,9 @@ public class SuggestServlet extends HttpServlet {
 		String category =
 				activity.getCategory();
 
+		/*
+		 * 昼：10時以上15時未満
+		 */
 		if (isBetween(
 				currentTime,
 				LocalTime.of(10, 0),
@@ -1082,30 +1489,36 @@ public class SuggestServlet extends HttpServlet {
 			}
 		}
 
+		/*
+		 * 夕方：15時以上18時未満
+		 */
 		if (isBetween(
 				currentTime,
 				LocalTime.of(15, 0),
 				LocalTime.of(18, 0))) {
 
 			if ("CHILD".equals(category)) {
-				return 10;
+				return 5;
 			}
 
 			if ("HOUSEWORK".equals(category)
 					&& activity.getRequiredTime()
-					<= 10) {
+						<= 10) {
 
 				return 10;
 			}
 		}
 
+		/*
+		 * 夜：18時以上21時未満
+		 */
 		if (isBetween(
 				currentTime,
 				LocalTime.of(18, 0),
 				LocalTime.of(21, 0))) {
 
 			if ("CHILD".equals(category)) {
-				return 20;
+				return 10;
 			}
 
 			if ("HOUSEWORK".equals(category)
@@ -1116,11 +1529,15 @@ public class SuggestServlet extends HttpServlet {
 			}
 		}
 
+		/*
+		 * 21時以上または5時未満
+		 */
 		if (isFinishTime(currentTime)) {
+
 			if ("REST".equals(category)
 					|| "CHILD".equals(category)) {
 
-				return 15;
+				return 10;
 			}
 		}
 
@@ -1133,8 +1550,7 @@ public class SuggestServlet extends HttpServlet {
 	private boolean isFlowAvailable(
 			Activity activity,
 			List<Activity> activityList,
-			Map<Integer, LocalDateTime>
-					lastExecutedAtMap,
+			Map<Integer, LocalDateTime> lastExecutedAtMap,
 			LocalDateTime now) {
 
 		String flowGroup =
@@ -1184,6 +1600,7 @@ public class SuggestServlet extends HttpServlet {
 				activity.getWaitMinutes();
 
 		if (waitMinutes > 0) {
+
 			LocalDateTime availableAt =
 					previousExecutedAt.plusMinutes(
 							waitMinutes);
@@ -1211,6 +1628,7 @@ public class SuggestServlet extends HttpServlet {
 		}
 
 		for (Activity activity : activityList) {
+
 			if (!flowGroup.equals(
 					activity.getFlowGroup())) {
 
@@ -1222,7 +1640,7 @@ public class SuggestServlet extends HttpServlet {
 
 			if (activityFlowStep != null
 					&& activityFlowStep
-					== flowStep) {
+						== flowStep) {
 
 				return activity;
 			}
@@ -1238,7 +1656,9 @@ public class SuggestServlet extends HttpServlet {
 			LocalDateTime first,
 			LocalDateTime second) {
 
-		if (first == null && second == null) {
+		if (first == null
+				&& second == null) {
+
 			return 0;
 		}
 
@@ -1301,6 +1721,7 @@ public class SuggestServlet extends HttpServlet {
 		}
 
 		for (Activity activity : activityList) {
+
 			if (activity.getId()
 					== activityId) {
 
@@ -1348,8 +1769,11 @@ public class SuggestServlet extends HttpServlet {
 		json.append("\"message\":");
 
 		if (message == null) {
+
 			json.append("null");
+
 		} else {
+
 			json.append("\"")
 					.append(escapeJson(message))
 					.append("\"");
@@ -1379,23 +1803,27 @@ public class SuggestServlet extends HttpServlet {
 					.append(",");
 
 			json.append("\"category\":\"")
-					.append(escapeJson(
-							activity.getCategory()))
+					.append(
+							escapeJson(
+									activity.getCategory()))
 					.append("\",");
 
 			json.append("\"title\":\"")
-					.append(escapeJson(
-							activity.getActivityName()))
+					.append(
+							escapeJson(
+									activity.getActivityName()))
 					.append("\",");
 
 			json.append("\"requiredTime\":")
-					.append(activity.getRequiredTime())
+					.append(
+							activity.getRequiredTime())
 					.append(",");
 
 			json.append("\"message\":\"")
-					.append(escapeJson(
-							createActivityMessage(
-									scored)))
+					.append(
+							escapeJson(
+									createActivityMessage(
+											scored)))
 					.append("\"");
 
 			json.append("}");
@@ -1454,6 +1882,7 @@ public class SuggestServlet extends HttpServlet {
 				activity.getCategory();
 
 		if ("REST".equals(category)) {
+
 			return activity.getRequiredTime()
 					+ "分だけ休憩して、"
 					+ activityName
@@ -1461,6 +1890,7 @@ public class SuggestServlet extends HttpServlet {
 		}
 
 		if ("CHILD".equals(category)) {
+
 			return activity.getRequiredTime()
 					+ "分だけ、"
 					+ activityName
@@ -1530,9 +1960,13 @@ public class SuggestServlet extends HttpServlet {
 	 * 活動とスコアを保持
 	 */
 	private static class ScoredActivity {
+
 		private Activity activity;
+
 		private int score;
+
 		private LocalDateTime lastExecutedAt;
+
 		private List<String> garbageNames =
 				new ArrayList<>();
 	}
