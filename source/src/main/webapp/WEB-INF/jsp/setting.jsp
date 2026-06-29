@@ -200,13 +200,13 @@
 					<label>曜日：</label>
 
 					<select name="garbage_day">
-						<option value="月曜日">月曜日</option>
-						<option value="火曜日">火曜日</option>
-						<option value="水曜日">水曜日</option>
-						<option value="木曜日">木曜日</option>
-						<option value="金曜日">金曜日</option>
-						<option value="土曜日">土曜日</option>
-						<option value="日曜日">日曜日</option>
+						<option value="月">月曜日</option>
+						<option value="火">火曜日</option>
+						<option value="水">水曜日</option>
+						<option value="木">木曜日</option>
+						<option value="金">金曜日</option>
+						<option value="土">土曜日</option>
+						<option value="日">日曜日</option>
 					</select>
 
 				</div>
