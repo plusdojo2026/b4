@@ -1,24 +1,21 @@
 /* =========================================================
    1. 配色
 ========================================================= */
-
-:root {
-	--background-color: #FBFAF7;
-	--main-color: #D2EBE6;
-	--title-color: #80350E;
-	--white-color: #FFFFFF;
-	--text-color: #332A25;
-	--sub-text-color: #6F625B;
-	--empty-cell-color: #FBFCFA;
-	--light-border-color: #D9DDD9;
-	--shadow-color: rgba(0, 0, 0, 0.14);
+:root { -
+	-background-color: #FBFAF7; -
+	-main-color: #D2EBE6; -
+	-title-color: #80350E; -
+	-white-color: #FFFFFF; -
+	-text-color: #332A25; -
+	-sub-text-color: #6F625B; -
+	-empty-cell-color: #FBFCFA; -
+	-light-border-color: #D9DDD9; -
+	-shadow-color: rgba(0, 0, 0, 0.14);
 }
-
 
 /* =========================================================
    2. 共通設定
 ========================================================= */
-
 * {
 	box-sizing: border-box;
 }
@@ -29,7 +26,7 @@ html {
 	min-width: 0;
 	min-height: 100%;
 	font-family: "Zen Maru Gothic", sans-serif;
-	background-color: var(--background-color);
+	background-color: var(- -background-color);
 }
 
 body {
@@ -38,8 +35,8 @@ body {
 	min-width: 0;
 	min-height: 100vh;
 	font-family: "Zen Maru Gothic", sans-serif;
-	color: var(--text-color);
-	background-color: var(--background-color);
+	color: var(- -text-color);
+	background-color: var(- -background-color);
 	text-align: center;
 	overflow-x: hidden;
 }
@@ -53,31 +50,27 @@ button {
 	font-family: "Zen Maru Gothic", sans-serif;
 }
 
-
 /* =========================================================
    3. 画面全体
 ========================================================= */
-
 .page-frame {
 	width: 100%;
 	min-width: 0;
 	min-height: 100vh;
 	margin: 0;
-	background-color: var(--background-color);
+	background-color: var(- -background-color);
 }
-
 
 /* =========================================================
    4. ヘッダー
 ========================================================= */
-
 .record-header {
 	width: 100%;
 	min-height: 88px;
 	padding: 14px 24px;
 	display: flex;
 	align-items: center;
-	background-color: var(--background-color);
+	background-color: var(- -background-color);
 	border-bottom: 1px solid #E4E0DA;
 }
 
@@ -86,19 +79,14 @@ button {
 	max-width: 1240px;
 	margin: 0 auto;
 	display: grid;
-	grid-template-columns:
-		64px
-		minmax(0, 1fr)
-		64px;
+	grid-template-columns: 64px minmax(0, 1fr) 64px;
 	align-items: center;
 	column-gap: 16px;
 }
 
-
 /* =========================================================
    5. サイドバーボタン
 ========================================================= */
-
 .record-header #toggleBtn {
 	position: static !important;
 	top: auto !important;
@@ -106,63 +94,50 @@ button {
 	bottom: auto !important;
 	left: auto !important;
 	transform: none !important;
-
 	width: 60px !important;
 	height: 60px !important;
 	margin: 0 !important;
 	padding: 0 !important;
-
 	display: flex !important;
 	align-items: center;
 	justify-content: center;
 	justify-self: start;
-
 	background-color: transparent !important;
 	border: 0 !important;
 	border-radius: 12px;
 	box-shadow: none !important;
-
 	appearance: none;
 	-webkit-appearance: none;
 	cursor: pointer;
-	overflow: hidden;
+	/* 画像を切り取らない */
+	overflow: visible !important;
 }
 
-.record-menu-viewport {
-	width: 54px;
-	height: 54px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-	pointer-events: none;
-}
-
-.record-menu-viewport .record-menu-icon {
-	width: 100% !important;
-	height: 100% !important;
-	min-width: 100% !important;
-	min-height: 100% !important;
-	max-width: none !important;
-	max-height: none !important;
+.record-header #toggleBtn .record-menu-icon {
+	width: 58px !important;
+	height: 58px !important;
+	min-width: 0 !important;
+	min-height: 0 !important;
+	max-width: 100% !important;
+	max-height: 100% !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	display: block !important;
 	object-fit: contain;
 	object-position: center;
-	transform: scale(1.45) !important;
+	/* 拡大による切り取りを解除 */
+	transform: none !important;
 	transform-origin: center;
+	pointer-events: none;
 }
-
 
 /* =========================================================
    6. ヘッダータイトル
 ========================================================= */
-
 .record-page-title {
 	min-width: 0;
 	margin: 0;
-	color: var(--title-color);
+	color: var(- -title-color);
 	font-size: 34px;
 	font-weight: bold;
 	line-height: 1.25;
@@ -173,11 +148,9 @@ button {
 	text-overflow: ellipsis;
 }
 
-
 /* =========================================================
    7. ログアウトボタン
 ========================================================= */
-
 .record-logout-button {
 	position: static !important;
 	top: auto !important;
@@ -185,64 +158,68 @@ button {
 	bottom: auto !important;
 	left: auto !important;
 	transform: none !important;
-
 	width: 60px !important;
 	height: 60px !important;
 	margin: 0 !important;
 	padding: 0 !important;
-
 	display: flex !important;
 	align-items: center;
 	justify-content: center;
 	justify-self: end;
-
-	background-color: #E1F2EE !important;
-	border: 1px solid #C6E2DB !important;
-	border-radius: 12px;
+	/* PNG画像の背景色に合わせる */
+	background-color: #D2EBE6 !important;
+	border: 0 !important;
+	border-radius: 10px;
 	box-shadow: none !important;
-	overflow: hidden;
-
-	transition:
-		background-color 0.2s ease,
-		transform 0.2s ease;
+	/*
+	 * 横長PNGの左右だけを隠す。
+	 * 中央のログアウトマークは切れない。
+	 */
+	overflow: hidden !important;
+	appearance: none;
+	-webkit-appearance: none;
+	cursor: pointer;
+	line-height: 0;
 }
 
 .record-logout-button:hover {
-	background-color: #D2EBE6 !important;
+	background-color: #C6E5DF !important;
 	transform: translateY(1px) !important;
 }
 
-.record-logout-viewport {
-	width: 52px;
-	height: 52px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-	pointer-events: none;
-}
-
-.record-logout-viewport .record-logout-icon {
-	width: 100% !important;
-	height: 100% !important;
-	min-width: 100% !important;
-	min-height: 100% !important;
+.record-logout-button .record-logout-icon {
+	/*
+	 * logout.pngは横長画像なので、
+	 * ボタンより横幅を大きくして中央部分を表示する。
+	 */
+	width: 105px !important;
+	height: auto !important;
+	min-width: 105px !important;
+	min-height: 0 !important;
 	max-width: none !important;
 	max-height: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
+	flex: 0 0 auto;
 	display: block !important;
-	object-fit: contain;
+	object-fit: initial !important;
 	object-position: center;
-	transform: scale(2.25) !important;
-	transform-origin: center;
+	/* PNG本来の色を維持する */
+	background: transparent !important;
+	border: 0 !important;
+	filter: none !important;
+	-webkit-filter: none !important;
+	mix-blend-mode: normal !important;
+	opacity: 1 !important;
+	transform: none !important;
+	image-rendering: auto;
+	pointer-events: none;
+	user-select: none;
+	-webkit-user-drag: none;
 }
-
-
 /* =========================================================
    8. メイン領域
 ========================================================= */
-
 .record-main {
 	width: 100%;
 	max-width: 1240px;
@@ -251,19 +228,17 @@ button {
 	padding: 30px 20px 54px;
 }
 
-
 /* =========================================================
    9. 記録パネル
 ========================================================= */
-
 .record-panel {
 	width: 100%;
 	min-width: 0;
 	padding: 28px;
-	background-color: var(--white-color);
+	background-color: var(- -white-color);
 	border: 1px solid #D9DDD9;
 	border-radius: 26px;
-	box-shadow: 0 7px 20px var(--shadow-color);
+	box-shadow: 0 7px 20px var(- -shadow-color);
 	overflow: hidden;
 }
 
@@ -273,31 +248,27 @@ button {
 	align-items: center;
 	justify-content: space-between;
 	gap: 20px;
-	color: var(--text-color);
+	color: var(- -text-color);
 	font-size: 25px;
 	font-weight: bold;
 	text-align: left;
 }
 
 .record-panel-title span:last-child {
-	color: var(--sub-text-color);
+	color: var(- -sub-text-color);
 	font-size: 18px;
 	font-weight: normal;
 	white-space: nowrap;
 }
 
-
 /* =========================================================
    10. 記録グリッド
 ========================================================= */
-
 .record-grid {
 	width: 100%;
 	min-width: 0;
 	display: grid;
-	grid-template-columns:
-		minmax(124px, 1.6fr)
-		repeat(7, minmax(0, 1fr));
+	grid-template-columns: minmax(124px, 1.6fr) repeat(7, minmax(0, 1fr));
 	gap: 8px;
 	align-items: stretch;
 }
@@ -307,11 +278,9 @@ button {
 	min-height: 46px;
 }
 
-
 /* =========================================================
    11. 曜日ラベル
 ========================================================= */
-
 .day-label {
 	min-width: 0;
 	min-height: 46px;
@@ -320,18 +289,16 @@ button {
 	align-items: center;
 	justify-content: center;
 	color: #478A78;
-	background-color: var(--main-color);
+	background-color: var(- -main-color);
 	border: 1px solid #C5E0DA;
 	border-radius: 999px;
 	font-size: 18px;
 	font-weight: bold;
 }
 
-
 /* =========================================================
    12. 活動名ラベル
 ========================================================= */
-
 .activity-label {
 	min-width: 0;
 	min-height: 66px;
@@ -339,7 +306,7 @@ button {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	color: var(--text-color);
+	color: var(- -text-color);
 	background-color: #F5F9F7;
 	border: 1px solid #E1E9E5;
 	border-radius: 18px;
@@ -350,25 +317,23 @@ button {
 	overflow-wrap: anywhere;
 }
 
-
 /* =========================================================
    13. 記録セル
 ========================================================= */
-
 .record-cell {
 	min-width: 0;
 	min-height: 66px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: var(--empty-cell-color);
-	border: 1px solid var(--light-border-color);
+	background-color: var(- -empty-cell-color);
+	border: 1px solid var(- -light-border-color);
 	border-radius: 18px;
 	overflow: hidden;
 }
 
 .record-cell.done {
-	background-color: var(--main-color);
+	background-color: var(- -main-color);
 	border-color: #B7DAD2;
 }
 
@@ -381,11 +346,9 @@ button {
 	display: block;
 }
 
-
 /* =========================================================
    14. 前週・翌週
 ========================================================= */
-
 .week-buttons {
 	margin-top: 32px;
 	display: flex;
@@ -408,7 +371,7 @@ button {
 	align-items: center;
 	justify-content: center;
 	color: #478A78;
-	background-color: var(--white-color);
+	background-color: var(- -white-color);
 	border: 1px solid #D2E3DE;
 	border-radius: 999px;
 	font-size: 21px;
@@ -416,24 +379,20 @@ button {
 	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.11);
 	appearance: none;
 	-webkit-appearance: none;
-	transition:
-		transform 0.2s ease,
-		box-shadow 0.2s ease,
-		background-color 0.2s ease;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, background-color
+		0.2s ease;
 	cursor: pointer;
 }
 
 .week-button:hover {
 	transform: translateY(3px);
-	background-color: var(--main-color);
+	background-color: var(- -main-color);
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
-
 
 /* =========================================================
    15. ホームへ戻る
 ========================================================= */
-
 .home-link-wrap {
 	margin-top: 28px;
 	display: flex;
@@ -451,83 +410,67 @@ button {
 }
 
 .home-link:hover {
-	color: var(--title-color);
+	color: var(- -title-color);
 }
-
 
 /* =========================================================
    16. フォーカス
 ========================================================= */
-
-.record-menu-button:focus-visible,
-.record-logout-button:focus-visible,
-.week-button:focus-visible,
-.home-link:focus-visible {
+.record-menu-button:focus-visible, .record-logout-button:focus-visible,
+	.week-button:focus-visible, .home-link:focus-visible {
 	outline: 3px solid rgba(71, 138, 120, 0.3);
 	outline-offset: 3px;
 }
 
-
 /* =========================================================
    17. タブレット・スマートフォン
 ========================================================= */
-
 @media screen and (max-width: 767px) {
-
 	.record-header {
 		min-height: 82px;
 		padding: 11px 12px;
 	}
-
 	.record-header-inner {
-		grid-template-columns:
-			54px
-			minmax(0, 1fr)
-			54px;
+		grid-template-columns: 54px minmax(0, 1fr) 54px;
 		column-gap: 10px;
 	}
-
 	.record-header #toggleBtn {
 		width: 52px !important;
 		height: 52px !important;
 	}
-
 	.record-menu-viewport {
 		width: 48px;
 		height: 48px;
 	}
-
 	.record-menu-viewport .record-menu-icon {
 		transform: scale(1.45) !important;
 	}
-
 	.record-page-title {
 		font-size: 30px;
 	}
-
 	.record-logout-button {
 		width: 52px !important;
 		height: 52px !important;
 	}
-
+	.record-logout-button .record-logout-icon {
+		width: 92px !important;
+		height: auto !important;
+		min-width: 92px !important;
+	}
 	.record-logout-viewport {
 		width: 46px;
 		height: 46px;
 	}
-
 	.record-logout-viewport .record-logout-icon {
 		transform: scale(2.25) !important;
 	}
-
 	.record-main {
 		padding: 18px 5px 36px;
 	}
-
 	.record-panel {
 		padding: 18px 8px 20px;
 		border-radius: 22px;
 	}
-
 	.record-panel-title {
 		margin-bottom: 18px;
 		padding: 0 5px;
@@ -536,160 +479,120 @@ button {
 		gap: 3px;
 		font-size: 21px;
 	}
-
 	.record-panel-title span:last-child {
 		font-size: 14px;
 	}
-
 	.record-grid {
-		grid-template-columns:
-			84px
-			repeat(7, minmax(0, 1fr));
+		grid-template-columns: 84px repeat(7, minmax(0, 1fr));
 		gap: 4px;
 	}
-
-	.grid-empty,
-	.day-label {
+	.grid-empty, .day-label {
 		min-height: 38px;
 	}
-
 	.day-label {
 		padding: 4px 0;
 		border-radius: 14px;
 		font-size: 14px;
 	}
-
 	.activity-label {
 		min-height: 52px;
 		padding: 6px 8px;
 		border-radius: 14px;
 		font-size: 14px;
 	}
-
 	.record-cell {
 		min-height: 52px;
 		border-radius: 14px;
 	}
-
 	.record-cell img {
 		width: 34px;
 		height: 34px;
 	}
-
 	.week-buttons {
 		margin-top: 26px;
 		gap: 14px;
 	}
-
 	.week-button {
 		width: 134px;
 		min-height: 58px;
 		padding: 10px 14px;
 		font-size: 18px;
 	}
-
 	.home-link-wrap {
 		margin-top: 22px;
 	}
-
 	.home-link {
 		padding: 10px 16px;
 		font-size: 17px;
 	}
 }
 
-
 /* =========================================================
    18. 幅390px以下
 ========================================================= */
-
 @media screen and (max-width: 390px) {
-
 	.record-header {
 		min-height: 78px;
 		padding-left: 8px;
 		padding-right: 8px;
 	}
-
 	.record-header-inner {
-		grid-template-columns:
-			48px
-			minmax(0, 1fr)
-			48px;
+		grid-template-columns: 48px minmax(0, 1fr) 48px;
 		column-gap: 7px;
 	}
-
-	.record-header #toggleBtn,
-	.record-logout-button {
+	.record-header #toggleBtn, .record-logout-button {
 		width: 46px !important;
 		height: 46px !important;
 	}
-
 	.record-menu-viewport {
 		width: 43px;
 		height: 43px;
 	}
-
 	.record-logout-viewport {
 		width: 41px;
 		height: 41px;
 	}
-
 	.record-menu-viewport .record-menu-icon {
 		transform: scale(1.45) !important;
 	}
-
 	.record-logout-viewport .record-logout-icon {
 		transform: scale(2.2) !important;
 	}
-
 	.record-page-title {
 		font-size: 27px;
 		letter-spacing: 0.02em;
 	}
-
 	.record-main {
 		padding-left: 3px;
 		padding-right: 3px;
 	}
-
 	.record-panel {
 		padding-left: 6px;
 		padding-right: 6px;
 	}
-
 	.record-grid {
-		grid-template-columns:
-			76px
-			repeat(7, minmax(0, 1fr));
+		grid-template-columns: 76px repeat(7, minmax(0, 1fr));
 		gap: 3px;
 	}
-
-	.grid-empty,
-	.day-label {
+	.grid-empty, .day-label {
 		min-height: 35px;
 	}
-
 	.day-label {
 		font-size: 13px;
 	}
-
 	.activity-label {
 		min-height: 49px;
 		padding: 5px 6px;
 		font-size: 13px;
 	}
-
 	.record-cell {
 		min-height: 49px;
 		border-radius: 12px;
 	}
-
 	.record-cell img {
 		width: 31px;
 		height: 31px;
 	}
-
 	.week-button {
 		width: 124px;
 		min-height: 56px;
@@ -697,96 +600,70 @@ button {
 	}
 }
 
-
 /* =========================================================
    19. 幅350px以下
 ========================================================= */
-
 @media screen and (max-width: 350px) {
-
 	.record-header-inner {
-		grid-template-columns:
-			44px
-			minmax(0, 1fr)
-			44px;
+		grid-template-columns: 44px minmax(0, 1fr) 44px;
 		column-gap: 5px;
 	}
-
-	.record-header #toggleBtn,
-	.record-logout-button {
+	.record-header #toggleBtn, .record-logout-button {
 		width: 42px !important;
 		height: 42px !important;
 	}
-
 	.record-menu-viewport {
 		width: 40px;
 		height: 40px;
 	}
-
 	.record-logout-viewport {
 		width: 38px;
 		height: 38px;
 	}
-
 	.record-menu-viewport .record-menu-icon {
 		transform: scale(1.45) !important;
 	}
-
 	.record-logout-viewport .record-logout-icon {
 		transform: scale(2.15) !important;
 	}
-
 	.record-page-title {
 		font-size: 24px;
 	}
-
 	.record-panel-title {
 		font-size: 19px;
 	}
-
 	.record-grid {
-		grid-template-columns:
-			68px
-			repeat(7, minmax(0, 1fr));
+		grid-template-columns: 68px repeat(7, minmax(0, 1fr));
 		gap: 2px;
 	}
-
-	.grid-empty,
-	.day-label {
+	.grid-empty, .day-label {
 		min-height: 32px;
 	}
-
 	.day-label {
 		padding: 2px 0;
 		font-size: 12px;
 	}
-
 	.activity-label {
 		min-height: 45px;
 		padding: 4px 5px;
 		font-size: 12px;
 	}
-
 	.record-cell {
 		min-height: 45px;
 		border-radius: 10px;
 	}
-
 	.record-cell img {
 		width: 28px;
 		height: 28px;
 	}
-
 	.week-buttons {
 		gap: 10px;
 	}
-
 	.week-button {
 		width: 112px;
 		min-height: 52px;
 		font-size: 16px;
 	}
-
 	.home-link {
 		font-size: 16px;
 	}
