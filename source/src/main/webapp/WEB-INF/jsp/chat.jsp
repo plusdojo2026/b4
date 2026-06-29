@@ -1,75 +1,86 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java"
+	contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
 <%@ page import="dto.Activity" %>
 
 <%!
-/**
- * HTMLへ表示する文字列をエスケープ
- */
-private String escapeHtml(String value) {
-	if (value == null) {
-		return "";
-	}
+	/**
+	 * HTMLに出力する文字列をエスケープ
+	 */
+	private String escapeHtml(
+			String value) {
 
-	return value
-			.replace("&", "&amp;")
-			.replace("<", "&lt;")
-			.replace(">", "&gt;")
-			.replace("\"", "&quot;")
-			.replace("'", "&#39;");
-}
+		if (value == null) {
+			return "";
+		}
+
+		return value
+				.replace("&", "&amp;")
+				.replace("<", "&lt;")
+				.replace(">", "&gt;")
+				.replace("\"", "&quot;")
+				.replace("'", "&#39;");
+	}
 %>
 
 <%
-Map<String, List<Activity>> reportActivityMap =(Map<String, List<Activity>>)
-		request.getAttribute("reportActivityMap");
+	/*
+	 * ChatServletから渡された
+	 * 分類済み家事一覧を取得
+	 */
+	@SuppressWarnings("unchecked")
+	Map<String, List<Activity>> reportActivityMap =
+			(Map<String, List<Activity>>)
+			request.getAttribute(
+					"reportActivityMap");
 %>
 
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
 
-<title>家事提案</title>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1">
 
-<link rel="preconnect"
-	href="https://fonts.googleapis.com">
+	<title>家事提案</title>
 
-<link rel="preconnect"
-	href="https://fonts.gstatic.com"
-	crossorigin>
+	<link rel="preconnect"
+		href="https://fonts.googleapis.com">
 
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap"
-	rel="stylesheet">
+	<link rel="preconnect"
+		href="https://fonts.gstatic.com"
+		crossorigin>
 
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/chat.css">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap"
+		rel="stylesheet">
 
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/sidebar.css">
+	<link rel="stylesheet"
+		href="${pageContext.request.contextPath}/css/chat.css">
 
-<script
-	src="${pageContext.request.contextPath}/js/sidebar.js"
-	defer>
-</script>
+	<link rel="stylesheet"
+		href="${pageContext.request.contextPath}/css/sidebar.css">
+
+	<script
+		src="${pageContext.request.contextPath}/js/sidebar.js"
+		defer>
+	</script>
 </head>
 
 <body data-context-path="${pageContext.request.contextPath}">
 
 	<!-- サイドバー -->
 	<jsp:include
-		page="sidebar.jspf"
+		page="/WEB-INF/jsp/sidebar.jsp"
 		flush="true" />
 
 	<header class="header">
 		<div class="title">
 
-			<!-- サイドバー表示ボタン -->
 			<img
 				src="${pageContext.request.contextPath}/img/sidebar.png"
 				id="toggleBtn"
@@ -86,6 +97,7 @@ Map<String, List<Activity>> reportActivityMap =(Map<String, List<Activity>>)
 					class="logout-icon"
 					alt="ログアウト">
 			</a>
+
 		</div>
 	</header>
 
@@ -94,7 +106,7 @@ Map<String, List<Activity>> reportActivityMap =(Map<String, List<Activity>>)
 		src="${Iconlist.icon_path}"
 		id="icon"
 		data-fallback="${pageContext.request.contextPath}/img/penguin.png"
-		alt="">
+		alt="ユーザーアイコン">
 
 	<!-- チャット表示領域 -->
 	<div id="chatArea"></div>
@@ -116,30 +128,33 @@ Map<String, List<Activity>> reportActivityMap =(Map<String, List<Activity>>)
 			<div class="check-area">
 
 <%
-if (reportActivityMap == null
-		|| reportActivityMap.isEmpty()) {
+	if (reportActivityMap == null
+			|| reportActivityMap.isEmpty()) {
 %>
 
 				<p>家事一覧を取得できませんでした</p>
 
 <%
-} else {
+	} else {
 
-	boolean hasAnyActivity = false;
+		boolean hasAnyActivity = false;
 
-	for (Map.Entry<String, List<Activity>>
-			entry : reportActivityMap.entrySet()) {
+		for (Map.Entry<String, List<Activity>>
+				entry : reportActivityMap.entrySet()) {
 
-		String groupName = entry.getKey();
+			String groupName =
+					entry.getKey();
 
-		List<Activity> groupActivityList = entry.getValue();
+			List<Activity> groupActivityList =
+					entry.getValue();
 
-		if (groupActivityList == null || groupActivityList.isEmpty()) {
+			if (groupActivityList == null
+					|| groupActivityList.isEmpty()) {
 
-			continue;
-		}
+				continue;
+			}
 
-		hasAnyActivity = true;
+			hasAnyActivity = true;
 %>
 
 				<details>
@@ -148,9 +163,15 @@ if (reportActivityMap == null
 					</summary>
 
 <%
-		for (Activity activity : groupActivityList) {
+			for (Activity activity
+					: groupActivityList) {
 
-			String activityName = activity.getActivityName();
+				if (activity == null) {
+					continue;
+				}
+
+				String activityName =
+						activity.getActivityName();
 %>
 
 					<label>
@@ -159,31 +180,34 @@ if (reportActivityMap == null
 							value="<%= activity.getId() %>"
 							data-name="<%= escapeHtml(activityName) %>">
 
-						<%= escapeHtml(activityName) %>
+						<span>
+							<%= escapeHtml(activityName) %>
+						</span>
 					</label>
 
 <%
-		}
+			}
 %>
 
 				</details>
 
 <%
-	}
+		}
 
-	if (!hasAnyActivity) {
+		if (!hasAnyActivity) {
 %>
 
 				<p>報告できる家事がありません</p>
 
 <%
+		}
 	}
-}
 %>
 
 			</div>
 
 			<div id="close">
+
 				<button
 					type="button"
 					onclick="reportHw()">
@@ -195,6 +219,7 @@ if (reportActivityMap == null
 					onclick="closeModal()">
 					閉じる
 				</button>
+
 			</div>
 		</div>
 	</div>
@@ -222,6 +247,7 @@ if (reportActivityMap == null
 			</select>
 
 			<div id="decide">
+
 				<button
 					type="button"
 					onclick="decideTime()">
@@ -233,6 +259,7 @@ if (reportActivityMap == null
 					onclick="closeTimeModal()">
 					閉じる
 				</button>
+
 			</div>
 		</div>
 	</div>
@@ -240,5 +267,6 @@ if (reportActivityMap == null
 	<script
 		src="${pageContext.request.contextPath}/js/chat.js">
 	</script>
+
 </body>
 </html>

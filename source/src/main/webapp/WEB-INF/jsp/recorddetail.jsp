@@ -1,5 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" %>
+<%@ page language="java"
+	contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
@@ -8,11 +9,97 @@
 
 <%!
 	/**
-	 * 指定した活動名が指定した曜日に記録されているか判定
+	 * 対象文字列にいずれかのキーワードが含まれるか判定
+	 */
+	private boolean containsAny(
+			String target,
+			String... keywords) {
+
+		if (target == null
+				|| keywords == null) {
+
+			return false;
+		}
+
+		for (String keyword : keywords) {
+
+			if (keyword != null
+					&& target.contains(keyword)) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 活動名が指定した表示グループに属するか判定
+	 */
+	private boolean matchesGroup(
+			String groupName,
+			String activityName) {
+
+		if (groupName == null
+				|| activityName == null) {
+
+			return false;
+		}
+
+		boolean cleaning =
+				containsAny(
+						activityName,
+						"掃除",
+						"拭く",
+						"流す",
+						"ワイパー");
+
+		boolean laundry =
+				containsAny(
+						activityName,
+						"洗濯",
+						"干す",
+						"取り込む",
+						"畳む",
+						"たたむ");
+
+		boolean cooking =
+				containsAny(
+						activityName,
+						"食器",
+						"キッチン",
+						"コンロ",
+						"料理",
+						"調理",
+						"食事");
+
+		if ("掃除".equals(groupName)) {
+			return cleaning;
+		}
+
+		if ("洗濯".equals(groupName)) {
+			return laundry;
+		}
+
+		if ("料理".equals(groupName)) {
+			return cooking;
+		}
+
+		if ("片付け".equals(groupName)) {
+			return !cleaning
+					&& !laundry
+					&& !cooking;
+		}
+
+		return false;
+	}
+
+	/**
+	 * 指定グループの家事が指定曜日に記録されているか判定
 	 */
 	private boolean hasRecord(
 			List<RecordHistoryDto> recordList,
-			String activityName,
+			String groupName,
 			int dayIndex) {
 
 		if (recordList == null
@@ -21,7 +108,8 @@
 			return false;
 		}
 
-		for (RecordHistoryDto record : recordList) {
+		for (RecordHistoryDto record
+				: recordList) {
 
 			if (record == null) {
 				continue;
@@ -33,7 +121,14 @@
 				continue;
 			}
 
-			if (!activityName.equals(
+			if (!"HOUSEWORK".equals(
+					record.getCategory())) {
+
+				continue;
+			}
+
+			if (!matchesGroup(
+					groupName,
 					record.getActivityName())) {
 
 				continue;
@@ -52,25 +147,14 @@
 	}
 
 	/**
-	 * LocalDateTimeから月曜日始まりの曜日番号を取得
-	 *
-	 * 月 = 0
-	 * 火 = 1
-	 * 水 = 2
-	 * 木 = 3
-	 * 金 = 4
-	 * 土 = 5
-	 * 日 = 6
+	 * 月曜日始まりの曜日番号を取得
 	 */
 	private int getDayIndex(
 			LocalDateTime dateTime) {
 
-		int dayOfWeekValue =
-				dateTime
-						.getDayOfWeek()
-						.getValue();
-
-		return dayOfWeekValue - 1;
+		return dateTime
+				.getDayOfWeek()
+				.getValue() - 1;
 	}
 
 	/**
@@ -93,11 +177,6 @@
 %>
 
 <%
-	// コンテキストパスを取得
-	String contextPath =
-			request.getContextPath();
-
-	// 記録一覧を取得
 	List<RecordHistoryDto> recordList =
 			new ArrayList<RecordHistoryDto>();
 
@@ -116,12 +195,10 @@
 				castedRecordList;
 	}
 
-	// 表示期間を取得
 	String periodLabel =
 			(String) request.getAttribute(
 					"periodLabel");
 
-	// 前週と翌週のオフセットを取得
 	Integer previousWeekOffset =
 			(Integer) request.getAttribute(
 					"previousWeekOffset");
@@ -130,7 +207,6 @@
 			(Integer) request.getAttribute(
 					"nextWeekOffset");
 
-	// null対策
 	if (periodLabel == null
 			|| periodLabel.isEmpty()) {
 
@@ -145,7 +221,6 @@
 		nextWeekOffset = 1;
 	}
 
-	// 画面に表示する活動名
 	String[] activityNames = {
 			"掃除",
 			"洗濯",
@@ -153,7 +228,6 @@
 			"片付け"
 	};
 
-	// 曜日ラベル
 	String[] dayLabels = {
 			"月",
 			"火",
@@ -186,140 +260,204 @@
 		href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap"
 		rel="stylesheet">
 
-	<!-- バージョンを付けて古いCSSキャッシュを回避 -->
 	<link rel="stylesheet"
-		href="<%= contextPath %>/css/recorddetail.css?v=20260629-2">
+		href="${pageContext.request.contextPath}/css/sidebar.css">
+
+	<link rel="stylesheet"
+		href="${pageContext.request.contextPath}/css/recorddetail.css?v=20260629-12">
+
+	<script
+		src="${pageContext.request.contextPath}/js/sidebar.js"
+		defer>
+	</script>
 </head>
 
-<body>
+<body data-context-path="${pageContext.request.contextPath}">
 
-<div class="page-frame">
+	<!-- サイドバー -->
+	<jsp:include
+		page="/WEB-INF/jsp/sidebar.jsp"
+		flush="true" />
 
-	<header class="record-header">
+	<div class="page-frame">
 
-		<h1 class="header-title">
-			記録一覧
-		</h1>
+		<header class="record-header">
 
-	</header>
+			<div class="record-header-inner">
 
-	<main class="record-main">
+				<button
+					type="button"
+					id="toggleBtn"
+					class="record-menu-button"
+					aria-label="サイドバーを開く">
 
-		<section class="record-panel">
+					<span class="record-menu-viewport">
 
-			<div class="record-panel-title">
+						<img
+							src="${pageContext.request.contextPath}/img/sidebar.png"
+							class="record-menu-icon"
+							alt="">
 
-				<span>
-					家事ごとの記録
-				</span>
+					</span>
 
-				<span>
-					<%= escapeHtml(periodLabel) %>
-				</span>
+				</button>
+
+				<h1 class="record-page-title">
+					記録一覧
+				</h1>
+
+				<a
+					href="${pageContext.request.contextPath}/LogoutServlet"
+					class="record-logout-button"
+					aria-label="ログアウト">
+
+					<span class="record-logout-viewport">
+
+						<img
+							src="${pageContext.request.contextPath}/img/logout.png"
+							class="record-logout-icon"
+							alt="">
+
+					</span>
+
+				</a>
 
 			</div>
 
-			<div class="record-grid">
+		</header>
 
-				<div class="grid-empty"></div>
+		<main class="record-main">
 
-				<%
-					for (String dayLabel
-							: dayLabels) {
-				%>
+			<section class="record-panel">
+
+				<div class="record-panel-title">
+
+					<span>
+						家事ごとの記録
+					</span>
+
+					<span>
+						<%= escapeHtml(periodLabel) %>
+					</span>
+
+				</div>
+
+				<div class="record-grid">
+
+					<div class="grid-empty"></div>
+
+<%
+	for (String dayLabel
+			: dayLabels) {
+%>
 
 					<div class="day-label">
 						<%= escapeHtml(dayLabel) %>
 					</div>
 
-				<%
-					}
-				%>
+<%
+	}
+%>
 
-				<%
-					for (String activityName
-							: activityNames) {
-				%>
+<%
+	for (String activityName
+			: activityNames) {
+%>
 
 					<div class="activity-label">
 						<%= escapeHtml(activityName) %>
 					</div>
 
-					<%
-						for (int dayIndex = 0;
-								dayIndex < 7;
-								dayIndex++) {
+<%
+		for (int dayIndex = 0;
+				dayIndex < 7;
+				dayIndex++) {
 
-							boolean done =
-									hasRecord(
-											recordList,
-											activityName,
-											dayIndex);
-					%>
+			boolean done =
+					hasRecord(
+							recordList,
+							activityName,
+							dayIndex);
+%>
 
-						<div class="record-cell<%= done ? " done" : "" %>">
+					<div class="record-cell<%= done ? " done" : "" %>">
 
-							<%
-								if (done) {
-							%>
+<%
+			if (done) {
+%>
 
-								<img
-									src="<%= contextPath %>/img/penguin.png"
-									alt="記録あり">
+						<img
+							src="${pageContext.request.contextPath}/img/penguin.png"
+							alt="記録あり">
 
-							<%
-								}
-							%>
+<%
+			}
+%>
 
-						</div>
+					</div>
 
-					<%
-						}
-					%>
+<%
+		}
+	}
+%>
 
-				<%
-					}
-				%>
+				</div>
+
+			</section>
+
+			<div class="week-buttons">
+
+				<form
+					action="${pageContext.request.contextPath}/RecordDetailServlet"
+					method="get"
+					class="week-form">
+
+					<input
+						type="hidden"
+						name="weekOffset"
+						value="<%= previousWeekOffset.intValue() %>">
+
+					<button
+						type="submit"
+						class="week-button">
+						前週
+					</button>
+
+				</form>
+
+				<form
+					action="${pageContext.request.contextPath}/RecordDetailServlet"
+					method="get"
+					class="week-form">
+
+					<input
+						type="hidden"
+						name="weekOffset"
+						value="<%= nextWeekOffset.intValue() %>">
+
+					<button
+						type="submit"
+						class="week-button">
+						翌週
+					</button>
+
+				</form>
 
 			</div>
 
-		</section>
+			<div class="home-link-wrap">
 
-		<div class="week-buttons">
+				<a
+					href="${pageContext.request.contextPath}/ChatServlet"
+					class="home-link">
+					ホームへ戻る
+				</a>
 
-			<a
-				href="<%= contextPath %>/record?weekOffset=<%= previousWeekOffset %>"
-				class="week-button">
+			</div>
 
-				前週
+		</main>
 
-			</a>
-
-			<a
-				href="<%= contextPath %>/record?weekOffset=<%= nextWeekOffset %>"
-				class="week-button">
-
-				翌週
-
-			</a>
-
-		</div>
-
-		<div class="home-link-wrap">
-
-			<a
-				href="<%= contextPath %>/ChatServlet"
-				class="home-link">
-
-				ホームへ戻る
-
-			</a>
-
-		</div>
-
-	</main>
-
-</div>
+	</div>
 
 </body>
 </html>
