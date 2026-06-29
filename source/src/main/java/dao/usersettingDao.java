@@ -7,9 +7,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class usersettingDao {
-    private final String URL = "jdbc:mysql://localhost:3306/b4?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B9&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true";
-    private final String USER = "your_user";
-    private final String PASS = "your_password";
+    private final String URL = 
+    		// サーバー環境
+    		/*"jdbc:mysql://localhost:3306/b4?"
+			+ "useSSL=false&allowPublicKeyRetrieval=true"
+			+ "&serverTimezone=Asia/Tokyo"
+			+ "&connectTimeout=30000";*/
+    		// ローカル環境
+    		"jdbc:mysql://localhost:3306/b4?"
+    		+ "characterEncoding=utf8&useSSL=false"
+    		+ "&serverTimezone=GMT%2B9&rewriteBatchedStatements=true"
+    		+ "&allowPublicKeyRetrieval=true";
+    private final String USER = "your_user"/*"b4"*/;
+    private final String PASS = "your_password"/*"6vvRyvdGp4t4Cr3C"*/;
 
     // ユーザー設定がすでに存在するか確認
     public boolean userSearch(int user_id) {

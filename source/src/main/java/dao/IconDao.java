@@ -30,13 +30,13 @@ public class IconDao {
 				String sql = "SELECT icon_path FROM user_settings INNER JOIN icons ON icon_id = icons.id WHERE user_id = 1";		// idの値でデータを指定
 				PreparedStatement pStmt = conn.prepareStatement(sql);
 
-				/* テスト中はコメントアウト
-				 * // SQL文を完成させる
+				// テスト中はコメントアウト
+				  // SQL文を完成させる
 				if (icon_id != 0) {							// 入力された文字で検索
 					pStmt.setInt(1, icon_id);
 				} else {										// nullだったらすべてあいまい検索
 					pStmt.setString(1, "%");
-				}*/
+				}
 				
 				// SQL文を実行し、結果表を取得する
 				ResultSet rs = pStmt.executeQuery();

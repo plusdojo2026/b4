@@ -20,8 +20,14 @@ public class UserDao {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 
 				// データベースに接続する
-				// ローカル環境
+				
 						conn = DriverManager.getConnection(
+						// サーバー環境
+						/*"jdbc:mysql://localhost:3306/b4?"
+						+ "useSSL=false&allowPublicKeyRetrieval=true"
+						+ "&serverTimezone=Asia/Tokyo"
+						+ "&connectTimeout=30000"*/
+						// ローカル環境
 						"jdbc:mysql://localhost:3306/b4?"
 						+ "characterEncoding=utf8"
 						+ "&useSSL=false"
